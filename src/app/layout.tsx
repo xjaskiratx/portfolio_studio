@@ -1,18 +1,6 @@
 import type { Metadata } from "next";
-import { DM_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
-import "@/lib/three-patch";
-
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-});
-
-const spaceMono = Space_Mono({
-  variable: "--font-space-mono",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
+import { ThreePatchInitializer } from "@/components/ThreePatchInitializer";
 
 export const metadata: Metadata = {
   title: "JSX W&D — Digital Forge | Full-Spectrum Design & Dev",
@@ -45,9 +33,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${spaceMono.variable} antialiased`}
+      className="antialiased"
     >
       <body className="bg-bg text-txt font-body selection:bg-lime/30 selection:text-lime">
+        <ThreePatchInitializer />
         <Preloader />
         <ScrollProgress />
         {children}

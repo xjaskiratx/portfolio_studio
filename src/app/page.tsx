@@ -76,13 +76,13 @@ export default function Home() {
         <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         <EasterEgg />
 
-        {/* Sections */}
         <Hero />
 
         <Marquee
           items={["Web Design", "Graphic Design", "Brand Identity", "UI / UX", "Development", "Print Design", "Redesigns"]}
           variant="lime"
           speed={22}
+          aria-hidden="true"
         />
         <Marquee
           items={["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Express", "MongoDB", "Supabase", "OAuth", "WordPress", "Tailwind CSS", "Framer Motion", "GSAP", "Three.js"]}
@@ -90,40 +90,30 @@ export default function Home() {
           direction="right"
           speed={30}
           separator="·"
+          aria-hidden="true"
         />
 
-        <div id="about">
-          <About />
-        </div>
-
-        <div id="services">
-          <Services />
-        </div>
-
-        <div id="work">
-          <Work />
-        </div>
+        <About />
+        <Services />
+        <Work />
 
         <Marquee
           items={["Got existing work?", "I'll make it what it should have been", "Redesigns are a specialty"]}
           variant="lime"
           speed={18}
           direction="right"
+          aria-hidden="true"
         />
 
-        <div id="gd">
-          <GDGallery />
-        </div>
-
-        <div id="process" className="rv">
-          <Process />
-        </div>
+        <GDGallery />
+        <Process />
 
         <Marquee
           items={["I build what agencies charge 10x for", "One expert, zero handoff losses", "Web · Graphic · Brand · Print"]}
           variant="dark"
           speed={25}
           separator="·"
+          aria-hidden="true"
         />
 
         {/* ══════════════════ CTA ══════════════════ */}
