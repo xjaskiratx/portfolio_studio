@@ -1,10 +1,6 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { ScrambleInView } from "@/components/ui/ScrambleInView";
+import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
+import { ParallaxImage } from "./ParallaxImage";
 
 const philosophy = [
   { label: "Efficiency", value: "Zero handoff loss. I design with the code in mind and code with the design in heart." },
@@ -12,35 +8,9 @@ const philosophy = [
   { label: "Partnership", value: "You work directly with me. No account managers, no layers — just results." }
 ];
 
-import { useInView } from "framer-motion";
-import { ScrambleText } from "@/components/ui/ScrambleText";
-import { ForgeVisualization } from "@/components/ui/ForgeVisualization";
-import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
-
 export function About() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-10%" });
-  
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(imageRef.current, {
-        y: -80,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.2,
-        },
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section id="about" ref={containerRef} className="sec relative bg-bg overflow-hidden scroll-mt-20">
+    <section id="about" className="sec relative bg-bg overflow-hidden scroll-mt-20">
       {/* Background Decor */}
       <div className="absolute left-[-20px] top-[10%] font-display font-black text-[380px] text-transparent [-webkit-text-stroke:1px_rgba(200,255,0,0.015)] leading-none tracking-tighter pointer-events-none select-none uppercase">
         Mind
@@ -55,7 +25,7 @@ export function About() {
           
           <h2 className="sec-title mb-12">
             Solo <ScrambleOutline text="Power," className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /><br/>
-            Agency <span className="text-lime"><ScrambleText text="Results." trigger={isInView} /></span>
+            Agency <span className="text-lime"><ScrambleInView text="Results." /></span>
           </h2>
           
           <div className="space-y-10 max-w-[600px] mb-20">
@@ -79,27 +49,7 @@ export function About() {
           </div>
         </div>
 
-        <div className="relative aspect-[4/5] md:aspect-square lg:aspect-[4/5.2] bg-[#0c0c14] overflow-hidden group rv si border border-white/5" style={{ transitionDelay: '0.3s' }}>
-          <div ref={imageRef} className="absolute inset-0 z-0">
-             <ForgeVisualization />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-bg/40 opacity-80 pointer-events-none" />
-          
-          {/* HUD Corner Accents */}
-          <div className="absolute top-10 left-10 w-16 h-16 border-t-[2px] border-l-[2px] border-white/20 group-hover:border-lime/40 transition-colors duration-500" />
-          <div className="absolute bottom-10 right-10 w-16 h-16 border-b-[2px] border-r-[2px] border-white/20 group-hover:border-lime/40 transition-colors duration-500" />
-          
-          <div className="absolute bottom-12 left-12 right-12 flex justify-between items-end">
-             <div className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/40 rotate-180 [writing-mode:vertical-lr] select-none">J.SINGH — DIGITAL FORGE — 2025</div>
-             <div className="bg-lime p-8 text-bg shadow-2xl translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 delay-200">
-                <div className="font-display font-black text-[11px] tracking-[0.2em] uppercase mb-2">STATUS: ACTIVE</div>
-                <div className="font-mono text-[9px] tracking-widest uppercase font-bold flex items-center gap-2">
-                  <span className="w-2 h-2 bg-bg rounded-full animate-pulse" />
-                  Open for Collaborations
-                </div>
-             </div>
-          </div>
-        </div>
+        <ParallaxImage />
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import { clsx, type ClassValue } from "clsx";
@@ -183,7 +183,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
       </div>
       
       <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-110">
-        {project.art}
+        <React.Fragment key="project-art">{project.art}</React.Fragment>
       </div>
 
       <div className="absolute inset-0 bg-gradient-to-t from-bg/98 via-bg/20 to-transparent flex flex-col justify-end p-8 md:p-10">

@@ -96,6 +96,7 @@ export function Cursor() {
       <AnimatePresence>
         {labels[cursorState] && (
           <motion.div
+            key={cursorState}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

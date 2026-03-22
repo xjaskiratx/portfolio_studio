@@ -41,12 +41,14 @@ export function Preloader() {
             {/* Animated Path */}
             <motion.svg viewBox="0 0 480 80" className="absolute inset-0 w-full fill-none stroke-lime stroke-[2]">
                <motion.path 
+                 key="path1"
                  initial={{ pathLength: 0 }}
                  animate={{ pathLength: 1 }}
                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.3 }}
                  d="M20,64 L20,16 L52,16 L52,38 L36,38 M80,16 L64,38 L80,64 M64,38 L56,64 M110,16 L95,64 M95,16 L125,64 M148,16 L148,64 M148,16 L172,16 C185,16 192,24 192,38 C192,52 185,64 172,64 L148,64 M220,64 L220,16 M220,16 L244,16 C257,16 264,26 264,38 C264,50 257,64 244,64 L220,64 M244,40 L264,64"
                />
                <motion.path 
+                 key="path2"
                  initial={{ pathLength: 0 }}
                  animate={{ pathLength: 1 }}
                  transition={{ duration: 1.5, ease: "easeInOut", delay: 1.1 }}
