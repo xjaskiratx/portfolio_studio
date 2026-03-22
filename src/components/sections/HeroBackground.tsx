@@ -10,7 +10,7 @@ function Constellation() {
   const shapesRef = useRef<THREE.Group>(null);
 
   // Stars data
-  const starsCount = 260;
+  const starsCount = 80;
   const starsPositions = useMemo(() => {
     const pos = new Float32Array(starsCount * 3);
     for (let i = 0; i < starsCount; i++) {
@@ -22,7 +22,7 @@ function Constellation() {
   }, []);
 
   // Lime particles data
-  const particlesCount = 120;
+  const particlesCount = 40;
   const particlesPositions = useMemo(() => {
     const pos = new Float32Array(particlesCount * 3);
     for (let i = 0; i < particlesCount; i++) {
@@ -36,7 +36,7 @@ function Constellation() {
   // Line segments data
   const lines = useMemo(() => {
     const points = [];
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 8; i++) {
       points.push(new THREE.Vector3((Math.random() - 0.5) * 30, (Math.random() - 0.5) * 26, (Math.random() - 0.5) * 13)); // eslint-disable-line react-hooks/purity
       points.push(new THREE.Vector3((Math.random() - 0.5) * 30, (Math.random() - 0.5) * 26, (Math.random() - 0.5) * 13)); // eslint-disable-line react-hooks/purity
     }
@@ -44,7 +44,7 @@ function Constellation() {
   }, []);
 
   const shapes = useMemo(() => {
-    return Array.from({ length: 22 }).map((_, i) => {
+    return Array.from({ length: 8 }).map((_, i) => {
       const size = Math.random() * 0.72 + 0.22; // eslint-disable-line react-hooks/purity
       const type = i % 4;
       let geometry;

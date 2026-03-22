@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { useLenis } from "lenis/react";
 
 interface PixelMaskProps {
   imagePath: string;
@@ -23,6 +24,17 @@ export function PixelMask({
   const containerRef = useRef<HTMLDivElement>(null);
   const mouse = useRef({ x: -2000, y: -2000 });
   const targetMouse = useRef({ x: -2000, y: -2000 });
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const updateRect = () => {
+    if (containerRef.current) {
+      rectRef.current = containerRef.current.getBoundingClientRect();
+    }
+  };
+
+  useLenis(() => {
+    updateRect();
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -34,14 +46,14 @@ export function PixelMask({
       if (!containerRef.current) return;
       canvas.width = containerRef.current.offsetWidth;
       canvas.height = containerRef.current.offsetHeight;
+      updateRect();
     };
 
     window.addEventListener("resize", resize);
     resize();
 
-    // Global mouse tracking for more robustness
     const handleGlobalMouseMove = (e: MouseEvent) => {
-      const rect = containerRef.current?.getBoundingClientRect();
+      const rect = rectRef.current;
       if (rect) {
         targetMouse.current = {
           x: e.clientX - rect.left,
@@ -54,7 +66,6 @@ export function PixelMask({
     let frame: number;
     const radiusSq = radius * radius;
 
-    // Create offscreen sprite for performance
     const sprite = document.createElement("canvas");
     sprite.width = pixelSize;
     sprite.height = pixelSize;
@@ -68,7 +79,6 @@ export function PixelMask({
       mouse.current.x += (targetMouse.current.x - mouse.current.x) * 0.12;
       mouse.current.y += (targetMouse.current.y - mouse.current.y) * 0.12;
 
-      // Update local CSS variables to avoid conflict with global ones
       if (containerRef.current) {
         containerRef.current.style.setProperty("--pmx", `${mouse.current.x}px`);
         containerRef.current.style.setProperty("--pmy", `${mouse.current.y}px`);
@@ -108,7 +118,6 @@ export function PixelMask({
       ref={containerRef}
       className="relative w-full h-full min-h-full overflow-hidden"
     >
-      {/* The background picture to be revealed */}
       <div
         className="absolute inset-0 bg-cover bg-center grayscale contrast-[1.45] brightness-[0.52] saturate-0 z-0"
         style={{
@@ -120,14 +129,12 @@ export function PixelMask({
         }}
       />
 
-      {/* Content sits above the mask/grid and stays readable */}
       <div className="relative z-40 w-full h-full">
         <div className="w-full h-full">
           {children}
         </div>
       </div>
 
-      {/* The Pixel Grid Overlay */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full z-20 pointer-events-none transition-opacity duration-700"

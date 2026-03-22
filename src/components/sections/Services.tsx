@@ -70,27 +70,36 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), { damping: 25, stiffness: 150 });
   const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-13, 13]), { damping: 25, stiffness: 150 });
   const scale = useSpring(1, { damping: 25, stiffness: 150 });
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const onMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    rectRef.current = e.currentTarget.getBoundingClientRect();
+    scale.set(1.02);
+  };
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
+    const rect = rectRef.current;
+    if (!rect) return;
+    
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
     x.set(px);
     y.set(py);
     mouseX.set(e.clientX - rect.left);
     mouseY.set(e.clientY - rect.top);
-    scale.set(1.02);
   };
 
   const onMouseLeave = () => {
     x.set(0);
     y.set(0);
     scale.set(1);
+    rectRef.current = null;
   };
 
   return (
     <motion.div
       style={{ rotateX, rotateY, scale, perspective: 1000 }}
+      onMouseEnter={onMouseEnter}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       className="group relative bg-bg p-12 md:p-[58px_48px] overflow-hidden cursor-none transition-all duration-500 hover:bg-[#090912] rv sp border border-white/[0.03]"

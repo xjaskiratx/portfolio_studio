@@ -9,8 +9,7 @@ const GDGallery = dynamic(() => import("@/components/sections/GDGallery").then(m
 const About = dynamic(() => import("@/components/sections/About").then(mod => mod.About));
 const Process = dynamic(() => import("@/components/sections/Process").then(mod => mod.Process));
 const ContactModal = dynamic(() => import("@/components/ui/ContactModal").then(mod => mod.ContactModal));
-
-import { Hero } from "@/components/sections/Hero";
+const Hero = dynamic(() => import("@/components/sections/Hero").then(mod => mod.Hero), { ssr: false });
 import { Grain } from "@/components/ui/Grain";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { Cursor } from "@/components/ui/Cursor";
@@ -33,35 +32,42 @@ export default function Home() {
   useReveal();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ["hero", "about", "services", "work", "gd", "process", "cta"];
-      let active = "hero";
+    const sections = ["hero", "about", "services", "work", "gd", "process", "cta"];
+    const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
 
-      for (const id of sections) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= 300) {
-          active = id;
-        }
-      }
-
-      const root = document.documentElement;
-      if (active === "gd") {
-        root.style.setProperty("--accent-lime", "#4466ff");
-        root.style.setProperty("--accent-glow", "rgba(68, 102, 255, 0.08)");
-        root.style.setProperty("--accent-line", "rgba(68, 102, 255, 0.12)");
-      } else if (active === "work") {
-        root.style.setProperty("--accent-lime", "#c8ff00");
-        root.style.setProperty("--accent-glow", "rgba(200, 255, 0, 0.08)");
-        root.style.setProperty("--accent-line", "rgba(200, 255, 0, 0.12)");
-      } else {
-        root.style.setProperty("--accent-lime", "#c8ff00");
-        root.style.setProperty("--accent-glow", "rgba(200, 255, 0, 0.06)");
-        root.style.setProperty("--accent-line", "rgba(200, 255, 0, 0.1)");
-      }
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0% -70% 0%",
+      threshold: [0, 0.1, 0.5, 1.0]
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const active = entry.target.id;
+          const root = document.documentElement;
+          
+          if (active === "gd") {
+            root.style.setProperty("--accent-lime", "#4466ff");
+            root.style.setProperty("--accent-glow", "rgba(68, 102, 255, 0.08)");
+            root.style.setProperty("--accent-line", "rgba(68, 102, 255, 0.12)");
+          } else if (active === "work") {
+            root.style.setProperty("--accent-lime", "#c8ff00");
+            root.style.setProperty("--accent-glow", "rgba(200, 255, 0, 0.08)");
+            root.style.setProperty("--accent-line", "rgba(200, 255, 0, 0.12)");
+          } else {
+            root.style.setProperty("--accent-lime", "#c8ff00");
+            root.style.setProperty("--accent-glow", "rgba(200, 255, 0, 0.06)");
+            root.style.setProperty("--accent-line", "rgba(200, 255, 0, 0.1)");
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+    sectionElements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -121,7 +127,7 @@ export default function Home() {
           id="cta"
           className="sec relative min-h-[760px] md:min-h-[880px] text-center overflow-hidden bg-bg2 group/cta flex items-center justify-center"
         >
-          <PixelMask imagePath="/me-pop-bw.png" radius={70} pixelSize={5} color="#99dc42ff" opacity={0.96}>
+          <PixelMask imagePath="/me-pop-bw.webp" radius={70} pixelSize={5} color="#99dc42ff" opacity={0.96}>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
               <div className="absolute w-[840px] h-[840px] border border-white/[0.035] rounded-full -translate-x-1/2 -translate-y-1/2 animate-[rpulse_10s_ease-in-out_infinite]" />
               <div className="absolute w-[590px] h-[590px] border border-white/[0.04] rounded-full -translate-x-1/2 -translate-y-1/2 animate-[rpulse_10s_ease-in-out_2s_infinite]" />

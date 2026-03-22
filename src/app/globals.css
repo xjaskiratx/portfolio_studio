@@ -256,3 +256,14 @@
 @media(max-width:479px) {
   .sec { padding: 64px 20px; }
 }
+
+/* ══════════════════ GRAIN OPTIMIZATION ══════════════════ */
+#grain-filter {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  opacity: .045;
+  mix-blend-mode: screen;
+  filter: url(#grain);
+}

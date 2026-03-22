@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLenis } from "lenis/react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import Magnetic from "./Magnetic";
@@ -47,32 +48,50 @@ export function PillNav({ onHireMe }: PillNavProps) {
     setExpandTimeout(timeout);
   };
 
+  const lastScrollY = useRef(0);
+
+  useLenis((lenis) => {
+    const scrollY = lenis.scroll;
+    const diff = Math.abs(scrollY - lastScrollY.current);
+    lastScrollY.current = scrollY;
+
+    if (diff > 8 && !isDimmed) {
+      setIsDimmed(true);
+    }
+  });
+
+  // Handle the undimming with a separate effect or just let it be
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let timeout: NodeJS.Timeout;
+    if (isDimmed) {
+      const t = setTimeout(() => setIsDimmed(false), 600);
+      return () => clearTimeout(t);
+    }
+  }, [isDimmed]);
 
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const diff = Math.abs(scrollY - lastScrollY);
-      lastScrollY = scrollY;
+  useEffect(() => {
+    const sections = ["hero", "services", "work", "gd", "about", "process", "cta"];
+    const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
 
-      if (diff > 8) {
-        setIsDimmed(true);
-        clearTimeout(timeout);
-        timeout = setTimeout(() => setIsDimmed(false), 600);
-      }
-
-      const sections = ["hero", "services", "work", "gd", "about", "process", "cta"];
-      for (const id of sections) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= 120) {
-          setActiveTab(id);
-        }
-      }
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0% -70% 0%",
+      threshold: [0, 0.1, 0.5, 1.0]
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveTab(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+    sectionElements.forEach(el => observer.observe(el));
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   const scrollTo = (id: string) => {

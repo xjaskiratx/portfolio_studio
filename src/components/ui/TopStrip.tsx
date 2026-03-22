@@ -2,16 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLenis } from "lenis/react";
 
 export function TopStrip() {
   const [isVisible, setIsVisible] = useState(true);
   const [time, setTime] = useState("");
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY < 80);
-    };
+  useLenis((lenis) => {
+    const shouldBeVisible = lenis.scroll < 80;
+    if (isVisible !== shouldBeVisible) {
+      setIsVisible(shouldBeVisible);
+    }
+  });
 
+  useEffect(() => {
     const updateTime = () => {
       const t = new Date().toLocaleTimeString('en-US', {
         timeZone: 'Asia/Kolkata',
@@ -25,11 +29,9 @@ export function TopStrip() {
 
     updateTime();
     const interval = setInterval(updateTime, 1000);
-    window.addEventListener("scroll", handleScroll, { passive: true });
     
     return () => {
       clearInterval(interval);
-      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 

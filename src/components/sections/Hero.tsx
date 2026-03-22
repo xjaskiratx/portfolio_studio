@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, useMotionValue, useSpring as useFramerSpring } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 const HeroBackground = dynamic(() => import("./HeroBackground").then(mod => mod.HeroBackground), { ssr: false });
 import { clsx, type ClassValue } from "clsx";
@@ -23,9 +23,27 @@ const stats = [
 export function Hero() {
   const { scrollYProgress } = useScroll();
   const [mounted, setMounted] = useState(false);
+  const [showScene, setShowScene] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
+    
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setShowScene(true);
+        // Optional: disconnect after first trigger if we want it to stay loaded
+        // observer.disconnect();
+      } else {
+        setShowScene(false);
+      }
+    }, { rootMargin: '200px' });
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
   
   // Weights go 900 -> 100 as you scroll past hero
@@ -62,13 +80,14 @@ export function Hero() {
   return (
     <section 
       id="hero" 
+      ref={heroRef}
       className={cn(
         "relative min-h-[100svh] flex flex-col justify-end px-16 pb-20 overflow-hidden max-[1279px]:px-[44px] max-[1023px]:px-[36px] max-[767px]:px-[24px] max-[479px]:px-[20px] max-[479px]:pb-16 transition-opacity duration-1000",
         !mounted ? "opacity-0" : "opacity-100"
       )}
       onMouseMove={handleMouseMove}
     >
-      {mounted && <HeroBackground />}
+      {showScene && <HeroBackground />}
 
       {/* Grid Overlay */}
       <div className="absolute inset-0 pointer-events-none z-[1] opacity-[0.03] bg-[linear-gradient(90deg,rgba(200,255,0,0.5)_1px,transparent_1px),linear-gradient(rgba(200,255,0,0.5)_1px,transparent_1px)] bg-[size:100px_100px]" />
