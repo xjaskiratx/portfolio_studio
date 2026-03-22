@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import { clsx, type ClassValue } from "clsx";
@@ -146,7 +146,9 @@ const glows: Record<string, string> = {
 
 import Magnetic from "@/components/ui/Magnetic";
 
-function ProjectCard({ project }: { project: typeof projects[0] }) {
+const PREVIEW_COUNT = 3;
+
+function ProjectCard({ project, uniform }: { project: typeof projects[0]; uniform?: boolean }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -160,7 +162,13 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
       data-cursor="cv"
       className={cn(
         "group relative overflow-hidden cursor-none rv si sp",
-        project.size === "large" ? "aspect-video md:aspect-[16/9]" : project.size === "tall" ? "aspect-[3/4.2] row-span-2" : "aspect-[4/3.2]"
+        uniform
+          ? "aspect-[4/3] md:aspect-[16/10] row-span-1"
+          : project.size === "large"
+            ? "aspect-video md:aspect-[16/9]"
+            : project.size === "tall"
+              ? "aspect-[3/4.2] row-span-2"
+              : "aspect-[4/3.2]"
       )}
     >
       <div 
@@ -191,7 +199,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
         <h3 className="font-display font-black text-2xl md:text-[32px] uppercase leading-none mb-1.5 group-hover:text-lime transition-colors duration-500">
           <ScrambleText text={project.title} trigger={isHovered} />
         </h3>
-        <div className="font-mono text-[9px] tracking-widest text-white/30 group-hover:text-white/60 transition-colors uppercase">{project.year} {"//"} FULL CASE STUDY AVAILABLE</div>
+        <div className="font-mono text-[9px] tracking-widest text-white/50 group-hover:text-white/75 transition-colors uppercase">{project.year} {"//"} FULL CASE STUDY AVAILABLE</div>
       </div>
 
       <div className="absolute top-8 right-8">
@@ -207,8 +215,16 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
 
 export function Work() {
   const [filter, setFilter] = useState("all");
+  const [showAll, setShowAll] = useState(false);
 
   const filteredProjects = projects.filter(p => filter === "all" || p.type === filter);
+  const hasMore = filteredProjects.length > PREVIEW_COUNT;
+  const visibleProjects = !showAll && hasMore ? filteredProjects.slice(0, PREVIEW_COUNT) : filteredProjects;
+  const previewUniform = !showAll && hasMore;
+
+  useEffect(() => {
+    setShowAll(false);
+  }, [filter]);
 
   return (
     <section id="work" className="sec-py px-4 md:px-0 bg-bg overflow-hidden">
@@ -231,48 +247,38 @@ export function Work() {
                   aria-label={`Filter projects by ${f}`}
                   className={cn(
                     "font-mono text-[10px] tracking-[0.16em] uppercase px-6 py-3 transition-all cursor-none",
-                    filter === f ? "bg-lime text-bg font-black" : "text-muted hover:text-white"
+                    filter === f ? "bg-lime text-bg font-black" : "text-dim hover:text-white"
                   )}
                 >
                   {f}
                 </button>
               ))}
             </div>
-            <button 
-              className="btn-o px-10 py-4.5 font-display font-black text-xs tracking-widest uppercase cursor-none hidden lg:block"
-              aria-label="View all projects in the chronicle"
-            >
-              All Projects →
-            </button>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr] gap-[4px] bg-white/[0.04] border-y border-white/[0.04]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[4px] bg-white/[0.04] border-y border-white/[0.04]">
         <AnimatePresence mode="popLayout">
-           {filteredProjects.slice(0, 2).map(p => (
-             <ProjectCard key={p.id} project={p} />
-           ))}
+          {visibleProjects.map((p) => (
+            <ProjectCard key={p.id} project={p} uniform={previewUniform} />
+          ))}
         </AnimatePresence>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[4px] mt-[4px] bg-white/[0.04] border-b border-white/[0.04]">
-        <AnimatePresence mode="popLayout">
-           {filteredProjects.slice(2).map(p => (
-             <ProjectCard key={p.id} project={p} />
-           ))}
-        </AnimatePresence>
-      </div>
-      
-      <div className="mt-20 flex justify-center rv">
-            <button 
-              className="btn-p bg-white text-bg px-14 py-6 font-display font-black text-sm tracking-widest uppercase hover:bg-lime transition-all cursor-none overflow-hidden group"
-              aria-label="Load more project chronicles"
-            >
-              <span className="relative z-10">Load More Chronicles</span>
-              <div className="absolute inset-0 bg-lime translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-            </button>
-      </div>
+      {hasMore && (
+        <div className="mt-12 flex justify-center rv">
+          <button
+            type="button"
+            onClick={() => setShowAll((s) => !s)}
+            className="btn-p relative bg-white text-bg px-12 py-5 font-display font-black text-sm tracking-widest uppercase hover:bg-lime transition-all cursor-none overflow-hidden group"
+            aria-label={showAll ? "Show fewer projects" : "Show all project case studies"}
+          >
+            <span className="relative z-10">{showAll ? "Show fewer" : `Show all (${filteredProjects.length})`}</span>
+            <div className="absolute inset-0 bg-lime translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+          </button>
+        </div>
+      )}
     </section>
   );
 }

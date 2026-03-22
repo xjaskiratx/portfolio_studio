@@ -119,7 +119,7 @@ export function Hero() {
         </motion.div>
 
         <motion.h1 
-          className="hero-hl text-[clamp(88px,13vw,196px)] leading-[0.84] uppercase mb-12 select-none"
+          className="hero-hl uppercase mb-fib-55 select-none"
           style={{ 
             fontVariationSettings,
             letterSpacing
@@ -134,7 +134,7 @@ export function Hero() {
                 text="Develop." 
                 className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" 
               />
-              <span className="font-body italic font-extralight text-[clamp(52px,6vw,100px)] normal-case text-lime/25 align-middle ml-4 max-[767px]:hidden">Build.</span>
+              <span className="font-body italic font-extralight text-[clamp(var(--fib-55),6vw,var(--fib-89))] normal-case text-lime/25 align-middle ml-fib-13 max-[767px]:hidden">Build.</span>
             </span>
           </div>
           <div className="overflow-hidden">
@@ -161,7 +161,7 @@ export function Hero() {
                 View My Work
               </button>
               <button 
-                className="btn-o font-mono text-[10.5px] tracking-[0.12em] uppercase text-white/40 border border-white/10 px-9 py-5 hover:text-lime hover:border-lime/30 transition-all cursor-none"
+                className="btn-o font-mono text-[10.5px] tracking-[0.12em] uppercase text-white/72 border border-white/10 px-9 py-5 hover:text-lime hover:border-lime/30 transition-all cursor-none"
                 aria-label="Start a conversation about your project"
               >
                 Let&apos;s Talk →

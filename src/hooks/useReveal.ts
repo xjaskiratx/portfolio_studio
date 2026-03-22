@@ -11,8 +11,7 @@ export function useReveal() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("in");
-            // Optional: unobserve if you only want it to reveal once
-            // observer.unobserve(entry.target);
+            observer.unobserve(entry.target);
           }
         });
       },

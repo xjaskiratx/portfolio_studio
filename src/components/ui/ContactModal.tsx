@@ -107,7 +107,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             className="modal relative bg-[rgba(13,13,21,0.97)] border border-white/10 backdrop-blur-[32px] w-full max-w-[540px] p-8 md:p-12 overflow-hidden"
           >
             <button 
-              className="modal-close absolute top-5 right-5 bg-transparent border border-white/10 text-white/42 hover:border-white/25 hover:text-white font-mono text-[10px] tracking-[0.1em] px-3 py-1.5 transition-all cursor-none"
+              className="modal-close absolute top-5 right-5 bg-transparent border border-white/10 text-white/72 hover:border-white/25 hover:text-white font-mono text-[10px] tracking-[0.1em] px-3 py-1.5 transition-all cursor-none"
               onClick={onClose}
               disabled={isSubmitting}
             >
@@ -178,14 +178,14 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   <div className="modal-tag font-mono text-[9.5px] tracking-[0.2em] uppercase text-lime mb-[10px]">Step 2 of 3</div>
                   <div className="modal-q font-display font-black text-4xl uppercase leading-[0.95] mb-7">Who are you?</div>
                   <input 
-                    className="modal-inp w-full bg-white/5 border border-white/10 text-white font-body text-sm p-[14px_18px] mb-3 outline-none focus:border-lime/40 transition-all placeholder:text-white/28 cursor-text" 
+                    className="modal-inp w-full bg-white/5 border border-white/10 text-white font-body text-sm p-[14px_18px] mb-3 outline-none focus:border-lime/40 transition-all placeholder:text-white/45 cursor-text" 
                     type="text" 
                     placeholder="Your name"
                     value={formData.name}
                     onChange={e => { setFormData({...formData, name: e.target.value}); setSubmitError(""); }}
                   />
                   <input 
-                    className="modal-inp w-full bg-white/5 border border-white/10 text-white font-body text-sm p-[14px_18px] mb-3 outline-none focus:border-lime/40 transition-all placeholder:text-white/28 cursor-text" 
+                    className="modal-inp w-full bg-white/5 border border-white/10 text-white font-body text-sm p-[14px_18px] mb-3 outline-none focus:border-lime/40 transition-all placeholder:text-white/45 cursor-text" 
                     type="email" 
                     placeholder="Your email address"
                     value={formData.email}
@@ -207,7 +207,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   <div className="modal-tag font-mono text-[9.5px] tracking-[0.2em] uppercase text-lime mb-[10px]">Step 3 of 3</div>
                   <div className="modal-q font-display font-black text-4xl uppercase leading-[0.95] mb-7">Tell me about the project</div>
                   <textarea 
-                    className="modal-inp w-full bg-white/5 border border-white/10 text-white font-body text-sm p-[14px_18px] mb-3 outline-none focus:border-lime/40 transition-all placeholder:text-white/28 h-[100px] resize-none cursor-text" 
+                    className="modal-inp w-full bg-white/5 border border-white/10 text-white font-body text-sm p-[14px_18px] mb-3 outline-none focus:border-lime/40 transition-all placeholder:text-white/45 h-[100px] resize-none cursor-text" 
                     placeholder="What's the project? Timeline? Budget? Any references?"
                     value={formData.project}
                     onChange={e => { setFormData({...formData, project: e.target.value}); setSubmitError(""); }}
@@ -216,7 +216,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   <button 
                     className={cn(
                       "modal-next w-full md:w-auto font-display font-bold text-[15px] tracking-[0.12em] uppercase px-9 py-[15px] mt-2 transition-all cursor-none",
-                      isSubmitting ? "bg-white/10 text-white/40 pointer-events-none" : "bg-lime text-bg hover:bg-[#d4ff22]"
+                      isSubmitting ? "bg-white/10 text-white/60 pointer-events-none" : "bg-lime text-bg hover:bg-[#d4ff22]"
                     )}
                     onClick={handleNext}
                     disabled={isSubmitting}
@@ -237,7 +237,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   <div className="ms-title font-display font-black text-4xl uppercase text-lime mb-2.5">Got it.</div>
                   <p className="ms-sub text-sm text-dim leading-[1.8]">I&apos;ll be in touch within 24 hours.<br />Check your inbox for a confirmation.</p>
                   <button 
-                    className="mt-8 font-mono text-[10px] tracking-widest uppercase border border-white/10 px-10 py-4 hover:border-lime hover:text-lime transition-all cursor-none"
+                    className="mt-8 font-mono text-[10px] tracking-widest uppercase text-dim border border-white/10 px-10 py-4 hover:border-lime hover:text-lime transition-all cursor-none"
                     onClick={onClose}
                   >
                     Back to Studio

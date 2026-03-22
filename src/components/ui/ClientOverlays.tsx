@@ -9,22 +9,23 @@ import { PillNav } from "@/components/ui/PillNav";
 import { ContactModal } from "@/components/ui/ContactModal";
 import { EasterEgg } from "@/components/ui/EasterEgg";
 import { PageBackground } from "@/components/ui/PageBackground";
-import { useReveal } from "@/hooks/useReveal";
+import { LisaAssistant } from "@/components/ui/LisaAssistant";
 
 export function ClientOverlays() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  // Initialize reveal animations
-  useReveal();
 
   useEffect(() => {
     const handleOpenModal = () => setIsModalOpen(true);
     window.addEventListener("open-contact-modal", handleOpenModal);
-    return () => window.removeEventListener("open-contact-modal", handleOpenModal);
+    window.addEventListener("open:contact-modal", handleOpenModal);
+    return () => {
+      window.removeEventListener("open-contact-modal", handleOpenModal);
+      window.removeEventListener("open:contact-modal", handleOpenModal);
+    };
   }, []);
 
   useEffect(() => {
-    const sections = ["hero", "about", "services", "work", "gd", "process", "cta"];
+    const sections = ["hero", "about", "services", "work", "process", "cta"];
     const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
 
     const observerOptions = {
@@ -39,11 +40,7 @@ export function ClientOverlays() {
           const active = entry.target.id;
           const root = document.documentElement;
           
-          if (active === "gd") {
-            root.style.setProperty("--accent-lime", "#4466ff");
-            root.style.setProperty("--accent-glow", "rgba(68, 102, 255, 0.08)");
-            root.style.setProperty("--accent-line", "rgba(68, 102, 255, 0.12)");
-          } else if (active === "work") {
+          if (active === "work") {
             root.style.setProperty("--accent-lime", "#c8ff00");
             root.style.setProperty("--accent-glow", "rgba(200, 255, 0, 0.08)");
             root.style.setProperty("--accent-line", "rgba(200, 255, 0, 0.12)");
@@ -72,6 +69,7 @@ export function ClientOverlays() {
       <PillNav onHireMe={() => setIsModalOpen(true)} />
       <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <EasterEgg />
+      <LisaAssistant />
     </>
   );
 }

@@ -11,13 +11,13 @@ interface ScrambleOutlineProps {
   duration?: number;
 }
 
-export function ScrambleOutline({ text, className = "", duration = 1.25 }: ScrambleOutlineProps) {
+export function ScrambleOutline({ text, className = "", duration = 0.28 }: ScrambleOutlineProps) {
   const [display, setDisplay] = useState(text);
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
 
   const scramble = useCallback(() => {
-    let iteration = 0;
+    let iteration = -4;
     const interval = setInterval(() => {
       setDisplay(
         text
@@ -34,8 +34,9 @@ export function ScrambleOutline({ text, className = "", duration = 1.25 }: Scram
         clearInterval(interval);
       }
 
-      iteration += (text.length / (duration * 30));
-    }, 30);
+      // Ultra-fast settle
+      iteration += (text.length / (duration * 62)) * 4.5;
+    }, 16);
 
     return () => clearInterval(interval);
   }, [text, duration]);
@@ -47,14 +48,17 @@ export function ScrambleOutline({ text, className = "", duration = 1.25 }: Scram
   }, [isInView, scramble]);
 
   return (
-    <span 
+    <span
       ref={ref}
-      className={`inline-block whitespace-nowrap ${className}`}
+      className={`relative inline-block whitespace-nowrap ${className}`}
       onMouseEnter={() => {
         scramble();
       }}
     >
-      {display}
+      <span className="invisible" aria-hidden="true">{text}</span>
+      <span className="absolute inset-0 tracking-normal text-left">
+        {display}
+      </span>
     </span>
   );
 }

@@ -3,22 +3,24 @@ import "./globals.css";
 import { ThreePatchInitializer } from "@/components/ThreePatchInitializer";
 
 export const metadata: Metadata = {
-  title: "JSX W&D — Digital Forge | Full-Spectrum Design & Dev",
-  description: "JSX W&D — Digital Forge (portfolio_studio): A premium solo studio specializing in top-tier Web Design, Brand Identity, and Full-Stack Development. Crafting high-performance digital excellence with technical precision and high-end design from Ludhiana, India.",
-  keywords: ["Web Design", "Graphic Design", "Brand Identity", "Full-Stack Developer", "Next.js", "React", "Digital Forge", "Ludhiana", "portfolio_studio"],
+  metadataBase: new URL("https://jsx-wd.com"),
+  title: "JSX W&D — Web Designer & Graphic Designer in Ludhiana, India",
+  description: "Full-spectrum creative studio. Web design, development, brand identity, and graphic design. Based in Ludhiana, Punjab. I build what agencies charge 10× for.",
+  keywords: ["web designer ludhiana", "graphic designer punjab", "full stack developer india", "brand identity designer", "website redesign india", "freelance web developer ludhiana"],
   authors: [{ name: "Jaskirat Singh" }],
   openGraph: {
-    title: "JSX W&D — Digital Forge",
-    description: "Premium Digital Design & Development Studio.",
-    url: "https://jsxwd.com",
+    title: "JSX W&D — Digital Forge Studio",
+    description: "Web design, development, graphic design, brand identity. Ludhiana, India.",
+    url: "https://jsx-wd.com",
     siteName: "JSX W&D",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "JSX W&D — Digital Forge",
-    description: "Premium Digital Design & Development Studio.",
+    title: "JSX W&D — Digital Forge Studio",
+    description: "Web design, development, graphic design, brand identity. Ludhiana, India.",
   },
 };
 

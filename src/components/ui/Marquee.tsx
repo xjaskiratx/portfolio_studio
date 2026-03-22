@@ -29,7 +29,7 @@ export function Marquee({
       data-cursor="ch"
       className={cn(
         "overflow-hidden whitespace-nowrap user-select-none py-3.5 flex items-center border-y border-border-subtle group",
-        variant === "lime" ? "bg-lime text-bg" : "bg-bg2 text-white/24",
+        variant === "lime" ? "bg-lime text-bg" : "bg-bg2 text-white/40",
         className
       )}
     >

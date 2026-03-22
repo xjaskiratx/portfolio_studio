@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import { ContactEmail } from "@/components/emails/ContactEmail";
 import { NextResponse } from "next/server";
+import { getSupabase } from "@/lib/supabase";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
@@ -37,6 +38,16 @@ export async function POST(req: Request) {
     if (error) {
       console.error("Resend Error:", error);
       return NextResponse.json({ error: "Failed to send email" }, { status: 400 });
+    }
+
+    // Log contact to Supabase (non-blocking — don't fail the request if this errors)
+    const db = getSupabase();
+    if (db) {
+      const { error: dbError } = await db
+        .from("contacts")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .insert({ name, email, type: selectedOpt, message: project } as any);
+      if (dbError) console.error("Supabase log error:", dbError);
     }
 
     return NextResponse.json({ success: true, data });

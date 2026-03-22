@@ -1,19 +1,19 @@
-import { ClientOverlays } from "@/components/ui/ClientOverlays";
+import { ClientOverlaysGate } from "@/components/ui/ClientOverlaysGate";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { Marquee } from "@/components/ui/Marquee";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Services } from "@/components/sections/Services";
 import { Work } from "@/components/sections/Work";
-import { GDGallery } from "@/components/sections/GDGallery";
+import { TechStackMarquee } from "@/components/ui/TechStackMarquee";
 import { Process } from "@/components/sections/Process";
 import { CTASection } from "@/components/sections/CTASection";
 
 export default function Home() {
   return (
     <SmoothScroll>
-      <main className="relative min-h-screen pb-32">
-        <ClientOverlays />
+      <main className="relative min-h-screen pb-fib-144">
+        <ClientOverlaysGate />
 
         <Hero />
 
@@ -23,14 +23,7 @@ export default function Home() {
           speed={22}
           aria-hidden="true"
         />
-        <Marquee
-          items={["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Express", "MongoDB", "Supabase", "OAuth", "WordPress", "Tailwind CSS", "Framer Motion", "GSAP", "Three.js"]}
-          variant="dark"
-          direction="right"
-          speed={30}
-          separator="·"
-          aria-hidden="true"
-        />
+        <TechStackMarquee />
 
         <About />
         <Services />
@@ -44,7 +37,6 @@ export default function Home() {
           aria-hidden="true"
         />
 
-        <GDGallery />
         <Process />
 
         <Marquee
@@ -62,7 +54,7 @@ export default function Home() {
           <div className="font-mono text-[9px] tracking-[0.07em] text-muted">© 2025 JSX W&D. SOLO STUDIO. ALL RIGHTS RESERVED.</div>
           <div className="flex gap-6 foot-links">
             {['Dribbble', 'Behance', 'Instagram', 'LinkedIn'].map(s => (
-              <a key={s} href="#" className="font-mono text-[9.5px] tracking-[0.12em] uppercase text-muted hover:text-lime transition-colors cursor-none">{s}</a>
+              <a key={s} href="#" className="font-mono text-[9.5px] tracking-[0.12em] uppercase text-dim hover:text-lime transition-colors cursor-none">{s}</a>
             ))}
           </div>
         </footer>

@@ -26,9 +26,9 @@ export function CTASection() {
         </div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] pointer-events-none bg-[radial-gradient(ellipse,rgba(255,255,255,0.055),transparent_65%)]" />
 
-        <div className="relative z-10 rv py-20 md:py-28">
-          <div className="sec-tag justify-center mb-[18px]">Let&apos;s Work Together</div>
-          <h2 className="font-display font-black text-[clamp(72px,11.5vw,156px)] leading-[0.86] uppercase mb-[26px] [text-shadow:0_12px_40px_rgba(0,0,0,0.5)]">
+        <div className="relative z-10 rv py-fib-89 md:py-fib-144">
+          <div className="sec-tag flex justify-center uppercase">Let&apos;s Work Together</div>
+          <h2 className="cta-head font-display font-black uppercase mb-fib-34 [text-shadow:0_12px_40px_rgba(0,0,0,0.5)]">
             <ScrambleOutline text="Let's" className="[-webkit-text-stroke:2.5px_rgba(237,233,223,0.92)] text-transparent" /><br />
             <div
               className="inline-block relative group/cr"
@@ -42,10 +42,10 @@ export function CTASection() {
             <ScrambleOutline text="something" className="[-webkit-text-stroke:2.5px_rgba(237,233,223,0.82)] text-transparent" />
           </h2>
 
-          <div className="flex flex-wrap justify-center items-center gap-[14px]">
+          <div className="flex flex-wrap justify-center items-center gap-fib-13">
             <button
               onClick={openModal}
-              className="btn-xl bg-lime text-bg font-display font-black text-lg tracking-[0.14em] uppercase px-[58px] py-[20px] cursor-none hover:bg-white transition-colors"
+              className="btn-xl bg-lime text-bg font-display font-black text-lg tracking-[0.14em] uppercase px-fib-55 py-fib-21 cursor-none hover:bg-white transition-colors"
               data-cta
             >
               <span>Start a Project</span>
@@ -54,15 +54,11 @@ export function CTASection() {
               href="https://calendly.com"
               target="_blank"
               rel="noreferrer"
-              className="btn-cal font-mono text-[11px] tracking-[0.1em] uppercase text-dim border border-border px-[28px] py-[19px] cursor-none hover:text-lime hover:border-lime/40 transition-colors"
+              className="btn-xl bg-lime text-bg font-display font-black text-lg tracking-[0.14em] uppercase px-fib-55 py-fib-21 cursor-none hover:bg-white transition-colors text-center max-[520px]:px-fib-34 max-[520px]:text-base"
             >
               Skip the email — Book 15 mins →
             </a>
           </div>
-
-          <a href="mailto:hello@jsxwd.com" className="block font-mono text-[11.5px] tracking-[0.14em] text-muted mt-[22px] cursor-none hover:text-lime transition-colors">
-            hello@jsxwd.com
-          </a>
         </div>
       </PixelMask>
     </section>

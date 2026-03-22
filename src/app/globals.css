@@ -87,8 +87,10 @@
   --color-violet: #9955ff;
   
   --color-txt: #ede9df;
-  --color-dim: rgba(237, 233, 223, 0.48);
-  --color-muted: rgba(237, 233, 223, 0.22);
+  /* Body / secondary copy — was ~0.48; raised for WCAG-style legibility on #05050a */
+  --color-dim: rgba(237, 233, 223, 0.66);
+  /* Labels, meta, de-emphasized links — was 0.22 (near-invisible on dark bg) */
+  --color-muted: rgba(237, 233, 223, 0.52);
   --color-border: rgba(237, 233, 223, 0.07);
 
   --transition-spring: cubic-bezier(.34, 1.56, .64, 1);
@@ -99,6 +101,16 @@
   --animate-float: gfloat 6s ease-in-out infinite;
   --animate-spin-slow: gspin 38s linear infinite;
   --animate-drift: bigdrift 16s ease-in-out infinite alternate;
+
+  /* Fibonacci spacing — use as p-fib-21, gap-fib-34, mb-fib-55, etc. */
+  --spacing-fib-8: 8px;
+  --spacing-fib-13: 13px;
+  --spacing-fib-21: 21px;
+  --spacing-fib-34: 34px;
+  --spacing-fib-55: 55px;
+  --spacing-fib-89: 89px;
+  --spacing-fib-144: 144px;
+  --spacing-fib-233: 233px;
 }
 
 :root {
@@ -111,6 +123,21 @@
   --accent-lime: #c8ff00;
   --accent-glow: rgba(200, 255, 0, 0.06);
   --accent-line: rgba(200, 255, 0, 0.1);
+
+  /*
+   * Fibonacci spacing scale (px): 8, 13, 21, 34, 55, 89, 144, 233…
+   * Use for section padding, vertical rhythm, and display type bounds.
+   */
+  --fib-8: 8px;
+  --fib-13: 13px;
+  --fib-21: 21px;
+  --fib-34: 34px;
+  --fib-55: 55px;
+  --fib-89: 89px;
+  --fib-144: 144px;
+  --fib-233: 233px;
+  /* Golden ratio (≈1.618) — line-height / composition helper */
+  --phi: 1.618;
 }
 
 @layer base {
@@ -131,6 +158,11 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     cursor: none;
+  }
+
+  a:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-lime) 65%, transparent);
+    outline-offset: 3px;
   }
 }
 
@@ -187,7 +219,7 @@
 }
 
 /* ══════════════════ REVEAL SYSTEM ══════════════════ */
-.rv { opacity: 0; transform: translateY(36px); transition: opacity .85s var(--transition-ease), transform .85s var(--transition-ease); }
+.rv { opacity: 0; transform: translateY(var(--fib-34)); transition: opacity .85s var(--transition-ease), transform .85s var(--transition-ease); }
 .rv.in { opacity: 1; transform: translateY(0); }
 .rv.sp { transition: opacity .85s var(--transition-spring), transform .85s var(--transition-spring); }
 .rv.d1 { transition-delay: .07s; }
@@ -217,8 +249,9 @@
 .hero-hl {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(88px, 13vw, 196px);
-  line-height: .84;
+  /* Fib bounds: 89 — 144+55 (≈ golden cap vs viewport) */
+  font-size: clamp(var(--fib-89), 13vw, calc(var(--fib-144) + var(--fib-55)));
+  line-height: 0.84;
   text-transform: uppercase;
   transition: font-variation-settings .05s linear;
 }
@@ -226,14 +259,43 @@
 .sec-title {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(50px, 6.5vw, 94px);
-  line-height: .9;
+  font-size: clamp(var(--fib-55), 6.5vw, var(--fib-89));
+  line-height: 0.9;
   text-transform: uppercase;
+}
+
+/* CTA mega headline — fib min/max */
+.cta-head {
+  font-size: clamp(var(--fib-55), 11.5vw, var(--fib-144));
+  line-height: 0.86;
+}
+
+/* Section vertical rhythm (Work / GD when not using full .sec) */
+.sec-py {
+  padding-top: var(--fib-89);
+  padding-bottom: var(--fib-89);
+}
+
+@media (max-width: 767px) {
+  .sec-py {
+    padding-top: var(--fib-55);
+    padding-bottom: var(--fib-55);
+  }
+}
+
+/* Eyebrow / kicker — fib margin below */
+.sec-tag {
+  font-family: var(--font-mono);
+  font-size: var(--fib-13);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-dim);
+  margin-bottom: var(--fib-21);
 }
 
 .char {
   display: inline-block;
-  transform: translateY(60px) rotateX(-45deg);
+  transform: translateY(var(--fib-55)) rotateX(-45deg);
   opacity: 0;
   transform-origin: bottom center;
   transition: transform .7s var(--transition-spring), opacity .5s var(--transition-ease);
@@ -250,38 +312,58 @@
 
 /* ══════════════════ RESPONSIVE BREAKPOINTS ══════════════════ */
 
-/* WIDE SCREEN ≥ 1600px */
+/* Section padding — Fibonacci vertical × horizontal pairs */
 @media(min-width:1600px) {
-  .sec { padding: 140px 80px; }
+  .sec { padding: var(--fib-144) var(--fib-89); }
 }
 
-/* TABLET LANDSCAPE 1024–1279px */
 @media(max-width:1279px) and (min-width:1024px) {
-  .sec { padding: 100px 44px; }
+  .sec { padding: var(--fib-89) var(--fib-55); }
 }
 
-/* TABLET PORTRAIT 768–1023px */
 @media(max-width:1023px) and (min-width:768px) {
-  .sec { padding: 88px 36px; }
+  .sec { padding: var(--fib-89) var(--fib-34); }
 }
 
-/* MOBILE LANDSCAPE 480–767px */
 @media(max-width:767px) and (min-width:480px) {
-  .sec { padding: 72px 24px; }
+  .sec { padding: var(--fib-55) var(--fib-34); }
 }
 
-/* MOBILE PORTRAIT ≤ 479px */
 @media(max-width:479px) {
-  .sec { padding: 64px 20px; }
+  .sec { padding: var(--fib-55) var(--fib-21); }
 }
 
 /* ══════════════════ GRAIN OPTIMIZATION ══════════════════ */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
 #grain-filter {
   position: fixed;
-  inset: 0;
+  inset: -150%;
+  width: 300%;
+  height: 300%;
   z-index: 9000;
   pointer-events: none;
-  opacity: .045;
+  opacity: .038;
   mix-blend-mode: screen;
-  filter: url(#grain);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  animation: grain 1s steps(10) infinite;
+  will-change: transform;
+}
+
+#pill-nav {
+  transition: opacity .4s var(--transition-ease);
+}
+#pill-nav.dimmed {
+  opacity: .3 !important;
 }

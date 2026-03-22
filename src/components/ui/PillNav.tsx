@@ -15,7 +15,6 @@ const navItems = [
   { id: "hero", label: "JSX W&D" },
   { id: "services", label: "Services" },
   { id: "work", label: "Work" },
-  { id: "gd", label: "Design" },
   { id: "about", label: "About" },
   { id: "process", label: "Forge" },
 ];
@@ -27,14 +26,11 @@ interface PillNavProps {
 export function PillNav({ onHireMe }: PillNavProps) {
   const [activeTab, setActiveTab] = useState("hero");
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isDimmed, setIsDimmed] = useState(false);
   const [expandTimeout, setExpandTimeout] = useState<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    return () => {
-      if (expandTimeout) clearTimeout(expandTimeout);
-    };
-  }, [expandTimeout]);
+  const navRef = useRef<HTMLElement>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastScrollY = useRef(0);
 
   const handleMouseEnter = () => {
     if (expandTimeout) clearTimeout(expandTimeout);
@@ -48,28 +44,25 @@ export function PillNav({ onHireMe }: PillNavProps) {
     setExpandTimeout(timeout);
   };
 
-  const lastScrollY = useRef(0);
-
   useLenis((lenis) => {
     const scrollY = lenis.scroll;
     const diff = Math.abs(scrollY - lastScrollY.current);
     lastScrollY.current = scrollY;
 
-    if (diff > 8 && !isDimmed) {
-      setIsDimmed(true);
+    if (diff > 8 && navRef.current) {
+      if (!navRef.current.classList.contains("dimmed")) {
+        navRef.current.classList.add("dimmed");
+      }
+      
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => {
+        navRef.current?.classList.remove("dimmed");
+      }, 600);
     }
   });
 
-  // Handle the undimming with a separate effect or just let it be
   useEffect(() => {
-    if (isDimmed) {
-      const t = setTimeout(() => setIsDimmed(false), 600);
-      return () => clearTimeout(t);
-    }
-  }, [isDimmed]);
-
-  useEffect(() => {
-    const sections = ["hero", "services", "work", "gd", "about", "process", "cta"];
+    const sections = ["hero", "services", "work", "about", "process", "cta"];
     const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
 
     const observerOptions = {
@@ -104,13 +97,11 @@ export function PillNav({ onHireMe }: PillNavProps) {
 
   return (
     <nav
+      ref={navRef}
       id="pill-nav"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={cn(
-        "fixed bottom-6 left-1/2 -translate-x-1/2 z-[800] transition-opacity duration-400 ease-out",
-        isDimmed ? "opacity-30" : "opacity-100"
-      )}
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[800] transition-opacity duration-400 ease-out"
     >
       <div className="relative">
         {/* Upper Extra Tray */}
@@ -133,7 +124,7 @@ export function PillNav({ onHireMe }: PillNavProps) {
                   {['DR', 'BE', 'IG', 'LI'].map(social => (
                     <span 
                       key={social} 
-                      className="pee-link font-mono text-[9px] tracking-[0.2em] uppercase text-muted hover:text-lime transition-all cursor-none"
+                      className="pee-link font-mono text-[9px] tracking-[0.2em] uppercase text-dim hover:text-lime transition-all cursor-none"
                     >
                       {social}
                     </span>
@@ -163,7 +154,7 @@ export function PillNav({ onHireMe }: PillNavProps) {
                       "p-item font-mono text-[10px] tracking-[0.12em] uppercase transition-all duration-300 cursor-none select-none px-5 flex items-center justify-center rounded-full h-[38px] leading-none",
                       activeTab === item.id
                         ? "bg-lime text-bg font-bold shadow-[0_0_20px_rgba(200,255,0,0.2)]"
-                        : "text-white/45 hover:text-white/95"
+                        : "text-white/72 hover:text-white"
                     )}
                   >
                     {item.label}

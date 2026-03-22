@@ -42,7 +42,7 @@ export function ParallaxImage() {
       <div className="absolute bottom-10 right-10 w-16 h-16 border-b-[2px] border-r-[2px] border-white/20 group-hover:border-lime/40 transition-colors duration-500" />
       
       <div className="absolute bottom-12 left-12 right-12 flex justify-between items-end">
-         <div className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/40 rotate-180 [writing-mode:vertical-lr] select-none">J.SINGH — DIGITAL FORGE — 2025</div>
+         <div className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/55 rotate-180 [writing-mode:vertical-lr] select-none">J.SINGH — DIGITAL FORGE — 2025</div>
          <div className="bg-lime p-8 text-bg shadow-2xl translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 delay-200">
             <div className="font-display font-black text-[11px] tracking-[0.2em] uppercase mb-2">STATUS: ACTIVE</div>
             <div className="font-mono text-[9px] tracking-widest uppercase font-bold flex items-center gap-2">
