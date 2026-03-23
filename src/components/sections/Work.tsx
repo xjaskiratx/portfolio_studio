@@ -212,22 +212,22 @@ export function Work() {
               <h2 className="sec-title">Selected <ScrambleOutline text="Work" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /></h2>
             </div>
 
-            <div className="flex flex-wrap items-center gap-6 rv si" style={{ transitionDelay: '0.2s' }}>
-              <div className="flex gap-2 bg-white/[0.03] backdrop-blur-md border border-white/[0.05] p-2">
-                {["dev", "design"].map(f => (
-                  <button
-                    key={f}
-                    onClick={() => setFilter(prev => prev === f ? "all" : f as "dev" | "design")}
-                    aria-label={`Filter projects by ${f}`}
-                    className={cn(
-                      "font-mono text-[15.5px] font-black tracking-[0.16em] uppercase px-7 py-3 transition-all cursor-none",
-                      filter === f ? "bg-lime text-bg" : "text-dim hover:text-white"
-                    )}
-                  >
-                    {f === "dev" ? "Development" : "Design"}
-                  </button>
-                ))}
-              </div>
+            <div className="flex flex-wrap items-center gap-4 rv si" style={{ transitionDelay: '0.2s' }}>
+              {["dev", "design"].map(f => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(prev => prev === f ? "all" : f as "dev" | "design")}
+                  aria-label={`Filter projects by ${f}`}
+                  className={cn(
+                    "transition-all cursor-none h-[54px] px-8 flex items-center justify-center font-display uppercase tracking-[0.14em]",
+                    filter === f 
+                      ? "bg-lime text-bg font-black text-base hover:bg-white" 
+                      : "font-mono font-bold text-[11.5px] text-white/72 border border-white/10 hover:text-lime hover:border-lime/30"
+                  )}
+                >
+                  {f === "dev" ? "Development" : "Design"}
+                </button>
+              ))}
             </div>
           </div>
         </div>

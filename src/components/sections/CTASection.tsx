@@ -22,9 +22,9 @@ export function CTASection() {
   return (
     <section
       id="cta"
-      className="sec relative min-h-[400px] md:min-h-[500px] text-center overflow-hidden bg-bg group/cta flex items-center justify-center border-t border-white/[0.03]"
+      className="sec pb-4 relative min-h-[400px] md:min-h-[500px] text-center overflow-hidden bg-bg group/cta flex items-center justify-center border-t border-white/[0.03]"
     >
-      <div className="relative z-10 rv pt-14 md:pt-24 pb-8 md:pb-12">
+      <div className="relative z-10 rv pt-14 md:pt-24 pb-2">
         <div className="sec-tag flex justify-center uppercase mb-8">Let&apos;s Work Together</div>
         <h2 className="cta-head font-display font-black uppercase mb-12">
           <ScrambleOutline text="Let's" className="[-webkit-text-stroke:2.5px_rgba(237,233,223,0.92)] text-transparent" /><br />

@@ -85,7 +85,7 @@ export function ServiceCard({ service }: { service: Service }) {
         </h3>
         <ul className="space-y-3 mb-8">
           {service.features.map((feature, i) => (
-            <li key={i} className="flex items-center gap-2.5 font-mono text-[11px] tracking-wider text-dim group-hover:text-white/90 transition-colors">
+            <li key={i} className="flex items-center gap-2.5 font-mono text-[14px] tracking-wider text-dim group-hover:text-white/90 transition-colors">
               <span className="w-1 h-1 bg-lime/40 rounded-full" />
               {feature}
             </li>
