@@ -2,12 +2,20 @@
 
 import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import * as THREE from "three";
+import { 
+  Vector3, 
+  Group, 
+  Points as ThreePoints, 
+  IcosahedronGeometry, 
+  OctahedronGeometry, 
+  TetrahedronGeometry, 
+  BoxGeometry 
+} from "three";
 import { Points, PointMaterial } from "@react-three/drei";
 
 function Constellation() {
-  const pointsRef = useRef<THREE.Points>(null);
-  const shapesRef = useRef<THREE.Group>(null);
+  const pointsRef = useRef<ThreePoints>(null);
+  const shapesRef = useRef<Group>(null);
 
   // Stars data
   const starsCount = 80;
@@ -37,8 +45,8 @@ function Constellation() {
   const lines = useMemo(() => {
     const points = [];
     for (let i = 0; i < 8; i++) {
-      points.push(new THREE.Vector3((Math.random() - 0.5) * 30, (Math.random() - 0.5) * 26, (Math.random() - 0.5) * 13)); // eslint-disable-line react-hooks/purity
-      points.push(new THREE.Vector3((Math.random() - 0.5) * 30, (Math.random() - 0.5) * 26, (Math.random() - 0.5) * 13)); // eslint-disable-line react-hooks/purity
+      points.push(new Vector3((Math.random() - 0.5) * 30, (Math.random() - 0.5) * 26, (Math.random() - 0.5) * 13)); // eslint-disable-line react-hooks/purity
+      points.push(new Vector3((Math.random() - 0.5) * 30, (Math.random() - 0.5) * 26, (Math.random() - 0.5) * 13)); // eslint-disable-line react-hooks/purity
     }
     return points;
   }, []);
@@ -48,10 +56,10 @@ function Constellation() {
       const size = Math.random() * 0.72 + 0.22; // eslint-disable-line react-hooks/purity
       const type = i % 4;
       let geometry;
-      if (type === 0) geometry = new THREE.IcosahedronGeometry(size, 0);
-      else if (type === 1) geometry = new THREE.OctahedronGeometry(size, 0);
-      else if (type === 2) geometry = new THREE.TetrahedronGeometry(size, 0);
-      else geometry = new THREE.BoxGeometry(size * 0.9, size * 0.9, size * 0.9);
+      if (type === 0) geometry = new IcosahedronGeometry(size, 0);
+      else if (type === 1) geometry = new OctahedronGeometry(size, 0);
+      else if (type === 2) geometry = new TetrahedronGeometry(size, 0);
+      else geometry = new BoxGeometry(size * 0.9, size * 0.9, size * 0.9);
 
       return {
         geometry,
@@ -80,8 +88,8 @@ function Constellation() {
   }, []);
 
   useFrame((state) => {
-    const { mouse } = state;
-    const t = performance.now() / 1000;
+    const { mouse, clock } = state;
+    const t = clock.getElapsedTime();
 
     if (pointsRef.current) {
       pointsRef.current.rotation.x = mouse.y * 0.15;
@@ -89,16 +97,22 @@ function Constellation() {
     }
 
     if (shapesRef.current) {
-      shapesRef.current.children.forEach((child, i) => {
+      const children = shapesRef.current.children;
+      for (let i = 0; i < children.length; i++) {
+        const child = children[i];
         const ud = shapes[i].userData;
         child.rotation.x += ud.rx;
         child.rotation.y += ud.ry;
         child.rotation.z += ud.rz;
-        child.position.y = ud.oy + Math.sin(t * ud.fs * 80 + ud.fo) * 0.42;
-        child.position.x = ud.ox + Math.cos(t * ud.fs * 60 + ud.fo) * 0.22;
+        
+        // Optimize sin/cos by pre-calculating common factors
+        const timeFactor = t * ud.fs;
+        child.position.y = ud.oy + Math.sin(timeFactor * 80 + ud.fo) * 0.42;
+        child.position.x = ud.ox + Math.cos(timeFactor * 60 + ud.fo) * 0.22;
+        
         child.rotation.x += mouse.y * 0.01;
         child.rotation.y += mouse.x * 0.01;
-      });
+      }
     }
   });
 

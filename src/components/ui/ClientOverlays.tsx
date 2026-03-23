@@ -1,15 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { Grain } from "@/components/ui/Grain";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { Cursor } from "@/components/ui/Cursor";
 import { TopStrip } from "@/components/ui/TopStrip";
 import { PillNav } from "@/components/ui/PillNav";
-import { ContactModal } from "@/components/ui/ContactModal";
-import { EasterEgg } from "@/components/ui/EasterEgg";
 import { PageBackground } from "@/components/ui/PageBackground";
-import { LisaAssistant } from "@/components/ui/LisaAssistant";
+
+// Non-critical overlays are loaded dynamically to reduce initial main-thread work
+const ContactModal = dynamic(() => import("@/components/ui/ContactModal").then(mod => mod.ContactModal), { ssr: false });
+const EasterEgg = dynamic(() => import("@/components/ui/EasterEgg").then(mod => mod.EasterEgg), { ssr: false });
+const LisaAssistant = dynamic(() => import("@/components/ui/LisaAssistant").then(mod => mod.LisaAssistant), { ssr: false });
 
 export function ClientOverlays() {
   const [isModalOpen, setIsModalOpen] = useState(false);

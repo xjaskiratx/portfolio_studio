@@ -156,8 +156,6 @@ export function Cursor() {
     }
   }, [isSafariBrowser]);
 
-  if (isSafariBrowser) return null;
-
   return (
     <>
       {/* Dot Pool Container */}
@@ -170,6 +168,8 @@ export function Cursor() {
         style={{
           x: mouseX,
           y: mouseY,
+          translateX: "-50%",
+          translateY: "-50%",
           mixBlendMode: "difference",
           opacity: 1,
         }}
@@ -185,6 +185,8 @@ export function Cursor() {
         style={{
           x: springX,
           y: springY,
+          translateX: "-50%",
+          translateY: "-50%",
         }}
         animate={{
           width: cursorState === "ch" ? 62 : cursorState === "cv" ? 82 : cursorState === "cta" ? 90 : 42,

@@ -11,10 +11,10 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     <ReactLenis
       root
       options={{
-        lerp: isIOSSafari ? 0 : 0.075,
-        duration: 1.2,
+        lerp: isIOSSafari ? 0 : 0.05,
+        duration: 1.5,
         easing: (t: number) => t === 1 ? 1 : 1 - Math.pow(2, -10 * t),
-        smoothWheel: !isSafari,
+        smoothWheel: true,
         wheelMultiplier: 1.0,
         touchMultiplier: 0,
         syncTouch: false,

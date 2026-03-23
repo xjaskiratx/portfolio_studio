@@ -26,7 +26,7 @@ export function Process() {
         Engine
       </div>
 
-      <div className="relative z-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-10 mb-14 md:mb-16">
+      <div className="max-w-[1400px] mx-auto relative z-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-10 mb-14 md:mb-16">
         <div className="rv">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-px bg-lime/40" />
@@ -39,7 +39,7 @@ export function Process() {
         </p>
       </div>
 
-      <div className="relative z-20 grid grid-cols-1 lg:grid-cols-3 gap-[4px] bg-white/[0.04] border border-white/[0.04]">
+      <div className="max-w-[1400px] mx-auto relative z-20 grid grid-cols-1 lg:grid-cols-3 gap-[4px] bg-white/[0.04] border border-white/[0.04]">
         {steps.map((step, i) => (
           <ProcessCard key={step.num} step={step} index={i} isLast={i === steps.length - 1} />
         ))}

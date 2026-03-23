@@ -45,7 +45,7 @@ export function CTASection() {
         <div className="flex flex-wrap justify-center items-center gap-6 mb-16">
           <button
             onClick={openModal}
-            className="btn-xl bg-lime text-bg font-display font-black text-lg tracking-[0.14em] uppercase px-12 py-5 cursor-none hover:bg-white transition-colors"
+            className="btn-xl bg-lime text-bg font-display font-black text-2xl tracking-[0.14em] uppercase px-10 py-4 cursor-none hover:bg-white transition-colors"
             data-cta
           >
             <span>Start a Project</span>
@@ -54,13 +54,13 @@ export function CTASection() {
             href="https://calendly.com"
             target="_blank"
             rel="noreferrer"
-            className="btn-xl bg-white text-bg font-display font-black text-lg tracking-[0.14em] uppercase px-12 py-5 cursor-none hover:bg-lime transition-colors text-center max-[520px]:px-8 max-[520px]:text-base"
+            className="btn-xl bg-white text-bg font-display font-black text-2xl tracking-[0.14em] uppercase px-10 py-4 cursor-none hover:bg-lime transition-colors text-center max-[520px]:px-8 max-[520px]:text-base"
           >
             Skip the email — Book 15 mins →
           </a>
         </div>
 
-        <div className="font-mono text-[9px] tracking-[0.12em] text-muted/40 uppercase">
+        <div className="font-mono text-[11px] tracking-[0.12em] text-white/70 uppercase">
           © 2025 JSX W&D. Solo Studio. All Rights Reserved.
         </div>
       </div>

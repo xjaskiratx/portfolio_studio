@@ -53,7 +53,7 @@ export function TopStrip() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed top-0 left-0 right-0 z-[400] px-10 py-[18px] flex justify-between pointer-events-none max-[479px]:hidden"
+            className="fixed top-0 left-0 right-0 z-[400] px-16 py-[18px] mt-4 md:mt-0.5 flex justify-between pointer-events-none max-[1279px]:px-[44px] max-[1023px]:px-[36px] max-[767px]:px-[24px] max-[479px]:px-[20px] max-[479px]:hidden"
           >
             <span
               className="font-mono text-[9.5px] tracking-[0.22em] uppercase text-white/72 [text-shadow:0_0_18px_rgba(0,0,0,0.45)]"

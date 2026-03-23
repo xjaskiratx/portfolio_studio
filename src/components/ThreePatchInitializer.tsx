@@ -1,17 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
-import "@/lib/three-patch";
 
 /**
  * Client Component that initializes the THREE.js patch.
- * This ensures the patch (side-effects like monkey-patching console.warn and THREE.Clock)
- * runs in the browser context as early as possible.
+ * This uses a dynamic import inside useEffect to ensure THREE.js 
+ * is not part of the initial critical-path bundle, reducing main-thread blocking.
  */
 export function ThreePatchInitializer() {
   useEffect(() => {
-    // The patch itself runs on import, but we include this component 
-    // to ensure it's part of the client-side bundle and execution graph.
+    // Load the patch dynamically after mount
+    import("@/lib/three-patch").then(() => {
+      console.log("🛠️ THREE patch: Dynamically initialized");
+    }).catch(err => {
+      console.error("❌ THREE patch: Failed to load", err);
+    });
   }, []);
 
   return null;

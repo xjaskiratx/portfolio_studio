@@ -6,7 +6,11 @@ const services = [
   {
     num: "01",
     title: "Web Design & Dev",
-    desc: "End-to-end digital products. Wireframe to deployed app — no handoff losses, one vision throughout.",
+    features: [
+      "Full-stack Next.js",
+      "Motion Engineering",
+      "Custom Architecture"
+    ],
     tags: ["React", "Next.js", "Figma", "Webflow"],
     icon: (
       <svg viewBox="0 0 54 54" fill="none">
@@ -24,7 +28,11 @@ const services = [
   {
     num: "02",
     title: "Graphic Design",
-    desc: "Posters, editorial layouts, social assets, print collateral — visuals that stop people mid-scroll.",
+    features: [
+      "Premium Visuals",
+      "Social Strategy",
+      "Editorial Layouts"
+    ],
     tags: ["Illustrator", "Photoshop", "InDesign"],
     icon: (
       <svg viewBox="0 0 54 54" fill="none">
@@ -38,7 +46,11 @@ const services = [
   {
     num: "03",
     title: "Brand Identity",
-    desc: "Logo systems, type hierarchies, colour palettes, brand guidelines — the full visual language of your business.",
+    features: [
+      "Logo Systems",
+      "Type Hierarchies",
+      "Brand Guidelines"
+    ],
     tags: ["Logo", "Guidelines", "Strategy"],
     icon: (
       <svg viewBox="0 0 54 54" fill="none">
@@ -65,7 +77,7 @@ export function Services() {
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(200,255,0,0.03),transparent_70%)] pointer-events-none" />
       <div className="absolute left-[-200px] bottom-[-200px] font-display font-black text-[380px] text-transparent [-webkit-text-stroke:1px_rgba(200,255,0,0.02)] leading-none select-none pointer-events-none uppercase">Forge</div>
 
-      <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-20 px-4">
+      <div className="max-w-[1400px] mx-auto relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-20">
         <div className="rv">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-px bg-lime/40" />
@@ -78,13 +90,13 @@ export function Services() {
         </p>
       </div>
 
-      <div className="relative z-20 grid grid-cols-1 md:grid-cols-3 gap-[4px] bg-white/[0.04] border-y border-white/[0.04]">
+      <div className="max-w-[1400px] mx-auto relative z-20 grid grid-cols-1 md:grid-cols-3 gap-[4px] bg-white/[0.04] border-y border-white/[0.04]">
         {services.map((service) => (
           <ServiceCard key={service.num} service={service} />
         ))}
       </div>
 
-      <div className="relative z-20 grid grid-cols-1 md:grid-cols-3 gap-[4px] mt-[4px] bg-white/[0.04] border-b border-white/[0.04]">
+      <div className="max-w-[1400px] mx-auto relative z-20 grid grid-cols-1 md:grid-cols-3 gap-[4px] mt-[4px] bg-white/[0.04] border-b border-white/[0.04]">
         {miniServices.map((name, i) => (
           <MiniServiceItem key={name} name={name} index={i} />
         ))}

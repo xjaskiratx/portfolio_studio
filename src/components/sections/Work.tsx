@@ -3,12 +3,22 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrambleText } from "@/components/ui/ScrambleText";
+import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+import { 
+  NovalyticsArt, 
+  EmberArt, 
+  SolarisArt, 
+  KovaArt, 
+  PulseArt, 
+  VegaArt 
+} from "./ProjectArts";
 
 const projects = [
   {
@@ -20,19 +30,7 @@ const projects = [
     size: "large",
     bg: "bg1",
     glow: "g1",
-    art: (
-       <svg width="80%" viewBox="0 0 500 290" fill="none" className="opacity-90">
-          <rect width="500" height="290" rx="7" fill="rgba(10,18,2,.95)"/>
-          <rect width="500" height="32" rx="7" fill="rgba(200,255,0,.07)"/>
-          <rect y="25" width="500" height="7" fill="rgba(200,255,0,.07)"/>
-          <circle cx="20" cy="16" r="5" fill="#ff5f57" opacity=".75"/>
-          <circle cx="36" cy="16" r="5" fill="#febc2e" opacity=".75"/>
-          <circle cx="52" cy="16" r="5" fill="#28c840" opacity=".75"/>
-          <path d="M128,238 L156,215 L184,224 L212,196 L240,210 L268,185 L296,200 L324,175 L352,190 L370,162" stroke="rgba(200,255,0,.8)" strokeWidth="2" fill="none" strokeLinejoin="round"/>
-          <path d="M128,238 L156,215 L184,224 L212,196 L240,210 L268,185 L296,200 L324,175 L352,190 L370,162 L370,278 L128,278Z" fill="rgba(200,255,0,.06)"/>
-          <circle cx="370" cy="162" r="5" fill="rgba(200,255,0,.9)"/>
-       </svg>
-    )
+    art: <NovalyticsArt />
   },
   {
     id: "ember",
@@ -43,15 +41,7 @@ const projects = [
     size: "tall",
     bg: "bg2",
     glow: "g2",
-    art: (
-      <svg width="60%" viewBox="0 0 290 460" fill="none" className="opacity-90">
-          <rect width="290" height="460" fill="rgba(20,2,8,.9)"/>
-          <circle cx="145" cy="182" r="126" stroke="rgba(255,45,45,.07)" strokeWidth="1"/>
-          <circle cx="145" cy="182" r="30" fill="rgba(255,45,45,.08)" stroke="rgba(255,45,45,.4)" strokeWidth="1.5"/>
-          <polygon points="145,120 191,207 99,207" fill="rgba(255,45,45,.12)" stroke="rgba(255,45,45,.65)" strokeWidth="2" strokeLinejoin="round"/>
-          <circle cx="145" cy="182" r="9" fill="rgba(255,45,45,.85)"/>
-       </svg>
-    )
+    art: <EmberArt />
   },
   {
     id: "solaris",
@@ -62,14 +52,7 @@ const projects = [
     size: "large",
     bg: "bg3",
     glow: "g3",
-    art: (
-      <svg width="80%" viewBox="0 0 440 295" fill="none" className="opacity-90">
-          <rect width="440" height="295" rx="4" fill="rgba(0,6,24,.92)"/>
-          <rect x="18" y="60" width="160" height="195" rx="2" fill="rgba(68,102,255,.1)" stroke="rgba(68,102,255,.22)" strokeWidth="1"/>
-          <rect x="210" y="18" width="212" height="20" rx="3" fill="rgba(68,102,255,.38)"/>
-          <rect x="210" y="102" width="8" height="68" rx="2" fill="rgba(200,255,0,.6)"/>
-       </svg>
-    )
+    art: <SolarisArt />
   },
   {
     id: "kova",
@@ -80,14 +63,7 @@ const projects = [
     size: "small",
     bg: "bg4",
     glow: "g4",
-    art: (
-      <svg width="88%" viewBox="0 0 380 270" fill="none" className="opacity-90">
-          <rect width="380" height="270" rx="6" fill="rgba(16,10,0,.95)"/>
-          <rect x="12" y="74" width="110" height="148" rx="5" fill="rgba(255,185,35,.07)" stroke="rgba(255,185,35,.18)" strokeWidth="1"/>
-          <circle cx="67" cy="119" r="22" stroke="rgba(255,185,35,.35)" strokeWidth="1.5" fill="rgba(255,185,35,.08)"/>
-          <rect x="300" y="240" width="68" height="20" rx="3" fill="rgba(255,185,35,.45)" stroke="rgba(255,185,35,.7)" strokeWidth="1"/>
-       </svg>
-    )
+    art: <KovaArt />
   },
   {
     id: "pulse",
@@ -98,13 +74,7 @@ const projects = [
     size: "small",
     bg: "bg5",
     glow: "g5",
-    art: (
-      <svg width="40%" viewBox="0 0 210 370" fill="none" className="opacity-90">
-          <rect x="6" y="0" width="198" height="370" rx="28" stroke="rgba(140,100,255,.35)" strokeWidth="2" fill="rgba(140,100,255,.04)"/>
-          <rect x="20" y="12" width="170" height="346" rx="20" fill="rgba(8,6,20,.92)"/>
-          <circle cx="105" cy="352" r="9" fill="rgba(200,255,0,.55)"/>
-       </svg>
-    )
+    art: <PulseArt />
   },
   {
     id: "vega",
@@ -115,14 +85,7 @@ const projects = [
     size: "small",
     bg: "bg-special",
     glow: "g-special",
-    art: (
-       <svg width="52%" viewBox="0 0 260 360" fill="none" className="opacity-90">
-          <rect width="260" height="360" fill="rgba(14,4,26,.98)"/>
-          <circle cx="130" cy="145" r="48" stroke="rgba(200,80,255,.2)" strokeWidth="2"/>
-          <circle cx="130" cy="145" r="20" fill="rgba(200,80,255,.1)" stroke="rgba(200,80,255,.55)" strokeWidth="2"/>
-          <path d="M130,89 L133,105 L148,95 L137,109 L154,113 L138,117 L145,133 L131,123 L130,141 L129,123 L115,133 L122,117 L106,113 L123,109 L112,95 L127,105Z" fill="rgba(200,255,0,0.65)"/>
-       </svg>
-    )
+    art: <VegaArt />
   }
 ];
 
@@ -148,7 +111,7 @@ import Magnetic from "@/components/ui/Magnetic";
 
 const PREVIEW_COUNT = 3;
 
-function ProjectCard({ project, uniform }: { project: typeof projects[0]; uniform?: boolean }) {
+function ProjectCard({ project }: { project: typeof projects[0] }) {
   const [isHovered, setIsHovered] = useState(false);
 
   const lastHover = useRef(0);
@@ -161,26 +124,17 @@ function ProjectCard({ project, uniform }: { project: typeof projects[0]; unifor
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.95 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
       onHoverStart={handleHover}
       onMouseEnter={handleHover}
       onMouseOver={handleHover}
       onHoverEnd={() => setIsHovered(false)}
       data-cursor="cv"
       data-sc="project"
-      className={cn(
-        "group relative overflow-hidden cursor-none rv si sp",
-        uniform
-          ? "aspect-[4/3] md:aspect-[16/10] row-span-1"
-          : project.size === "large"
-            ? "aspect-video md:aspect-[16/9]"
-            : project.size === "tall"
-              ? "aspect-[3/4.2] row-span-2"
-              : "aspect-[4/3.2]"
-      )}
+      className="group relative w-full h-full overflow-hidden cursor-none"
     >
       <div 
         className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110"
@@ -225,71 +179,73 @@ function ProjectCard({ project, uniform }: { project: typeof projects[0]; unifor
 }
 
 export function Work() {
-  const [filter, setFilter] = useState("all");
-  const [showAll, setShowAll] = useState(false);
-
-  const filteredProjects = projects.filter(p => filter === "all" || p.type === filter);
-  const hasMore = filteredProjects.length > PREVIEW_COUNT;
-  const visibleProjects = !showAll && hasMore ? filteredProjects.slice(0, PREVIEW_COUNT) : filteredProjects;
-  const previewUniform = !showAll && hasMore;
+  const [filter, setFilter] = useState<"all" | "dev" | "design">("all");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setShowAll(false);
+    setMounted(true);
+  }, []);
+
+  const displayProjects = React.useMemo(() => {
+    if (filter === "all") {
+      const dev = projects.filter(p => p.type === "dev").slice(0, 2);
+      const design = projects.filter(p => p.type === "design").slice(0, 1);
+      return [...dev, ...design];
+    }
+    return projects.filter(p => p.type === filter).slice(0, 3);
   }, [filter]);
 
+  if (!mounted) {
+    return <section id="work" className="sec bg-bg overflow-hidden min-h-[50vh]" />;
+  }
+
   return (
-    <section id="work" className="sec-py px-4 md:px-0 bg-bg overflow-hidden">
-      <div className="max-w-[1400px] mx-auto mb-20">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
-          <div className="rv">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-px bg-lime/40" />
-              <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">Proof of Concept</span>
+    <section id="work" className="sec bg-bg overflow-hidden !px-0">
+      <div className="w-full px-[var(--sec-px)]">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-20">
+            <div className="rv">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-px bg-lime/40" />
+                <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">Proof of Concept</span>
+              </div>
+              <h2 className="sec-title">Selected <ScrambleOutline text="Work" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /></h2>
             </div>
-            <h2 className="sec-title">Selected <span className="[-webkit-text-stroke:2px_rgba(237,233,223,0.12)] text-transparent">Work</span></h2>
-          </div>
 
-          <div className="flex flex-wrap items-center gap-6 rv si" style={{ transitionDelay: '0.2s' }}>
-            <div className="flex gap-1.5 bg-white/[0.03] backdrop-blur-md border border-white/[0.05] p-1.5">
-              {["all", "dev", "design"].map(f => (
-                <button
-                  key={f}
-                  onClick={() => setFilter(f)}
-                  aria-label={`Filter projects by ${f}`}
-                  className={cn(
-                    "font-mono text-[10px] tracking-[0.16em] uppercase px-6 py-3 transition-all cursor-none",
-                    filter === f ? "bg-lime text-bg font-black" : "text-dim hover:text-white"
-                  )}
-                >
-                  {f}
-                </button>
-              ))}
+            <div className="flex flex-wrap items-center gap-6 rv si" style={{ transitionDelay: '0.2s' }}>
+              <div className="flex gap-2 bg-white/[0.03] backdrop-blur-md border border-white/[0.05] p-2">
+                {["dev", "design"].map(f => (
+                  <button
+                    key={f}
+                    onClick={() => setFilter(prev => prev === f ? "all" : f as "dev" | "design")}
+                    aria-label={`Filter projects by ${f}`}
+                    className={cn(
+                      "font-mono text-[15.5px] font-black tracking-[0.16em] uppercase px-7 py-3 transition-all cursor-none",
+                      filter === f ? "bg-lime text-bg" : "text-dim hover:text-white"
+                    )}
+                  >
+                    {f === "dev" ? "Development" : "Design"}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[4px] bg-white/[0.04] border-y border-white/[0.04]">
-        <AnimatePresence mode="popLayout">
-          {visibleProjects.map((p) => (
-            <ProjectCard key={p.id} project={p} uniform={previewUniform} />
-          ))}
-        </AnimatePresence>
+      <div className="grid grid-cols-1 md:grid-cols-3 w-full bg-white/[0.04] border-y border-white/[0.04] overflow-hidden">
+        {[0, 1, 2].map((index) => (
+          <div key={index} className="relative aspect-[4/5] md:aspect-auto md:h-[70vh] border-r border-white/[0.04] last:border-r-0 overflow-hidden">
+            <AnimatePresence mode="wait">
+              {displayProjects[index] ? (
+                <ProjectCard key={displayProjects[index].id} project={displayProjects[index]} />
+              ) : (
+                <div key={`empty-${index}`} className="w-full h-full bg-bg/50" />
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
       </div>
-
-      {hasMore && (
-        <div className="mt-12 flex justify-center rv">
-          <button
-            type="button"
-            onClick={() => setShowAll((s) => !s)}
-            className="btn-p relative bg-white text-bg px-12 py-5 font-display font-black text-sm tracking-widest uppercase hover:bg-lime transition-all cursor-none overflow-hidden group"
-            aria-label={showAll ? "Show fewer projects" : "Show all project case studies"}
-          >
-            <span className="relative z-10">{showAll ? "Show fewer" : `Show all (${filteredProjects.length})`}</span>
-            <div className="absolute inset-0 bg-lime translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-          </button>
-        </div>
-      )}
     </section>
   );
 }

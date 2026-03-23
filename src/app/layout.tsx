@@ -22,6 +22,9 @@ export const metadata: Metadata = {
     title: "JSX W&D — Digital Forge Studio",
     description: "Web design, development, graphic design, brand identity. Ludhiana, India.",
   },
+  icons: {
+    icon: "/favicon.webp",
+  },
 };
 
 import { Preloader } from "@/components/ui/Preloader";

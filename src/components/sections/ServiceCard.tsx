@@ -12,7 +12,7 @@ function cn(...inputs: ClassValue[]) {
 interface Service {
   num: string;
   title: string;
-  desc: string;
+  features: string[];
   tags: string[];
   icon: React.ReactNode;
 }
@@ -80,12 +80,17 @@ export function ServiceCard({ service }: { service: Service }) {
         <div className="w-[60px] h-[60px] mb-8 text-lime transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
           <React.Fragment key="service-icon">{service.icon}</React.Fragment>
         </div>
-        <h3 className="font-display font-black text-[32px] uppercase leading-none mb-4 group-hover:text-lime transition-all max-[479px]:text-3xl">
+        <h3 className="font-display font-black text-[32px] uppercase leading-none mb-7 group-hover:text-lime transition-all max-[479px]:text-3xl">
           {service.title}
         </h3>
-        <p className="text-[14.5px] font-light text-dim leading-relaxed mb-8 group-hover:text-white transition-colors">
-          {service.desc}
-        </p>
+        <ul className="space-y-3 mb-8">
+          {service.features.map((feature, i) => (
+            <li key={i} className="flex items-center gap-2.5 font-mono text-[11px] tracking-wider text-dim group-hover:text-white/90 transition-colors">
+              <span className="w-1 h-1 bg-lime/40 rounded-full" />
+              {feature}
+            </li>
+          ))}
+        </ul>
       </div>
     </motion.div>
   );

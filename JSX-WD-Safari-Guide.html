@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSX W&D — Safari Refinements Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#05050a;--bg2:#09090f;--card:#0d0d15;--card2:#111119;
+  --lime:#c8ff00;--red:#ff2d2d;--blue:#4466ff;--amber:#ffb020;--green:#00e676;
+  --txt:#ede9df;--dim:rgba(237,233,223,.52);--muted:rgba(237,233,223,.28);
+  --border:rgba(237,233,223,.07);
+  --fd:'Big Shoulders Display',sans-serif;
+  --fb:'DM Sans',sans-serif;
+  --fm:'Space Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--fb);
+  font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+
+/* ── LAYOUT ── */
+.page{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--bg2);border-right:1px solid var(--border);
+  padding:32px 0;
+  scrollbar-width:thin;scrollbar-color:rgba(255,45,45,.2) transparent;
+}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,45,45,.25);border-radius:2px}
+.sb-logo{padding:0 24px 28px;border-bottom:1px solid var(--border);margin-bottom:20px}
+.sb-logo-text{font-family:var(--fd);font-weight:900;font-size:18px;letter-spacing:.06em}
+.sb-logo-text .s{color:var(--red)}
+.sb-logo-sub{font-family:var(--fm);font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(255,45,45,.5);margin-top:4px}
+.sb-section{margin-bottom:8px}
+.sb-section-label{font-family:var(--fm);font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(237,233,223,.28);padding:10px 24px 6px}
+.sb-link{display:block;font-family:var(--fm);font-size:10.5px;letter-spacing:.06em;
+  color:var(--muted);text-decoration:none;padding:7px 24px;
+  border-left:2px solid transparent;transition:color .15s,border-color .15s,background .15s}
+.sb-link:hover{color:var(--txt);background:rgba(237,233,223,.03)}
+.sb-link.active{color:var(--red);border-left-color:var(--red);background:rgba(255,45,45,.04)}
+.sb-link.p1{color:rgba(255,45,45,.7)} /* critical priority */
+.sb-link.p1.active{color:var(--red)}
+
+/* priority badges in sidebar */
+.sb-badge{display:inline-block;font-family:var(--fm);font-size:7.5px;
+  letter-spacing:.1em;text-transform:uppercase;padding:1px 5px;
+  margin-left:6px;vertical-align:middle;position:relative;top:-1px}
+.bp1{background:rgba(255,45,45,.15);color:var(--red);border:1px solid rgba(255,45,45,.3)}
+.bp2{background:rgba(255,176,32,.1);color:var(--amber);border:1px solid rgba(255,176,32,.2)}
+.bp3{background:rgba(0,230,118,.08);color:var(--green);border:1px solid rgba(0,230,118,.18)}
+
+/* ── MAIN ── */
+.main{padding:0}
+
+/* ── COVER ── */
+.cover{
+  padding:72px 64px 64px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(255,45,45,.04) 0%,var(--bg) 60%);
+  position:relative;overflow:hidden;
+}
+.cover::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 85% 50%,rgba(255,45,45,.06),transparent 60%);
+  pointer-events:none}
+.cover-chip{display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--red);border:1px solid rgba(255,45,45,.25);padding:5px 12px;margin-bottom:24px}
+.cover-chip::before{content:'';width:6px;height:6px;background:var(--red);
+  border-radius:50%;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
+.cover-title{font-family:var(--fd);font-weight:900;
+  font-size:clamp(44px,6vw,78px);line-height:.88;
+  text-transform:uppercase;letter-spacing:-.01em;margin-bottom:20px}
+.cover-title .r{color:var(--red)}
+.cover-title .o{-webkit-text-stroke:2px rgba(237,233,223,.12);color:transparent}
+.cover-sub{font-size:15px;font-weight:300;color:var(--dim);max-width:600px;line-height:1.9}
+.cover-sub strong{color:var(--txt);font-weight:600}
+
+/* priority legend */
+.legend{display:flex;gap:20px;margin-top:36px;padding-top:28px;
+  border-top:1px solid var(--border);flex-wrap:wrap}
+.lg{display:flex;align-items:center;gap:8px}
+.lg-dot{width:8px;height:8px;border-radius:50%}
+.lg-label{font-family:var(--fm);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted)}
+
+/* ── SECTIONS ── */
+.sec{padding:52px 64px;border-bottom:1px solid var(--border)}
+.sec:last-child{border-bottom:none}
+
+/* section header */
+.sec-header{
+  display:grid;grid-template-columns:1fr auto;
+  align-items:start;gap:24px;margin-bottom:28px;
+}
+.sec-meta{}
+.sec-num{font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--red);display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sec-num::before{content:'';display:block;width:20px;height:1px;background:var(--red)}
+.sec-title{font-family:var(--fd);font-weight:900;
+  font-size:clamp(26px,3.5vw,42px);line-height:.9;text-transform:uppercase}
+
+/* priority card */
+.priority-card{
+  background:var(--card);border:1px solid var(--border);
+  padding:14px 18px;text-align:right;flex-shrink:0;min-width:130px;
+}
+.pc-label{font-family:var(--fm);font-size:8px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.pc-val{font-family:var(--fd);font-weight:900;font-size:26px;line-height:1}
+.pc-val.p1{color:var(--red)}
+.pc-val.p2{color:var(--amber)}
+.pc-val.p3{color:var(--green)}
+.pc-sub{font-family:var(--fm);font-size:9px;color:var(--muted);margin-top:3px}
+
+/* ── WHAT / WHY / FIX BLOCK ── */
+.fix-block{display:flex;flex-direction:column;gap:0;margin-bottom:20px}
+.fb-row{background:var(--card);border:1px solid var(--border);
+  border-bottom:none;padding:16px 22px;display:grid;
+  grid-template-columns:90px 1fr;gap:16px;align-items:start}
+.fb-row:last-child{border-bottom:1px solid var(--border)}
+.fb-label{font-family:var(--fm);font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);padding-top:2px}
+.fb-content{font-size:13.5px;color:var(--dim);line-height:1.75}
+.fb-content strong{color:var(--txt);font-weight:600}
+.fb-content em{color:var(--red);font-style:normal}
+.fb-content .lime{color:var(--lime)}
+.fb-content code{font-family:var(--fm);font-size:11.5px;color:var(--lime);
+  background:rgba(200,255,0,.07);border:1px solid rgba(200,255,0,.12);padding:1px 6px}
+
+/* ── CODE ── */
+pre{
+  background:var(--card2);border:1px solid var(--border);
+  border-left:3px solid var(--red);
+  padding:20px 24px;margin:16px 0 20px;overflow-x:auto;
+  font-family:var(--fm);font-size:12.5px;line-height:1.75;
+  color:rgba(237,233,223,.85);
+}
+pre.css{border-left-color:var(--blue)}
+pre.js{border-left-color:var(--amber)}
+pre.both{border-left-color:var(--lime)}
+pre.check{border-left-color:var(--green);background:rgba(0,230,118,.03)}
+code{font-family:var(--fm);font-size:12px;color:var(--lime);
+  background:rgba(200,255,0,.07);border:1px solid rgba(200,255,0,.12);padding:2px 6px}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+
+/* syntax */
+.kw{color:#c8ff00}.st{color:#ffd080}.cm{color:rgba(237,233,223,.3);font-style:italic}
+.fn{color:#80d0ff}.nm{color:#ff9580}.tp{color:#c8aaff}.pr{color:#ffb3b3}
+
+/* ── CALLOUTS ── */
+.callout{background:var(--card);border:1px solid var(--border);
+  border-left:3px solid var(--red);padding:18px 22px;margin:16px 0}
+.callout.warn{border-left-color:var(--amber);background:rgba(255,176,32,.04)}
+.callout.ok{border-left-color:var(--green);background:rgba(0,230,118,.04)}
+.callout.info{border-left-color:var(--blue);background:rgba(68,102,255,.04)}
+.callout p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.75}
+.callout p strong{color:var(--txt)}
+.callout-label{font-family:var(--fm);font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;margin-bottom:7px;color:var(--red)}
+.callout.warn .callout-label{color:var(--amber)}
+.callout.ok .callout-label{color:var(--green)}
+.callout.info .callout-label{color:var(--blue)}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font-family:var(--fm);font-size:9px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--red);text-align:left;padding:10px 16px;
+  background:rgba(255,45,45,.05);border-bottom:1px solid rgba(255,45,45,.15)}
+td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:top}
+tr:hover td{background:rgba(237,233,223,.015)}
+.k{font-family:var(--fm);font-size:11.5px;color:var(--lime);white-space:nowrap}
+.v{color:var(--txt)}.n{font-family:var(--fm);font-size:11px;color:rgba(237,233,223,.3)}
+td.p1{color:var(--red);font-family:var(--fm);font-size:11px;font-weight:700}
+td.p2{color:var(--amber);font-family:var(--fm);font-size:11px}
+td.p3{color:var(--green);font-family:var(--fm);font-size:11px}
+
+/* ── INLINE TAG ── */
+.tag{display:inline-flex;font-family:var(--fm);font-size:8px;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 7px;margin-left:6px;
+  vertical-align:middle;position:relative;top:-1px}
+.tl{color:var(--lime);background:rgba(200,255,0,.08);border:1px solid rgba(200,255,0,.2)}
+.tr{color:var(--red);background:rgba(255,45,45,.08);border:1px solid rgba(255,45,45,.2)}
+.ta{color:var(--amber);background:rgba(255,176,32,.08);border:1px solid rgba(255,176,32,.2)}
+.tg{color:var(--green);background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2)}
+.tb{color:#80d0ff;background:rgba(68,102,255,.08);border:1px solid rgba(68,102,255,.2)}
+
+/* ── DETECTION UTILITY BOX ── */
+.detect-box{
+  background:var(--card2);border:1px solid rgba(200,255,0,.12);
+  padding:22px 24px;margin:16px 0;
+}
+.detect-box-title{font-family:var(--fm);font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--lime);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px}
+.detect-box-title::before{content:'◈';font-size:11px}
+
+/* ── CHECKLIST ── */
+.checklist{display:flex;flex-direction:column;gap:3px;margin:16px 0}
+.chk{background:var(--card);border:1px solid var(--border);
+  padding:14px 18px;display:grid;grid-template-columns:22px 1fr auto;
+  gap:12px;align-items:start;cursor:default}
+.chk-box{width:14px;height:14px;border:1.5px solid var(--border);
+  margin-top:2px;flex-shrink:0;transition:background .2s,border-color .2s}
+.chk:hover .chk-box{border-color:rgba(200,255,0,.4)}
+.chk.done .chk-box{background:var(--green);border-color:var(--green)}
+.chk-text{font-size:13.5px;color:var(--dim);line-height:1.65}
+.chk-text strong{color:var(--txt);font-weight:600}
+.chk-priority{font-family:var(--fm);font-size:9px;letter-spacing:.08em;
+  text-transform:uppercase;padding-top:2px;white-space:nowrap}
+
+/* ── BROWSER SUPPORT GRID ── */
+.browser-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin:16px 0}
+.browser-cell{background:var(--card);border:1px solid var(--border);
+  padding:16px;text-align:center}
+.browser-name{font-family:var(--fm);font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.browser-status{font-family:var(--fd);font-weight:900;font-size:20px;text-transform:uppercase}
+.ok-status{color:var(--green)}.bad-status{color:var(--red)}.med-status{color:var(--amber)}
+.browser-note{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .page{grid-template-columns:1fr}
+  .sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .cover,.sec{padding:40px 24px}
+  .sec-header{grid-template-columns:1fr}
+  .priority-card{text-align:left}
+  .browser-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ════════════════ SIDEBAR ════════════════ -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-text">JSX W&D · <span class="s">Safari</span></div>
+    <div class="sb-logo-sub">Browser Refinements · 2025</div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-label">Start here</div>
+    <a href="#overview" class="sb-link active">Overview & Priority</a>
+    <a href="#detection" class="sb-link">Detection Utilities</a>
+    <a href="#testing" class="sb-link">How to Test in Safari</a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-label">Critical fixes</div>
+    <a href="#fix-backdrop" class="sb-link p1">01 backdrop-filter <span class="sb-badge bp1">P1</span></a>
+    <a href="#fix-vh" class="sb-link p1">02 100vh on iOS <span class="sb-badge bp1">P1</span></a>
+    <a href="#fix-inset" class="sb-link p1">03 inset shorthand <span class="sb-badge bp1">P1</span></a>
+    <a href="#fix-gradient-text" class="sb-link p1">04 Gradient text <span class="sb-badge bp1">P1</span></a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-label">High priority</div>
+    <a href="#fix-sticky" class="sb-link">05 Sticky word builder <span class="sb-badge bp2">P2</span></a>
+    <a href="#fix-varfont" class="sb-link">06 Variable font wght <span class="sb-badge bp2">P2</span></a>
+    <a href="#fix-clippath" class="sb-link">07 clip-path reveals <span class="sb-badge bp2">P2</span></a>
+    <a href="#fix-blend" class="sb-link">08 mix-blend-mode <span class="sb-badge bp2">P2</span></a>
+    <a href="#fix-fixed" class="sb-link">09 position:fixed jump <span class="sb-badge bp2">P2</span></a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-label">Medium priority</div>
+    <a href="#fix-grain" class="sb-link">10 Grain canvas iOS <span class="sb-badge bp3">P3</span></a>
+    <a href="#fix-webgl" class="sb-link">11 WebGL context loss <span class="sb-badge bp3">P3</span></a>
+    <a href="#fix-svg" class="sb-link">12 SVG path draw <span class="sb-badge bp3">P3</span></a>
+    <a href="#fix-char" class="sb-link">13 Char split titles <span class="sb-badge bp3">P3</span></a>
+    <a href="#fix-lenis" class="sb-link">14 Lenis on iOS <span class="sb-badge bp3">P3</span></a>
+    <a href="#fix-gap" class="sb-link">15 flex gap Safari 13 <span class="sb-badge bp3">P3</span></a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-label">Reference</div>
+    <a href="#checklist" class="sb-link">Full Checklist</a>
+    <a href="#support" class="sb-link">Browser Support Table</a>
+    <a href="#globalfix" class="sb-link">Global Fix File</a>
+  </div>
+</aside>
+
+<!-- ════════════════ MAIN ════════════════ -->
+<main class="main">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-chip">Safari Refinements · JSX W&D v4.0</div>
+  <div class="cover-title">
+    Safari <span class="r">Fixes</span><br>
+    <span class="o">Handoff</span>
+  </div>
+  <p class="cover-sub">
+    JSX W&D runs well on Chrome and Brave. Safari — particularly iOS Safari — has 15 specific issues caused by the combination of <code>backdrop-filter</code>, variable fonts, <code>clip-path</code> animations, canvas grain, WebGL, <code>mix-blend-mode</code>, Lenis, and <code>position:fixed</code>. <strong>Every issue is documented here with the exact code fix.</strong> All are copy-paste ready.
+  </p>
+
+  <div class="legend">
+    <div class="lg"><div class="lg-dot" style="background:var(--red)"></div><div class="lg-label">P1 — Critical · Fix first, visible immediately</div></div>
+    <div class="lg"><div class="lg-dot" style="background:var(--amber)"></div><div class="lg-label">P2 — High · Fix in first pass</div></div>
+    <div class="lg"><div class="lg-dot" style="background:var(--green)"></div><div class="lg-label">P3 — Medium · Fix before launch</div></div>
+  </div>
+</div>
+
+
+<!-- ════ OVERVIEW ════ -->
+<section class="sec" id="overview">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Overview</div>
+      <div class="sec-title">Priority Order</div>
+    </div>
+  </div>
+
+  <p>Fix these in order. The P1 issues are visible on first load. P2 issues break individual interactions. P3 issues are edge cases and iOS-specific crashes.</p>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th>#</th><th>Issue</th><th>What breaks</th><th>Where</th><th>Priority</th>
+    </tr>
+    <tr>
+      <td class="k">01</td>
+      <td class="v"><strong>backdrop-filter prefix</strong></td>
+      <td>Pill nav, modals, Lisa panel are invisible or fully transparent</td>
+      <td class="n">Pill nav, modal, Lisa, filter bar</td>
+      <td class="p1">P1 CRITICAL</td>
+    </tr>
+    <tr>
+      <td class="k">02</td>
+      <td class="v"><strong>100vh on iOS</strong></td>
+      <td>Hero is taller than viewport, bottom content clipped</td>
+      <td class="n">Hero section</td>
+      <td class="p1">P1 CRITICAL</td>
+    </tr>
+    <tr>
+      <td class="k">03</td>
+      <td class="v"><strong>inset shorthand</strong></td>
+      <td>Grain, modal overlays, page-bg don't cover full screen</td>
+      <td class="n">Multiple overlays</td>
+      <td class="p1">P1 CRITICAL</td>
+    </tr>
+    <tr>
+      <td class="k">04</td>
+      <td class="v"><strong>Gradient text</strong></td>
+      <td>"Impossible to ignore" shows as a solid block</td>
+      <td class="n">Hero description</td>
+      <td class="p1">P1 CRITICAL</td>
+    </tr>
+    <tr>
+      <td class="k">05</td>
+      <td class="v"><strong>Sticky word builder</strong></td>
+      <td>Pinned statement doesn't stick — scrolls straight past</td>
+      <td class="n">Word builder section</td>
+      <td class="p2">P2 HIGH</td>
+    </tr>
+    <tr>
+      <td class="k">06</td>
+      <td class="v"><strong>Variable font weight on scroll</strong></td>
+      <td>Headline stays at 900 — scroll-driven weight change does nothing</td>
+      <td class="n">Hero H1</td>
+      <td class="p2">P2 HIGH</td>
+    </tr>
+    <tr>
+      <td class="k">07</td>
+      <td class="v"><strong>clip-path animation</strong></td>
+      <td>Work section wipe reveals are janky or don't animate</td>
+      <td class="n">Work, shuffle overlay</td>
+      <td class="p2">P2 HIGH</td>
+    </tr>
+    <tr>
+      <td class="k">08</td>
+      <td class="v"><strong>mix-blend-mode on cursor</strong></td>
+      <td>Page flickers or cursor causes render glitch</td>
+      <td class="n">Cursor dot</td>
+      <td class="p2">P2 HIGH</td>
+    </tr>
+    <tr>
+      <td class="k">09</td>
+      <td class="v"><strong>position:fixed jump on scroll</strong></td>
+      <td>Pill nav, Lisa button, grain canvas jump during iOS momentum</td>
+      <td class="n">All fixed elements</td>
+      <td class="p2">P2 HIGH</td>
+    </tr>
+    <tr>
+      <td class="k">10</td>
+      <td class="v"><strong>Grain canvas memory crash</strong></td>
+      <td>iOS Safari tab crashes — grain canvas allocating too much RAM</td>
+      <td class="n">Grain canvas</td>
+      <td class="p3">P3 MED</td>
+    </tr>
+    <tr>
+      <td class="k">11</td>
+      <td class="v"><strong>WebGL context loss</strong></td>
+      <td>Three.js hero canvas goes black silently</td>
+      <td class="n">Three.js / Spline</td>
+      <td class="p3">P3 MED</td>
+    </tr>
+    <tr>
+      <td class="k">12</td>
+      <td class="v"><strong>SVG stroke-dashoffset</strong></td>
+      <td>Process connector line doesn't draw</td>
+      <td class="n">Process section</td>
+      <td class="p3">P3 MED</td>
+    </tr>
+    <tr>
+      <td class="k">13</td>
+      <td class="v"><strong>Char split 3D transform</strong></td>
+      <td>Section title characters render at wrong weight or disappear</td>
+      <td class="n">All split-title headings</td>
+      <td class="p3">P3 MED</td>
+    </tr>
+    <tr>
+      <td class="k">14</td>
+      <td class="v"><strong>Lenis + iOS rubber band</strong></td>
+      <td>Double scroll feeling at top/bottom of page</td>
+      <td class="n">Lenis provider</td>
+      <td class="p3">P3 MED</td>
+    </tr>
+    <tr>
+      <td class="k">15</td>
+      <td class="v"><strong>flex gap on Safari 13</strong></td>
+      <td>Flex containers with gap have no spacing</td>
+      <td class="n">Various flex layouts</td>
+      <td class="p3">P3 MED</td>
+    </tr>
+  </table>
+  </div>
+</section>
+
+
+<!-- ════ DETECTION UTILITIES ════ -->
+<section class="sec" id="detection">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Detection</div>
+      <div class="sec-title">Browser Utilities</div>
+    </div>
+  </div>
+
+  <p>Put this block in a single shared utility file — <code>src/lib/browser.ts</code> — and import the constants wherever needed. Do not repeat these detections inline across multiple components.</p>
+
+  <div class="detect-box">
+    <div class="detect-box-title">src/lib/browser.ts — copy this entire file</div>
+<pre class="both">
+<span class="cm">// ── Browser & device detection ──────────────────────────────────────────</span>
+<span class="cm">// Import these constants wherever you need browser-conditional behaviour.</span>
+<span class="cm">// All are safe to call client-side only — wrap in useEffect or check window.</span>
+
+<span class="kw">export const</span> isSafari =
+  <span class="kw">typeof</span> window !== <span class="st">'undefined'</span> &&
+  /^((?!chrome|android).)*safari/i.<span class="fn">test</span>(navigator.userAgent)
+
+<span class="kw">export const</span> isIOSSafari =
+  <span class="kw">typeof</span> window !== <span class="st">'undefined'</span> &&
+  /iP(ad|hone|od)/.<span class="fn">test</span>(navigator.userAgent) &&
+  /WebKit/.<span class="fn">test</span>(navigator.userAgent) &&
+  !(<span class="st">'MSStream'</span> <span class="kw">in</span> window)
+
+<span class="kw">export const</span> isTouch =
+  <span class="kw">typeof</span> window !== <span class="st">'undefined'</span> &&
+  (<span class="st">'ontouchstart'</span> <span class="kw">in</span> window || navigator.maxTouchPoints > <span class="nm">0</span>)
+
+<span class="kw">export const</span> isMobile =
+  <span class="kw">typeof</span> window !== <span class="st">'undefined'</span> &&
+  /iPhone|iPad|iPod|Android/i.<span class="fn">test</span>(navigator.userAgent)
+
+<span class="kw">export const</span> prefersReducedMotion =
+  <span class="kw">typeof</span> window !== <span class="st">'undefined'</span> &&
+  window.<span class="fn">matchMedia</span>(<span class="st">'(prefers-reduced-motion: reduce)'</span>).matches
+
+<span class="cm">// Safari version — useful for targeting specific Safari bugs</span>
+<span class="kw">export function</span> <span class="fn">getSafariVersion</span>(): <span class="tp">number</span> {
+  <span class="kw">if</span> (!isSafari) <span class="kw">return</span> <span class="nm">0</span>
+  <span class="kw">const</span> match = navigator.userAgent.<span class="fn">match</span>(/Version\/(\d+)/)
+  <span class="kw">return</span> match ? parseInt(match[<span class="nm">1</span>]) : <span class="nm">0</span>
+}
+
+<span class="cm">// Feature detection (better than UA sniffing where possible)</span>
+<span class="kw">export const</span> supportsBackdropFilter =
+  <span class="kw">typeof</span> CSS !== <span class="st">'undefined'</span> &&
+  (CSS.<span class="fn">supports</span>(<span class="st">'backdrop-filter'</span>, <span class="st">'blur(1px)'</span>) ||
+   CSS.<span class="fn">supports</span>(<span class="st">'-webkit-backdrop-filter'</span>, <span class="st">'blur(1px)'</span>))
+
+<span class="kw">export const</span> supportsMixBlendMode =
+  <span class="kw">typeof</span> CSS !== <span class="st">'undefined'</span> &&
+  CSS.<span class="fn">supports</span>(<span class="st">'mix-blend-mode'</span>, <span class="st">'difference'</span>)
+
+<span class="kw">export const</span> supportsInset =
+  <span class="kw">typeof</span> CSS !== <span class="st">'undefined'</span> &&
+  CSS.<span class="fn">supports</span>(<span class="st">'inset'</span>, <span class="st">'0'</span>)
+</pre>
+  </div>
+</section>
+
+
+<!-- ════ HOW TO TEST ════ -->
+<section class="sec" id="testing">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Testing</div>
+      <div class="sec-title">How to Test in Safari</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">Desktop Safari</div>
+      <div class="fb-content"><strong>Safari → Develop menu → Enable</strong> (if not visible: Safari Preferences → Advanced → Show Develop menu). Open DevTools with Cmd+Option+I. Use the Responsive Design Mode (Develop → Enter Responsive Design Mode) to test different iPhone/iPad viewport sizes without a device.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Real iOS device</div>
+      <div class="fb-content">Connect iPhone/iPad via USB. Safari → Develop → [Your Device Name] → [Page]. This gives you full DevTools on the device's actual Safari. <strong>Always test on a real device</strong> — the simulator doesn't reproduce all iOS Safari bugs, especially the memory crash and fixed-position jump.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">BrowserStack</div>
+      <div class="fb-content">If no Apple device available: <strong>browserstack.com</strong> — free trial gives real device testing on iOS Safari. Use iPhone 13/14 with Safari 16+ as primary target, and iPhone 12 with Safari 15 as secondary.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Version targets</div>
+      <div class="fb-content"><strong>Safari 17</strong> (current) — full support. <strong>Safari 16</strong> — target minimum. <strong>Safari 15</strong> — check for svh unit. <strong>Safari 14</strong> — check inset and gap. <strong>Safari 13</strong> — flex gap only, don't invest heavily here.</div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">Test order</div>
+    <p>Always test the P1 fixes first with the page at rest (not scrolling). Then test scroll-driven effects. Then test hover interactions with a mouse on Safari desktop. Then test on an actual iOS device. Each layer can reveal different problems.</p>
+  </div>
+</section>
+
+
+<!-- ════════════════ FIX 01 ════════════════ -->
+<section class="sec" id="fix-backdrop">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 01</div>
+      <div class="sec-title">backdrop-filter <span class="tag tr">P1 Critical</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p1">P1</div>
+      <div class="pc-sub">Fix first</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">The <strong>pill nav, contact modal, Lisa assistant panel, and filter bar</strong> all use <code>backdrop-filter: blur()</code>. In Safari without the <code>-webkit-</code> prefix, the blur does not render. The background becomes either fully transparent or a solid colour with no blur effect — making the pill nav look like a broken strip and the modals look like flat boxes.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Why</div>
+      <div class="fb-content">Safari requires <code>-webkit-backdrop-filter</code> alongside the unprefixed version. Without it Safari simply ignores the property entirely. This has been the case since Safari first implemented backdrop-filter in version 9.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Affected files</div>
+      <div class="fb-content"><code>globals.css</code> or component CSS — anywhere <code>backdrop-filter</code> appears. Search the entire codebase for the string <code>backdrop-filter</code> and apply the fix to every instance.</div>
+    </div>
+  </div>
+
+<pre class="css">
+<span class="cm">/* BEFORE — Safari ignores this */</span>
+.pill-track {
+  backdrop-filter: blur(28px) saturate(180%);
+}
+
+<span class="cm">/* AFTER — add -webkit- prefix immediately above every instance */</span>
+.pill-track {
+  -webkit-backdrop-filter: blur(28px) saturate(180%); <span class="cm">/* Safari */</span>
+          backdrop-filter: blur(28px) saturate(180%); <span class="cm">/* All others */</span>
+}
+</pre>
+
+  <p><strong>Apply to all four affected elements:</strong></p>
+<pre class="css">
+.pill-track {
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+          backdrop-filter: blur(28px) saturate(180%);
+}
+.modal {
+  -webkit-backdrop-filter: blur(32px);
+          backdrop-filter: blur(32px);
+}
+#lisa-panel {
+  -webkit-backdrop-filter: blur(24px);
+          backdrop-filter: blur(24px);
+}
+.filter-bar {
+  -webkit-backdrop-filter: blur(16px);
+          backdrop-filter: blur(16px);
+}
+#modal-bg {
+  -webkit-backdrop-filter: blur(20px);
+          backdrop-filter: blur(20px);
+}
+</pre>
+
+  <div class="callout ok">
+    <div class="callout-label">Quick verification</div>
+    <p>Open the site in Safari, open DevTools, click the pill nav. If you see <code>backdrop-filter</code> in the Styles panel with a strikethrough, the prefix is missing. After adding the prefix, the strikethrough disappears and the blur renders correctly.</p>
+  </div>
+</section>
+
+
+<!-- ════ FIX 02 ════ -->
+<section class="sec" id="fix-vh">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 02</div>
+      <div class="sec-title">100vh on iOS <span class="tag tr">P1 Critical</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p1">P1</div>
+      <div class="pc-sub">Fix first</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">On iOS Safari, <code>100vh</code> is calculated <strong>including the browser chrome</strong> (address bar + tab bar). When the address bar is visible, the hero section is taller than the actual visible area. The bottom stats bar gets pushed below the fold and isn't visible without scrolling.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Why</div>
+      <div class="fb-content">Apple's intentional design decision — <code>100vh</code> in iOS Safari represents the maximum possible viewport height (browser chrome hidden), not the current visible height. Chrome/Firefox match the actual visible area instead.</div>
+    </div>
+  </div>
+
+  <p><strong>Modern fix</strong> — use <code>svh</code> (small viewport height), supported in Safari 15.4+:</p>
+<pre class="css">
+#hero {
+  min-height: 100svh; <span class="cm">/* Safari 15.4+ — excludes browser chrome */</span>
+  min-height: 100vh;  <span class="cm">/* Fallback for older Safari */</span>
+}
+
+<span class="cm">/* Also fix the word builder sticky container */</span>
+#word-build-sticky {
+  height: 100svh;
+  height: 100vh; <span class="cm">/* fallback */</span>
+}
+</pre>
+
+  <p><strong>Older iOS fallback</strong> — if you need to support Safari 14 and below:</p>
+<pre class="js">
+<span class="cm">// In layout.tsx or a client component — run once on mount</span>
+<span class="kw">useEffect</span>(() => {
+  <span class="kw">function</span> <span class="fn">setVH</span>() {
+    <span class="kw">const</span> vh = window.innerHeight * <span class="nm">0.01</span>
+    document.documentElement.style.<span class="fn">setProperty</span>(<span class="st">'--vh'</span>, <span class="st">`${vh}px`</span>)
+  }
+  <span class="fn">setVH</span>()
+  window.<span class="fn">addEventListener</span>(<span class="st">'resize'</span>, setVH)
+  <span class="kw">return</span> () => window.<span class="fn">removeEventListener</span>(<span class="st">'resize'</span>, setVH)
+}, [])
+</pre>
+<pre class="css">
+<span class="cm">/* Then in CSS — use the variable with vh fallback */</span>
+#hero {
+  min-height: calc(var(--vh, 1vh) * 100);
+}
+</pre>
+</section>
+
+
+<!-- ════ FIX 03 ════ -->
+<section class="sec" id="fix-inset">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 03</div>
+      <div class="sec-title">inset Shorthand <span class="tag tr">P1 Critical</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p1">P1</div>
+      <div class="pc-sub">Fix first</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">The grain canvas, page background overlay, spotlight div, preloader, shuffle overlay, modal background, and Easter egg all use <code>inset: 0</code> as shorthand for <code>top: 0; right: 0; bottom: 0; left: 0</code>. Safari 14 and below doesn't support this shorthand — these elements don't cover the full screen, causing layout breaks or partial overlays.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Scope</div>
+      <div class="fb-content">Do a <strong>global find-and-replace</strong> across all CSS and styled components. Search for <code>inset: 0</code> and replace with the explicit four-property version. Safari 15+ supports inset, but replacing it costs nothing and fixes Safari 14.</div>
+    </div>
+  </div>
+
+<pre class="css">
+<span class="cm">/* BEFORE */</span>
+#grain, #trail-canvas, #page-bg, #spot,
+#preloader, #shuffle-overlay, #modal-bg, #egg {
+  inset: 0;
+}
+
+<span class="cm">/* AFTER — explicit, works on Safari 14+ */</span>
+#grain, #trail-canvas, #page-bg, #spot,
+#preloader, #shuffle-overlay, #modal-bg, #egg {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+</pre>
+
+  <div class="callout info">
+    <div class="callout-label">Note</div>
+    <p><code>inset</code> for non-zero values (e.g. <code>inset: 0 24px</code>) also needs the same treatment. Check for any other <code>inset</code> usages beyond <code>inset: 0</code>.</p>
+  </div>
+</section>
+
+
+<!-- ════ FIX 04 ════ -->
+<section class="sec" id="fix-gradient-text">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 04</div>
+      <div class="sec-title">Gradient Text <span class="tag tr">P1 Critical</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p1">P1</div>
+      <div class="pc-sub">Fix first</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">The animated gradient on <em>"impossible to ignore"</em> in the hero description renders as a solid lime block in Safari instead of showing the gradient sweep. The text is visible but the gradient animation doesn't work.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Why</div>
+      <div class="fb-content">Two issues: <strong>(1)</strong> <code>background-clip: text</code> requires the <code>-webkit-background-clip: text</code> prefix in Safari. <strong>(2)</strong> <code>color: transparent</code> must be replaced with <code>-webkit-text-fill-color: transparent</code> — Safari handles text colour clipping differently from other browsers.</div>
+    </div>
+  </div>
+
+<pre class="css">
+<span class="cm">/* BEFORE — broken in Safari */</span>
+.grad-text {
+  background: linear-gradient(90deg, var(--lime) 0%, #fff 40%, var(--lime) 80%);
+  background-size: 200% auto;
+  background-clip: text;
+  color: transparent;
+  animation: gradmove 3.5s linear infinite;
+}
+
+<span class="cm">/* AFTER — works in Safari */</span>
+.grad-text {
+  background: linear-gradient(90deg, var(--lime) 0%, #fff 40%, var(--lime) 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; <span class="cm">/* Safari */</span>
+          background-clip: text;
+  -webkit-text-fill-color: transparent; <span class="cm">/* Safari — NOT color: transparent */</span>
+  color: transparent; <span class="cm">/* Fallback for non-Safari */</span>
+  animation: gradmove 3.5s linear infinite;
+}
+</pre>
+</section>
+
+
+<!-- ════ FIX 05 ════ -->
+<section class="sec" id="fix-sticky">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 05</div>
+      <div class="sec-title">Sticky Word Builder <span class="tag ta">P2 High</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p2">P2</div>
+      <div class="pc-sub">First pass</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">The pinned word-building statement doesn't stick in Safari. The user scrolls straight through the section without the content pinning in place. All 15 words appear simultaneously and instantly — the whole scroll-driven narrative is broken.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Why</div>
+      <div class="fb-content">Safari has documented bugs with <code>position: sticky</code> inside <code>display: grid</code> parents. The sticky child computes its containing block incorrectly. The fix is to change the parent from grid to block, and ensure no ancestor has <code>overflow: hidden</code> (which also breaks sticky in Safari).</div>
+    </div>
+  </div>
+
+<pre class="css">
+<span class="cm">/* BEFORE — breaks Safari sticky */</span>
+#word-build {
+  position: relative;
+  height: 500vh;
+  display: grid; <span class="cm">/* ← THIS breaks sticky in Safari */</span>
+}
+
+<span class="cm">/* AFTER — display: block fixes it */</span>
+#word-build {
+  position: relative;
+  height: 500vh;
+  display: block; <span class="cm">/* Safari sticky works correctly inside block */</span>
+}
+
+#word-build-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  height: 100vh; <span class="cm">/* fallback */</span>
+  overflow: hidden; <span class="cm">/* Needed for Safari — define the stacking context */</span>
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</pre>
+
+  <div class="callout warn">
+    <div class="callout-label">Also check</div>
+    <p>Make sure <strong>no ancestor element</strong> of <code>#word-build</code> has <code>overflow: hidden</code> or <code>overflow: auto</code> set. In Safari, any <code>overflow</code> value other than <code>visible</code> on an ancestor will break <code>position: sticky</code> on a descendant — even if the overflow is set many levels up the tree.</p>
+  </div>
+</section>
+
+
+<!-- ════ FIX 06 ════ -->
+<section class="sec" id="fix-varfont">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 06</div>
+      <div class="sec-title">Variable Font Weight on Scroll <span class="tag ta">P2 High</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p2">P2</div>
+      <div class="pc-sub">First pass</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">The scroll-driven headline font-weight change does nothing in Safari. The H1 stays at weight 900 regardless of scroll position.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Why</div>
+      <div class="fb-content">Safari sometimes ignores <code>font-variation-settings</code> set via JS if the font isn't fully ready when the property is first applied. Safari also requires that the <code>@font-face</code> declaration includes <code>font-weight: 100 900</code> (the full range) to recognise the font as variable — without this it treats it as a static font and ignores the variation axis.</div>
+    </div>
+  </div>
+
+<pre class="css">
+<span class="cm">/* Ensure @font-face declares the full weight range */</span>
+@font-face {
+  font-family: 'Big Shoulders Display';
+  src: url('/fonts/BigShouldersDisplay-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900; <span class="cm">/* ← CRITICAL — tells Safari it's a variable font */</span>
+  font-style: normal;
+  font-display: swap;
+}
+</pre>
+
+<pre class="js">
+<span class="cm">// Wrap the scroll listener in document.fonts.ready</span>
+<span class="cm">// Safari needs fonts fully loaded before accepting fontVariationSettings via JS</span>
+<span class="kw">export function</span> <span class="fn">initFontWeightScroll</span>() {
+  <span class="kw">const</span> headline = document.<span class="fn">getElementById</span>(<span class="st">'hero-hl'</span>)
+  <span class="kw">if</span> (!headline) <span class="kw">return</span>
+
+  document.fonts.ready.<span class="fn">then</span>(() => {
+    <span class="cm">// Fonts confirmed loaded — now safe to set fontVariationSettings</span>
+    window.<span class="fn">addEventListener</span>(<span class="st">'scroll'</span>, () => {
+      <span class="kw">try</span> {
+        <span class="kw">const</span> heroEl = document.<span class="fn">getElementById</span>(<span class="st">'hero'</span>)
+        <span class="kw">const</span> heroH = heroEl?.offsetHeight ?? innerHeight
+        <span class="kw">const</span> progress = Math.<span class="fn">min</span>(Math.<span class="fn">max</span>(scrollY / heroH, <span class="nm">0</span>), <span class="nm">1</span>)
+        <span class="kw">const</span> weight = Math.<span class="fn">round</span>(<span class="nm">900</span> - progress * <span class="nm">800</span>)
+        headline.style.fontVariationSettings = <span class="st">`'wght' ${weight}`</span>
+        headline.style.letterSpacing = <span class="st">`${-0.01 + progress * 0.04}em`</span>
+      } <span class="kw">catch</span> (e) {
+        <span class="cm">// Safari can throw if font transitions aren't ready — silently skip</span>
+      }
+    }, { passive: <span class="nm">true</span> })
+  })
+}
+</pre>
+</section>
+
+
+<!-- ════ FIX 07 ════ -->
+<section class="sec" id="fix-clippath">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 07</div>
+      <div class="sec-title">clip-path Animations <span class="tag ta">P2 High</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p2">P2</div>
+      <div class="pc-sub">First pass</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">Work section wipe and swipe scroll reveals are either invisible, instantly visible (no animation), or jank heavily on Safari. The shuffle transition column sweep also breaks.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Why</div>
+      <div class="fb-content">Safari supports <code>clip-path</code> but doesn't hardware-accelerate clip-path transitions the same way Chrome does. Without a GPU compositing hint (<code>translateZ(0)</code>), Safari repaints the clip-path change in software every frame, causing severe jank on complex layouts. Also requires <code>-webkit-clip-path</code> prefix for Safari 14 and below.</div>
+    </div>
+  </div>
+
+<pre class="css">
+<span class="cm">/* Add -webkit-clip-path prefix + GPU compositing hint to all animated clip-path elements */</span>
+.wipe {
+  -webkit-clip-path: inset(0 0 100% 0); <span class="cm">/* Safari 14 and below */</span>
+          clip-path: inset(0 0 100% 0);
+  -webkit-transform: translateZ(0); <span class="cm">/* Force GPU layer — prevents Safari jank */</span>
+          transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  transition:
+    -webkit-clip-path 1.05s cubic-bezier(.16,1,.3,1),
+            clip-path 1.05s cubic-bezier(.16,1,.3,1);
+}
+.wipe.in {
+  -webkit-clip-path: inset(0 0 0% 0);
+          clip-path: inset(0 0 0% 0);
+}
+
+.swipe {
+  -webkit-clip-path: inset(0 100% 0 0);
+          clip-path: inset(0 100% 0 0);
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  transition:
+    -webkit-clip-path 1.05s cubic-bezier(.16,1,.3,1),
+            clip-path 1.05s cubic-bezier(.16,1,.3,1);
+}
+.swipe.in {
+  -webkit-clip-path: inset(0 0% 0 0);
+          clip-path: inset(0 0% 0 0);
+}
+
+<span class="cm">/* Shuffle overlay columns */</span>
+.shuffle-col {
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+  will-change: transform; <span class="cm">/* Promote to own GPU layer pre-animation */</span>
+}
+</pre>
+</section>
+
+
+<!-- ════ FIX 08 ════ -->
+<section class="sec" id="fix-blend">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 08</div>
+      <div class="sec-title">mix-blend-mode on Cursor <span class="tag ta">P2 High</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p2">P2</div>
+      <div class="pc-sub">First pass</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">The cursor dot uses <code>mix-blend-mode: difference</code> to invert colour against content. In Safari, when the cursor dot overlaps a hardware-accelerated layer (the Three.js WebGL canvas), it causes the entire page to flash or flicker with each cursor movement. On some Safari versions, the blend mode on a <code>position: fixed</code> element renders completely wrong.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Fix approach</div>
+      <div class="fb-content">Detect Safari in JS and remove the blend mode. The cursor still works visually — it just doesn't invert against content. This is an acceptable trade-off. On Safari, keep the cursor as a solid lime dot and ring without blending.</div>
+    </div>
+  </div>
+
+<pre class="js">
+<span class="cm">// In Cursor component — remove mix-blend-mode on Safari</span>
+<span class="kw">import</span> { isSafari } <span class="kw">from</span> <span class="st">'@/lib/browser'</span>
+
+<span class="kw">useEffect</span>(() => {
+  <span class="kw">const</span> dot = document.<span class="fn">getElementById</span>(<span class="st">'cdot'</span>)
+  <span class="kw">if</span> (dot && isSafari) {
+    dot.style.mixBlendMode = <span class="st">'normal'</span>
+    dot.style.background = <span class="st">'var(--lime)'</span>
+    <span class="cm">// Make it slightly transparent so it doesn't occlude content</span>
+    dot.style.opacity = <span class="st">'0.85'</span>
+  }
+}, [])
+</pre>
+
+<pre class="css">
+<span class="cm">/* CSS-only alternative — use @supports to detect blend mode support */</span>
+@supports not (mix-blend-mode: difference) {
+  #cdot {
+    mix-blend-mode: normal;
+    opacity: 0.85;
+  }
+}
+</pre>
+</section>
+
+
+<!-- ════ FIX 09 ════ -->
+<section class="sec" id="fix-fixed">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 09</div>
+      <div class="sec-title">position:fixed Jump on iOS <span class="tag ta">P2 High</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p2">P2</div>
+      <div class="pc-sub">First pass</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">On iOS Safari during momentum scroll (especially at the top and bottom of the page), <code>position: fixed</code> elements — the pill nav, Lisa button, grain canvas, cursor, spotlight, and page background — appear to jump or slide briefly before snapping back to their fixed position.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">Why</div>
+      <div class="fb-content">A long-standing iOS Safari rendering bug. During momentum scroll compositing, iOS moves the fixed element with the scroll momentarily before the next paint corrects it. Promoting the element to its own GPU compositor layer (via <code>transform: translateZ(0)</code>) moves it out of the main scroll compositing layer and eliminates the jump.</div>
+    </div>
+  </div>
+
+<pre class="css">
+<span class="cm">/* Apply GPU promotion to all position:fixed elements */</span>
+#pill-nav,
+#lisa-btn,
+#lisa-panel,
+#grain,
+#trail-canvas,
+#page-bg,
+#spot,
+#cdot,
+#cring,
+#clabel,
+#scrollprog {
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+</pre>
+
+  <div class="callout warn">
+    <div class="callout-label">Trade-off</div>
+    <p>Applying <code>transform: translateZ(0)</code> to many elements creates many GPU compositor layers, which uses more VRAM. On low-end iOS devices (iPhone SE, older iPads), too many promoted layers can cause a different problem — GPU memory pressure. Apply selectively to the elements most visible during scroll — pill nav, grain canvas, and page-bg — rather than every single fixed element.</p>
+  </div>
+</section>
+
+
+<!-- ════ FIX 10 ════ -->
+<section class="sec" id="fix-grain">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 10</div>
+      <div class="sec-title">Grain Canvas Memory Crash <span class="tag tg">P3 Medium</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p3">P3</div>
+      <div class="pc-sub">Before launch</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">On iOS Safari the browser tab crashes silently — the page reloads with "A problem occurred with this webpage so it was reloaded." The grain canvas is regenerating a full-screen <code>createImageData</code> at 60fps, which allocates roughly 8MB per frame on a 1920px-wide screen. iOS strictly limits canvas memory.</div>
+    </div>
+  </div>
+
+<pre class="js">
+<span class="cm">// Grain init — throttle heavily on iOS, disable entirely on very low-end devices</span>
+<span class="kw">import</span> { isIOSSafari, isMobile } <span class="kw">from</span> <span class="st">'@/lib/browser'</span>
+
+<span class="kw">export function</span> <span class="fn">initGrain</span>() {
+  <span class="kw">const</span> canvas = document.<span class="fn">getElementById</span>(<span class="st">'grain'</span>) <span class="kw">as</span> HTMLCanvasElement
+  <span class="kw">if</span> (!canvas) <span class="kw">return</span>
+
+  <span class="cm">// On iOS Safari — use SVG filter instead of canvas (zero CPU, no crash risk)</span>
+  <span class="kw">if</span> (isIOSSafari) {
+    canvas.style.display = <span class="st">'none'</span>
+    <span class="kw">const</span> grainDiv = document.<span class="fn">getElementById</span>(<span class="st">'grain-filter'</span>)
+    <span class="kw">if</span> (grainDiv) grainDiv.style.display = <span class="st">'block'</span>
+    <span class="kw">return</span>
+  }
+
+  <span class="kw">const</span> ctx = canvas.<span class="fn">getContext</span>(<span class="st">'2d'</span>)!
+  <span class="kw">let</span> W = innerWidth, H = innerHeight
+  canvas.width = W; canvas.height = H
+
+  <span class="cm">// Throttle: 20fps on desktop, 12fps on mobile</span>
+  <span class="kw">const</span> interval = isMobile ? <span class="nm">5</span> : <span class="nm">3</span> <span class="cm">// skip N frames between redraws</span>
+  <span class="kw">let</span> frame = <span class="nm">0</span>
+
+  <span class="kw">function</span> <span class="fn">draw</span>() {
+    frame++
+    <span class="kw">if</span> (frame % interval === <span class="nm">0</span>) {
+      <span class="kw">const</span> id = ctx.<span class="fn">createImageData</span>(W, H)
+      <span class="kw">const</span> d = id.data
+      <span class="kw">for</span> (<span class="kw">let</span> i = <span class="nm">0</span>; i < d.length; i += <span class="nm">4</span>) {
+        <span class="kw">const</span> v = Math.<span class="fn">random</span>() * <span class="nm">255</span> | <span class="nm">0</span>
+        d[i] = d[i+<span class="nm">1</span>] = d[i+<span class="nm">2</span>] = v; d[i+<span class="nm">3</span>] = <span class="nm">255</span>
+      }
+      ctx.<span class="fn">putImageData</span>(id, <span class="nm">0</span>, <span class="nm">0</span>)
+    }
+    <span class="fn">requestAnimationFrame</span>(draw)
+  }
+  <span class="fn">requestAnimationFrame</span>(draw)
+}
+</pre>
+
+  <p>Add the SVG grain filter to your layout — this is the iOS Safari fallback:</p>
+<pre class="css">
+<span class="cm">/* iOS Safari sees this, Chrome/Brave see the canvas */</span>
+#grain-filter {
+  display: none; <span class="cm">/* hidden by default — JS enables on iOS Safari */</span>
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: 9000;
+  pointer-events: none;
+  opacity: .04;
+  mix-blend-mode: screen;
+  filter: url(#noise);
+}
+</pre>
+<pre>
+<span class="cm">&lt;!-- Add to layout — hidden SVG filter definition --&gt;</span>
+&lt;svg style="display:none"&gt;
+  &lt;filter id="noise"&gt;
+    &lt;feTurbulence type="fractalNoise" baseFrequency="0.85"
+      numOctaves="4" stitchTiles="stitch"/&gt;
+    &lt;feColorMatrix type="saturate" values="0"/&gt;
+  &lt;/filter&gt;
+&lt;/svg&gt;
+&lt;div id="grain-filter"&gt;&lt;/div&gt;
+</pre>
+</section>
+
+
+<!-- ════ FIX 11 ════ -->
+<section class="sec" id="fix-webgl">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 11</div>
+      <div class="sec-title">WebGL Context Loss <span class="tag tg">P3 Medium</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p3">P3</div>
+      <div class="pc-sub">Before launch</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">The Three.js constellation background goes black silently — the canvas element is present but renders nothing. Happens when Safari exceeds its 8 simultaneous WebGL context limit, or when the page is backgrounded and then foregrounded.</div>
+    </div>
+  </div>
+
+<pre class="js">
+<span class="cm">// In HeroScene.tsx — add context loss recovery handlers</span>
+<span class="kw">const</span> canvas = renderer.domElement
+
+canvas.<span class="fn">addEventListener</span>(<span class="st">'webglcontextlost'</span>, (e) => {
+  e.<span class="fn">preventDefault</span>() <span class="cm">// Prevent default — allows context to be restored</span>
+  <span class="fn">cancelAnimationFrame</span>(animRAF)
+  console.<span class="fn">warn</span>(<span class="st">'WebGL context lost — waiting for restore'</span>)
+}, <span class="nm">false</span>)
+
+canvas.<span class="fn">addEventListener</span>(<span class="st">'webglcontextrestored'</span>, () => {
+  console.<span class="fn">log</span>(<span class="st">'WebGL context restored — reinitialising'</span>)
+  <span class="fn">initHeroScene</span>() <span class="cm">// re-run your scene init function</span>
+}, <span class="nm">false</span>)
+
+<span class="cm">// Also — reduce pixel ratio more aggressively on iOS to reduce GPU pressure</span>
+<span class="kw">import</span> { isIOSSafari } <span class="kw">from</span> <span class="st">'@/lib/browser'</span>
+renderer.<span class="fn">setPixelRatio</span>(isIOSSafari ? <span class="nm">1</span> : Math.<span class="fn">min</span>(devicePixelRatio, <span class="nm">1.5</span>))
+</pre>
+</section>
+
+
+<!-- ════ FIX 12 ════ -->
+<section class="sec" id="fix-svg">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 12</div>
+      <div class="sec-title">SVG Path Draw <span class="tag tg">P3 Medium</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p3">P3</div>
+      <div class="pc-sub">Before launch</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">The process section connector line doesn't draw in Safari — it either shows fully visible from the start or stays fully invisible. The CSS transition on <code>stroke-dashoffset</code> is not firing.</div>
+    </div>
+  </div>
+
+<pre class="css">
+<span class="cm">/* Add will-change hint + ensure SVG has explicit dimensions */</span>
+.proc-conn-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  will-change: stroke-dashoffset; <span class="cm">/* Safari needs this to animate SVG properties */</span>
+  transition: stroke-dashoffset 1.8s cubic-bezier(.16,1,.3,1);
+}
+.proc-conn-path.drawn {
+  stroke-dashoffset: 0;
+}
+</pre>
+
+<pre>
+<span class="cm">&lt;!-- Give the SVG explicit width/height — Safari ignores percentage SVG without it --&gt;</span>
+&lt;svg id="proc-connector"
+  width="100%"
+  height="4"
+  viewBox="0 0 1200 4"
+  preserveAspectRatio="none"
+  style="position:absolute;bottom:0;left:0;right:0;overflow:visible"&gt;
+  ...
+&lt;/svg&gt;
+</pre>
+</section>
+
+
+<!-- ════ FIX 13 ════ -->
+<section class="sec" id="fix-char">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 13</div>
+      <div class="sec-title">Character Split Titles <span class="tag tg">P3 Medium</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p3">P3</div>
+      <div class="pc-sub">Before launch</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">Section title characters rendered via the split-title system disappear or render at the wrong weight in Safari. The <code>rotateX(-45deg)</code> 3D transform on individual <code>&lt;span&gt;</code> elements inside a variable-weight headline causes Safari to lose the font weight or drop the glyph entirely during the animation.</div>
+    </div>
+  </div>
+
+<pre class="css">
+<span class="cm">/* Fix: flatten the 3D transform space and add backface culling */</span>
+.char {
+  display: inline-block;
+  transform: translateY(60px) rotateX(-45deg);
+  opacity: 0;
+  transform-style: flat; <span class="cm">/* NOT preserve-3d — Safari breaks on inline elements */</span>
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transform: translateY(60px) rotateX(-45deg);
+  transition:
+    -webkit-transform 0.7s cubic-bezier(.34,1.56,.64,1),
+            transform 0.7s cubic-bezier(.34,1.56,.64,1),
+    opacity 0.5s cubic-bezier(.16,1,.3,1);
+}
+.char.in {
+  -webkit-transform: translateY(0) rotateX(0);
+          transform: translateY(0) rotateX(0);
+  opacity: 1;
+}
+</pre>
+</section>
+
+
+<!-- ════ FIX 14 ════ -->
+<section class="sec" id="fix-lenis">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 14</div>
+      <div class="sec-title">Lenis on iOS Safari <span class="tag tg">P3 Medium</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p3">P3</div>
+      <div class="pc-sub">Before launch</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content">On iOS Safari, Lenis can cause a "double scroll" sensation at the top and bottom of the page — the iOS native rubber-band overscroll bounce fights with Lenis's momentum, making the scroll feel unstable or twitchy at the edges of the page.</div>
+    </div>
+  </div>
+
+<pre class="js">
+<span class="cm">// LenisProvider.tsx — update config for Safari compatibility</span>
+<span class="kw">import</span> { isIOSSafari, isSafari } <span class="kw">from</span> <span class="st">'@/lib/browser'</span>
+
+<span class="kw">const</span> lenis = <span class="kw">new</span> <span class="fn">Lenis</span>({
+  lerp: isIOSSafari ? <span class="nm">0</span> : <span class="nm">0.075</span>, <span class="cm">// 0 = native scroll on iOS, no Lenis lerp</span>
+  duration: <span class="nm">1.2</span>,
+  easing: (t) => t === <span class="nm">1</span> ? <span class="nm">1</span> : <span class="nm">1</span> - Math.<span class="fn">pow</span>(<span class="nm">2</span>, -<span class="nm">10</span> * t),
+  smoothWheel: !isSafari, <span class="cm">// disable smooth wheel on all Safari — native handles it better</span>
+  smoothTouch: <span class="nm">false</span>,     <span class="cm">// NEVER override iOS touch scroll</span>
+  touchMultiplier: <span class="nm">0</span>,
+  syncTouch: <span class="nm">false</span>,
+  overscroll: <span class="nm">false</span>,
+})
+</pre>
+
+<pre class="css">
+<span class="cm">/* Prevent rubber band fighting Lenis at page edges */</span>
+html {
+  overscroll-behavior-y: none; <span class="cm">/* Only on the root — prevents edge bounce conflict */</span>
+}
+</pre>
+
+  <div class="callout warn">
+    <div class="callout-label">Trade-off</div>
+    <p>Setting <code>lerp: 0</code> on iOS means Safari users get native scroll instead of the gummy Lenis feel. This is intentional — iOS Safari's native momentum scroll is already excellent, and fighting it creates a worse experience than native. Desktop Safari still gets Lenis with <code>smoothWheel: false</code> which gives a good feel without the rubber-band conflict.</p>
+  </div>
+</section>
+
+
+<!-- ════ FIX 15 ════ -->
+<section class="sec" id="fix-gap">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Fix 15</div>
+      <div class="sec-title">flex gap on Safari 13 <span class="tag tg">P3 Medium</span></div>
+    </div>
+    <div class="priority-card">
+      <div class="pc-label">Priority</div>
+      <div class="pc-val p3">P3</div>
+      <div class="pc-sub">Before launch</div>
+    </div>
+  </div>
+
+  <div class="fix-block">
+    <div class="fb-row">
+      <div class="fb-label">What breaks</div>
+      <div class="fb-content"><code>gap</code> in flexbox (not grid) wasn't supported until Safari 14.1. Any <code>display: flex</code> container using <code>gap</code> for spacing between items will have no spacing on Safari 13. This primarily affects: service mini row, footer links, CTA buttons row, cover-meta strip.</div>
+    </div>
+    <div class="fb-row">
+      <div class="fb-label">How common</div>
+      <div class="fb-content">Safari 13 is very rare in 2025 — mostly users on macOS Mojave who can't update. Analytics will tell you if it's worth fixing. Use <code>@supports</code> to add margin fallbacks only when gap isn't supported.</div>
+    </div>
+  </div>
+
+<pre class="css">
+<span class="cm">/* @supports fallback for flex gap */</span>
+@supports not (gap: 1px) {
+  <span class="cm">/* Footer links */</span>
+  .foot-links a + a { margin-left: 24px; }
+
+  <span class="cm">/* CTA buttons */</span>
+  .cta-acts > * + * { margin-left: 14px; }
+
+  <span class="cm">/* Hero actions */</span>
+  .hero-acts > * + * { margin-left: 12px; }
+
+  <span class="cm">/* Service pills */</span>
+  .svc-pills > * + * { margin-left: 6px; }
+}
+</pre>
+</section>
+
+
+<!-- ════ FULL CHECKLIST ════ -->
+<section class="sec" id="checklist">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Checklist</div>
+      <div class="sec-title">Testing Checklist</div>
+    </div>
+  </div>
+  <p>Work through this list on Safari desktop first, then on a real iOS device. Click any item to mark it done.</p>
+
+  <div class="checklist" id="checks">
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Pill nav glassmorphism visible</strong> — blur renders, not transparent or solid</div>
+      <div class="chk-priority" style="color:var(--red)">P1</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Contact modal blur renders</strong> — open modal, check glassmorphism background</div>
+      <div class="chk-priority" style="color:var(--red)">P1</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Lisa panel glassmorphism</strong> — open Lisa chat, check blur background</div>
+      <div class="chk-priority" style="color:var(--red)">P1</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Hero height correct on iOS</strong> — stats bar visible without scrolling on iPhone Safari</div>
+      <div class="chk-priority" style="color:var(--red)">P1</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Overlays cover full screen</strong> — grain, preloader, shuffle overlay, modal backdrop all edge-to-edge</div>
+      <div class="chk-priority" style="color:var(--red)">P1</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Gradient text shows gradient</strong> — "impossible to ignore" has lime-to-white-to-lime sweep, not solid block</div>
+      <div class="chk-priority" style="color:var(--red)">P1</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Word builder sticky pins</strong> — scroll into that section, text builds word by word without scrolling past</div>
+      <div class="chk-priority" style="color:var(--amber)">P2</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Headline font weight changes on scroll</strong> — H1 visibly gets lighter as you scroll past hero</div>
+      <div class="chk-priority" style="color:var(--amber)">P2</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Work section wipe reveals animate</strong> — project rows wipe open smoothly, no instant snap</div>
+      <div class="chk-priority" style="color:var(--amber)">P2</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>No page flicker on cursor movement</strong> — move mouse quickly over Three.js area, no full-page flash</div>
+      <div class="chk-priority" style="color:var(--amber)">P2</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Pill nav stable during iOS scroll</strong> — fast scroll and momentum scroll on iPhone, nav doesn't jump</div>
+      <div class="chk-priority" style="color:var(--amber)">P2</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>No iOS tab crash</strong> — scroll through full page on iPhone, tab doesn't reload</div>
+      <div class="chk-priority" style="color:var(--green)">P3</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Three.js canvas doesn't go black</strong> — background the page and return, constellation still renders</div>
+      <div class="chk-priority" style="color:var(--green)">P3</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Process line draws</strong> — scroll into process section, connector animates from left to right</div>
+      <div class="chk-priority" style="color:var(--green)">P3</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Section titles animate character by character</strong> — scroll through site, H2s build from rotated chars</div>
+      <div class="chk-priority" style="color:var(--green)">P3</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>No double scroll on iOS</strong> — scroll to top and bottom of page, no twitchy rubber-band conflict</div>
+      <div class="chk-priority" style="color:var(--green)">P3</div>
+    </div>
+    <div class="chk" onclick="this.classList.toggle('done')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><strong>Footer links have correct spacing</strong> — links are spaced correctly, not bunched together</div>
+      <div class="chk-priority" style="color:var(--green)">P3</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════ BROWSER SUPPORT ════ -->
+<section class="sec" id="support">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Reference</div>
+      <div class="sec-title">Browser Support After Fixes</div>
+    </div>
+  </div>
+
+  <div class="browser-grid">
+    <div class="browser-cell">
+      <div class="browser-name">Chrome / Brave</div>
+      <div class="browser-status ok-status">✓ Full</div>
+      <div class="browser-note">All effects working including mix-blend-mode, backdrop-filter, all animations</div>
+    </div>
+    <div class="browser-cell">
+      <div class="browser-name">Firefox</div>
+      <div class="browser-status ok-status">✓ Full</div>
+      <div class="browser-note">All effects working. Check backdrop-filter — supported since v103</div>
+    </div>
+    <div class="browser-cell">
+      <div class="browser-name">Safari Desktop</div>
+      <div class="browser-status med-status">⚡ Good</div>
+      <div class="browser-note">All effects after P1+P2 fixes. Cursor blend mode degraded gracefully</div>
+    </div>
+    <div class="browser-cell">
+      <div class="browser-name">iOS Safari</div>
+      <div class="browser-status med-status">⚡ Good</div>
+      <div class="browser-note">After all fixes: canvas → SVG grain, Lenis → native, no crashes</div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>Feature</th><th>Chrome</th><th>Firefox</th><th>Safari 17</th><th>Safari 15</th><th>iOS Safari</th></tr>
+    <tr><td class="k">backdrop-filter</td><td class="v">✓</td><td class="v">✓ (v103+)</td><td class="v">✓ + prefix</td><td class="v">✓ + prefix</td><td class="v">✓ + prefix</td></tr>
+    <tr><td class="k">Variable font wght</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓ after fix</td><td class="v">✓ after fix</td><td class="v">✓ after fix</td></tr>
+    <tr><td class="k">100svh</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓</td><td class="n">⚠ 15.4+</td><td class="n">⚠ 15.4+</td></tr>
+    <tr><td class="k">clip-path animate</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓ + prefix</td><td class="v">✓ + prefix</td><td class="v">✓ + prefix</td></tr>
+    <tr><td class="k">mix-blend-mode fixed</td><td class="v">✓</td><td class="v">✓</td><td class="n">⚠ degraded</td><td class="n">⚠ degraded</td><td class="n">⚠ degraded</td></tr>
+    <tr><td class="k">position:sticky grid</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓ after fix</td><td class="v">✓ after fix</td><td class="v">✓ after fix</td></tr>
+    <tr><td class="k">Canvas grain</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓</td><td class="n">⚠ SVG fallback</td></tr>
+    <tr><td class="k">Lenis gummy scroll</td><td class="v">✓</td><td class="v">✓</td><td class="n">⚠ native scroll</td><td class="n">⚠ native</td><td class="n">⚠ native</td></tr>
+    <tr><td class="k">flex gap</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓</td><td class="n">⚠ 14.1+ only</td></tr>
+    <tr><td class="k">WebGL / Three.js</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓</td><td class="v">✓ + recovery</td></tr>
+  </table>
+  </div>
+</section>
+
+
+<!-- ════ GLOBAL FIX FILE ════ -->
+<section class="sec" id="globalfix">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">Reference</div>
+      <div class="sec-title">Global Fix File</div>
+    </div>
+  </div>
+
+  <p>Create this file and import it once in <code>globals.css</code> — it handles all CSS-level Safari fixes in one place. The JS fixes live in their respective components using the <code>browser.ts</code> utility from the Detection section.</p>
+
+  <div class="detect-box">
+    <div class="detect-box-title">src/styles/safari-fixes.css — create and import into globals.css</div>
+<pre class="css">
+<span class="cm">/* ═══════════════════════════════════════════════════════
+   JSX W&D — Safari & Cross-browser CSS Fixes
+   Import this file into globals.css
+   All JS fixes live in their respective components
+   using browser detection from @/lib/browser.ts
+═══════════════════════════════════════════════════════ */</span>
+
+<span class="cm">/* 1. backdrop-filter — add -webkit- prefix everywhere */</span>
+.pill-track,
+#pill-track {
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+          backdrop-filter: blur(28px) saturate(180%);
+}
+.modal {
+  -webkit-backdrop-filter: blur(32px);
+          backdrop-filter: blur(32px);
+}
+#lisa-panel {
+  -webkit-backdrop-filter: blur(24px);
+          backdrop-filter: blur(24px);
+}
+.filter-bar {
+  -webkit-backdrop-filter: blur(16px);
+          backdrop-filter: blur(16px);
+}
+#modal-bg {
+  -webkit-backdrop-filter: blur(20px);
+          backdrop-filter: blur(20px);
+}
+
+<span class="cm">/* 2. 100vh — use svh with vh fallback */</span>
+#hero {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+#word-build-sticky {
+  height: 100vh;
+  height: 100svh;
+}
+
+<span class="cm">/* 3. inset shorthand — replace with explicit properties */</span>
+#grain, #trail-canvas, #page-bg, #spot,
+#preloader, #shuffle-overlay, #modal-bg, #egg {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+<span class="cm">/* 4. Gradient text — add -webkit- prefixes */</span>
+.grad-text {
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+<span class="cm">/* 5. Word builder — display:block for sticky to work */</span>
+#word-build {
+  display: block;
+}
+
+<span class="cm">/* 6. clip-path — add -webkit- prefix + GPU layer */</span>
+.wipe {
+  -webkit-clip-path: inset(0 0 100% 0);
+          clip-path: inset(0 0 100% 0);
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  transition:
+    -webkit-clip-path 1.05s cubic-bezier(.16,1,.3,1),
+            clip-path 1.05s cubic-bezier(.16,1,.3,1);
+}
+.wipe.in {
+  -webkit-clip-path: inset(0 0 0% 0);
+          clip-path: inset(0 0 0% 0);
+}
+.swipe {
+  -webkit-clip-path: inset(0 100% 0 0);
+          clip-path: inset(0 100% 0 0);
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  transition:
+    -webkit-clip-path 1.05s cubic-bezier(.16,1,.3,1),
+            clip-path 1.05s cubic-bezier(.16,1,.3,1);
+}
+.swipe.in {
+  -webkit-clip-path: inset(0 0% 0 0);
+          clip-path: inset(0 0% 0 0);
+}
+
+<span class="cm">/* 7. mix-blend-mode — fallback for Safari */</span>
+@supports not (mix-blend-mode: difference) {
+  #cdot {
+    mix-blend-mode: normal;
+    opacity: 0.85;
+  }
+}
+
+<span class="cm">/* 8. GPU promotion for position:fixed elements on iOS */</span>
+#pill-nav, #lisa-btn, #lisa-panel,
+#grain, #trail-canvas, #page-bg,
+#spot, #scrollprog {
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+
+<span class="cm">/* 9. SVG path draw */</span>
+.proc-conn-path {
+  will-change: stroke-dashoffset;
+}
+
+<span class="cm">/* 10. Char split — fix 3D transform on inline elements */</span>
+.char {
+  transform-style: flat;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transform: translateY(60px) rotateX(-45deg);
+          transform: translateY(60px) rotateX(-45deg);
+  transition:
+    -webkit-transform 0.7s cubic-bezier(.34,1.56,.64,1),
+            transform 0.7s cubic-bezier(.34,1.56,.64,1),
+    opacity 0.5s cubic-bezier(.16,1,.3,1);
+}
+.char.in {
+  -webkit-transform: translateY(0) rotateX(0);
+          transform: translateY(0) rotateX(0);
+}
+
+<span class="cm">/* 11. Prevent Lenis + iOS rubber band conflict */</span>
+html {
+  overscroll-behavior-y: none;
+}
+
+<span class="cm">/* 12. flex gap fallback for Safari 13 */</span>
+@supports not (gap: 1px) {
+  .foot-links a + a { margin-left: 24px; }
+  .cta-acts > * + * { margin-left: 14px; }
+  .hero-acts > * + * { margin-left: 12px; }
+  .svc-pills > * + * { margin-left: 6px; }
+}
+
+<span class="cm">/* 13. grain filter fallback for iOS (visibility controlled by JS) */</span>
+#grain-filter {
+  display: none;
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: 9000;
+  pointer-events: none;
+  opacity: .04;
+  mix-blend-mode: screen;
+  filter: url(#noise);
+}
+</pre>
+  </div>
+
+  <div class="callout ok">
+    <div class="callout-label">Import in globals.css</div>
+    <p>Add this line at the bottom of <code>src/app/globals.css</code>:</p>
+  </div>
+<pre class="css">
+@import './safari-fixes.css'; <span class="cm">/* or use relative path as needed */</span>
+</pre>
+</section>
+
+</main>
+</div>
+
+<script>
+const links = document.querySelectorAll('.sb-link[href^="#"]')
+const secs = []
+links.forEach(l => {
+  const id = l.getAttribute('href').slice(1)
+  const el = document.getElementById(id)
+  if(el) secs.push({el, link: l})
+})
+function update(){
+  let cur = null
+  secs.forEach(({el}) => { if(el.getBoundingClientRect().top <= 100) cur = el.id })
+  links.forEach(l => l.classList.remove('active'))
+  if(cur){
+    const a = document.querySelector(`.sb-link[href="#${cur}"]`)
+    if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest'}) }
+  }
+}
+window.addEventListener('scroll', update, {passive:true})
+update()
+</script>
+</body>
+</html>

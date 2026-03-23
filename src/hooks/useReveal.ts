@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export function useReveal() {
+  const observedElements = useRef<Set<Element>>(new Set());
+
   useEffect(() => {
-    const revEls = document.querySelectorAll(".rv, .wipe, .swipe, .si");
-    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -18,10 +18,41 @@ export function useReveal() {
       { threshold: 0.1 }
     );
 
-    revEls.forEach((el) => observer.observe(el));
+    const scanAndObserve = () => {
+      const elements = document.querySelectorAll(".rv, .wipe, .swipe, .si");
+      elements.forEach((el) => {
+        if (!observedElements.current.has(el)) {
+          observer.observe(el);
+          observedElements.current.add(el);
+        }
+      });
+    };
+
+    let scanScheduled = false;
+    const throttledScan = () => {
+      if (scanScheduled) return;
+      scanScheduled = true;
+      requestAnimationFrame(() => {
+        scanAndObserve();
+        scanScheduled = false;
+      });
+    };
+
+    // Initial scan
+    scanAndObserve();
+
+    // Watch for new elements being added to the DOM with throttled scans
+    const mutationObserver = new MutationObserver(throttledScan);
+
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
 
     return () => {
-      revEls.forEach((el) => observer.unobserve(el));
+      observer.disconnect();
+      mutationObserver.disconnect();
+      observedElements.current.clear();
     };
   }, []);
 }
