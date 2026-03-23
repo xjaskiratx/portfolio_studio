@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import { clsx, type ClassValue } from "clsx";
@@ -151,15 +151,26 @@ const PREVIEW_COUNT = 3;
 function ProjectCard({ project, uniform }: { project: typeof projects[0]; uniform?: boolean }) {
   const [isHovered, setIsHovered] = useState(false);
 
+  const lastHover = useRef(0);
+  const handleHover = () => {
+    const now = Date.now();
+    if (now - lastHover.current < 600) return;
+    lastHover.current = now;
+    setIsHovered(true);
+  };
+
   return (
     <motion.div
       layout
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      onHoverStart={() => setIsHovered(true)}
+      onHoverStart={handleHover}
+      onMouseEnter={handleHover}
+      onMouseOver={handleHover}
       onHoverEnd={() => setIsHovered(false)}
       data-cursor="cv"
+      data-sc="project"
       className={cn(
         "group relative overflow-hidden cursor-none rv si sp",
         uniform

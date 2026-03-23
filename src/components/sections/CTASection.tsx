@@ -1,11 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
 
 export function CTASection() {
   const [isHoveringCreate, setIsHoveringCreate] = useState(false);
+  const lastHover = useRef(0);
+
+  const handleHover = () => {
+    const now = Date.now();
+    if (now - lastHover.current < 600) return;
+    lastHover.current = now;
+    setIsHoveringCreate(true);
+  };
 
   const openModal = () => {
     window.dispatchEvent(new CustomEvent("open-contact-modal"));
@@ -22,8 +30,10 @@ export function CTASection() {
           <ScrambleOutline text="Let's" className="[-webkit-text-stroke:2.5px_rgba(237,233,223,0.92)] text-transparent" /><br />
           <div
             className="inline-block relative group/cr"
-            onMouseEnter={() => setIsHoveringCreate(true)}
+            onMouseEnter={handleHover}
+            onMouseOver={handleHover}
             onMouseLeave={() => setIsHoveringCreate(false)}
+            data-sc="cta"
           >
             <span className="text-white group-hover/cr:text-lime transition-colors group-hover/cr:animate-glitch-ga">
               <ScrambleText text="CREATE" trigger={isHoveringCreate} />

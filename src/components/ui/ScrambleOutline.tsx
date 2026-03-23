@@ -41,19 +41,27 @@ export function ScrambleOutline({ text, className = "", duration = 0.4 }: Scramb
     return () => clearInterval(interval);
   }, [text, duration]);
 
+  const lastTriggered = useRef(0);
+  const triggerScramble = useCallback(() => {
+    const now = Date.now();
+    if (now - lastTriggered.current < 600) return;
+    lastTriggered.current = now;
+    scramble();
+  }, [scramble]);
+
   useEffect(() => {
     if (isInView) {
-      scramble();
+      triggerScramble();
     }
-  }, [isInView, scramble]);
+  }, [isInView, triggerScramble]);
 
   return (
     <span
       ref={ref}
+      data-sc="outline"
       className={`relative inline-block whitespace-nowrap ${className}`}
-      onMouseEnter={() => {
-        scramble();
-      }}
+      onMouseEnter={triggerScramble}
+      onMouseOver={triggerScramble}
     >
       <span className="invisible" aria-hidden="true">{text}</span>
       <span className="absolute inset-0 tracking-normal text-left">

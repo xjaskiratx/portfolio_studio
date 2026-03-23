@@ -50,12 +50,15 @@ export function WordBuilder() {
   return (
     <section
       ref={containerRef}
-      className="relative"
+      className="relative block" // block for Safari sticky support
       style={{ height: "500vh" }}
-      id="word-builder"
+      id="word-build"
       aria-label="Studio positioning statement"
     >
-      <div className="sticky top-0 h-screen flex items-center justify-center px-fib-55 max-[1279px]:px-fib-34 max-[1023px]:px-fib-34 max-[767px]:px-fib-21 max-[479px]:px-fib-21">
+      <div 
+        id="word-build-sticky"
+        className="sticky top-0 h-screen md:h-[100svh] flex items-center justify-center px-fib-55 max-[1279px]:px-fib-34 max-[1023px]:px-fib-34 max-[767px]:px-fib-21 max-[479px]:px-fib-21"
+      >
         {/* Section label */}
         <div className="absolute top-10 left-fib-55 max-[767px]:left-fib-21 font-mono text-[9px] tracking-[0.2em] uppercase text-lime flex items-center gap-2.5">
           <span className="block w-5 h-px bg-lime" />

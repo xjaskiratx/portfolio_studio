@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import Magnetic from "@/components/ui/Magnetic";
 
@@ -16,6 +16,14 @@ interface GDItem {
 
 export function GDCard({ item, index }: { item: GDItem, index: number }) {
   const [isHovered, setIsHovered] = useState(false);
+  const lastHover = useRef(0);
+
+  const handleHover = () => {
+    const now = Date.now();
+    if (now - lastHover.current < 600) return;
+    lastHover.current = now;
+    setIsHovered(true);
+  };
 
   return (
     <motion.div
@@ -23,9 +31,12 @@ export function GDCard({ item, index }: { item: GDItem, index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", damping: 30, stiffness: 200, delay: index * 0.1 }}
       viewport={{ once: true, margin: "-10%" }}
-      onHoverStart={() => setIsHovered(true)}
+      onHoverStart={handleHover}
+      onMouseEnter={handleHover}
+      onMouseOver={handleHover}
       onHoverEnd={() => setIsHovered(false)}
       data-cursor="cv"
+      data-sc="gd-card"
       className="group bg-[#060608] border border-white/[0.04] relative overflow-hidden cursor-none transition-all duration-500 hover:border-lime/30 hover:shadow-[0_40px_100px_rgba(0,0,0,0.6)] rv si"
     >
       <div className="relative h-[280px] bg-bg overflow-hidden border-b border-white/[0.03]">

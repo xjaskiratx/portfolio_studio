@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Points, PointMaterial } from "@react-three/drei";
@@ -157,12 +157,53 @@ function Constellation() {
   );
 }
 
+import { isIOSSafari } from "@/lib/browser";
+
 export function HeroBackground() {
+  const [contextKey, setContextKey] = useState(0);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const handleContextLost = (e: Event) => {
+      e.preventDefault();
+      console.warn('WebGL context lost — Safari refinement');
+    };
+
+    const handleContextRestored = () => {
+      console.log('WebGL context restored — re-initializing');
+      setContextKey((p: number) => p + 1);
+    };
+
+    canvas.addEventListener('webglcontextlost', handleContextLost);
+    canvas.addEventListener('webglcontextrestored', handleContextRestored);
+
+    return () => {
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
+      canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+    };
+  }, [contextKey]);
+
   return (
     <div className="absolute inset-0 z-0">
       <Canvas 
+        key={contextKey}
         camera={{ position: [0, 0, 15], fov: 60 }} 
-        gl={{ alpha: true }}
+        gl={{ 
+          alpha: true, 
+          antialias: !isIOSSafari,
+          powerPreference: "high-performance"
+        }}
+        dpr={isIOSSafari ? 1 : [1, 2]}
+        onCreated={({ gl }) => {
+          const canvas = gl.domElement;
+          canvasRef.current = canvas;
+        }}
+        onPointerMissed={() => {
+          // Cleanup listeners if the component unmounts but R3F state is tricky
+        }}
       >
         <ambientLight intensity={0.8} />
         <pointLight position={[10, 10, 10]} intensity={1.5} color="#c8ff00" />

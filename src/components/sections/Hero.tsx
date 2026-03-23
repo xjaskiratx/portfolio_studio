@@ -20,14 +20,23 @@ const stats = [
   { label: "Creative Vision", value: "∞" },
 ];
 
+import { isSafari } from "@/lib/browser";
+
 export function Hero() {
   const { scrollYProgress } = useScroll();
   const [mounted, setMounted] = useState(false);
+  const [fontsReady, setFontsReady] = useState(false);
   const [showScene, setShowScene] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
+
+    if (isSafari && typeof document !== 'undefined') {
+      document.fonts.ready.then(() => setFontsReady(true));
+    } else {
+      setFontsReady(true);
+    }
     
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
@@ -121,7 +130,7 @@ export function Hero() {
         <motion.h1 
           className="hero-hl uppercase mb-fib-55 select-none"
           style={{ 
-            fontVariationSettings,
+            fontVariationSettings: fontsReady ? fontVariationSettings : "'wght' 900",
             letterSpacing
           }}
         >

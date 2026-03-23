@@ -44,6 +44,16 @@ export function Process() {
           <ProcessCard key={step.num} step={step} index={i} isLast={i === steps.length - 1} />
         ))}
       </div>
+
+      {/* SVG Connector for Safari Refinement */}
+      <svg id="proc-connector"
+        width="100%"
+        height="4"
+        viewBox="0 0 1200 4"
+        preserveAspectRatio="none"
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'visible' }}>
+        <path className="proc-conn-path" d="M0,2 L1200,2" stroke="var(--lime)" strokeWidth="2" fill="none" />
+      </svg>
     </section>
   );
 }

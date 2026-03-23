@@ -388,3 +388,5 @@ p:last-child {
 #pill-nav.dimmed {
   opacity: .3 !important;
 }
+
+@import '../styles/safari-fixes.css';
