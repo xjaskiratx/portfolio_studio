@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useInView } from "framer-motion";
 
-const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!%^&*";
+const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!%^&*ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!%^&*";
 
 interface ScrambleOutlineProps {
   text: string;
@@ -11,7 +11,7 @@ interface ScrambleOutlineProps {
   duration?: number;
 }
 
-export function ScrambleOutline({ text, className = "", duration = 0.28 }: ScrambleOutlineProps) {
+export function ScrambleOutline({ text, className = "", duration = 0.4 }: ScrambleOutlineProps) {
   const [display, setDisplay] = useState(text);
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
@@ -35,7 +35,7 @@ export function ScrambleOutline({ text, className = "", duration = 0.28 }: Scram
       }
 
       // Ultra-fast settle
-      iteration += (text.length / (duration * 62)) * 4.5;
+      iteration += (text.length / (duration * 360)) * 4.5;
     }, 16);
 
     return () => clearInterval(interval);

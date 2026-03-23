@@ -86,13 +86,6 @@ export function ServiceCard({ service }: { service: Service }) {
         <p className="text-[14.5px] font-light text-dim leading-relaxed mb-8 group-hover:text-white transition-colors">
           {service.desc}
         </p>
-        <div className="flex flex-wrap gap-2">
-          {service.tags.map(tag => (
-            <span key={tag} className="font-mono text-[9px] tracking-[0.14em] uppercase text-lime/55 border border-lime/20 px-3 py-1.5 transition-all group-hover:bg-lime/10 group-hover:text-lime group-hover:border-lime/40">
-              {tag}
-            </span>
-          ))}
-        </div>
       </div>
     </motion.div>
   );

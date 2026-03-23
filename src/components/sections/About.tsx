@@ -1,6 +1,5 @@
 import { ScrambleInView } from "@/components/ui/ScrambleInView";
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
-import { ParallaxImage } from "./ParallaxImage";
 
 const philosophy = [
   { label: "Efficiency", value: "Zero handoff loss. I design with the code in mind and code with the design in heart." },
@@ -16,7 +15,7 @@ export function About() {
         Mind
       </div>
 
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-20 items-start">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-20 items-start">
         <div className="relative rv">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-px bg-lime/40" />
@@ -28,7 +27,7 @@ export function About() {
             Agency <span className="text-lime"><ScrambleInView text="Results." /></span>
           </h2>
           
-          <div className="space-y-10 max-w-[600px] mb-20">
+          <div className="space-y-10 max-w-[600px]">
             <p className="text-[18px] font-light text-dim leading-relaxed si">
               I’m <span className="text-white font-medium">Jaskirat Singh</span>, a <span className="grad-text">full-spectrum digital creator</span>. I build <span className="grad-text">high-performance products</span> that transcend generic templates. I don&apos;t just &quot;design&quot; — I <span className="grad-text">engineer experiences</span> that make your brand impossible to ignore.
             </p>
@@ -36,20 +35,18 @@ export function About() {
              I don&apos;t just build websites; I forge <span className="grad-text">digital identities</span> that demand attention. My approach combines the raw power of <span className="grad-text">technical precision</span> with the refined touch of <span className="grad-text">high-end design</span>. Whether it&apos;s a high-performance web app or a boutique brand identity, I deliver work that isn&apos;t just &quot;good&quot;&mdash;it&apos;s &quot;unforgettable.&quot;
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-16 border-t border-white/6 rv si" style={{ transitionDelay: '0.2s' }}>
-            {philosophy.map((item, i) => (
-              <div key={i} className="group rounded-[24px] border border-white/7 bg-white/[0.02] px-7 py-8 md:min-h-[220px] transition-all duration-500 hover:border-lime/20 hover:bg-white/[0.035] hover:shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
-                <div className="font-display font-black text-[22px] md:text-[24px] tracking-[0.14em] uppercase text-lime mb-4 group-hover:scale-[1.03] transition-transform origin-left">{item.label}</div>
-                <p className="text-[17px] font-light text-white/72 leading-relaxed group-hover:text-white/84 transition-colors">
-                  {item.value}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
 
-        <ParallaxImage />
+        <div className="flex flex-col gap-4 rv si" style={{ transitionDelay: '0.2s' }}>
+          {philosophy.map((item, i) => (
+            <div key={i} className="group rounded-[24px] border border-white/7 bg-white/[0.02] px-7 py-8 transition-all duration-500 hover:border-lime/20 hover:bg-white/[0.035] hover:shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
+              <div className="font-display font-black text-[22px] md:text-[24px] tracking-[0.14em] uppercase text-lime mb-4 group-hover:scale-[1.03] transition-transform origin-left">{item.label}</div>
+              <p className="text-[16px] font-light text-white/72 leading-relaxed group-hover:text-white/84 transition-colors">
+                {item.value}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

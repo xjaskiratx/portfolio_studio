@@ -1,17 +1,4 @@
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
-import {
-  IconForgeChart,
-  IconForgeLayers,
-  IconForgeRocket,
-  IconForgeTarget,
-  IconForgeUsers,
-  IconFramerLogo,
-  IconNextLogo,
-  IconReactLogo,
-  IconTailwindLogo,
-  IconThreeLogo,
-  IconVercelLogo,
-} from "@/components/ui/techIcons";
 import { ProcessCard, type ForgeStep } from "./ProcessCard";
 
 const steps: ForgeStep[] = [
@@ -19,43 +6,20 @@ const steps: ForgeStep[] = [
     num: "01",
     title: "Strategy / Concept",
     desc: "Clarify goals, audience, and constraints before design or code.",
-    line: "Audit · Personas · Blueprint",
   },
   {
     num: "02",
     title: "The Forge / Build",
     desc: "Design and build together so UI, motion, and performance stay aligned.",
-    line: "Systems · Motion · Core web vitals",
   },
   {
     num: "03",
     title: "Ship / Launch",
     desc: "Harden, deploy, measure—then iterate with real usage data.",
-    line: "QA · Edge · Analytics",
   },
 ];
 
 export function Process() {
-  const iconRows = [
-    <>
-      <IconForgeTarget />
-      <IconForgeUsers />
-      <IconForgeLayers />
-    </>,
-    <>
-      <IconReactLogo />
-      <IconNextLogo />
-      <IconThreeLogo />
-      <IconTailwindLogo />
-      <IconFramerLogo />
-    </>,
-    <>
-      <IconVercelLogo />
-      <IconForgeRocket />
-      <IconForgeChart />
-    </>,
-  ];
-
   return (
     <section id="process" className="sec relative bg-bg2 overflow-hidden scroll-mt-20 group/sec">
       <div className="absolute right-[-40px] top-[20%] font-display font-black text-[350px] text-transparent [-webkit-text-stroke:1px_rgba(237,233,223,0.015)] leading-none tracking-tighter pointer-events-none select-none uppercase z-10">
@@ -77,7 +41,7 @@ export function Process() {
 
       <div className="relative z-20 grid grid-cols-1 lg:grid-cols-3 gap-[4px] bg-white/[0.04] border border-white/[0.04]">
         {steps.map((step, i) => (
-          <ProcessCard key={step.num} step={step} index={i} isLast={i === steps.length - 1} icons={iconRows[i]} />
+          <ProcessCard key={step.num} step={step} index={i} isLast={i === steps.length - 1} />
         ))}
       </div>
     </section>

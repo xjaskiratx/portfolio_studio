@@ -7,17 +7,15 @@ export interface ForgeStep {
   num: string;
   title: string;
   desc: string;
-  line: string;
 }
 
 interface ProcessCardProps {
   step: ForgeStep;
   index: number;
   isLast: boolean;
-  icons: ReactNode;
 }
 
-export function ProcessCard({ step, index, isLast, icons }: ProcessCardProps) {
+export function ProcessCard({ step, index, isLast }: ProcessCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -46,13 +44,6 @@ export function ProcessCard({ step, index, isLast, icons }: ProcessCardProps) {
         <p className="text-[14.5px] font-light text-dim leading-relaxed mb-4 group-hover:text-white/80 transition-colors">
           {step.desc}
         </p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/55 mb-6 group-hover:text-white/70 transition-colors">
-          {step.line}
-        </p>
-
-        <div className="flex flex-wrap items-center gap-4 md:gap-5 pt-1 border-t border-white/[0.06]" aria-label="Tools">
-          {icons}
-        </div>
       </div>
       <div className="absolute bottom-0 left-0 w-full h-[3px] bg-lime scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
     </motion.div>
