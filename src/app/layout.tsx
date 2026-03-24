@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThreePatchInitializer } from "@/components/ThreePatchInitializer";
+import { FramerProvider } from "@/components/FramerProvider";
+import { Preloader } from "@/components/ui/Preloader";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://jsx-wd.com"),
@@ -27,9 +30,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { Preloader } from "@/components/ui/Preloader";
-import { ScrollProgress } from "@/components/ui/ScrollProgress";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,10 +41,12 @@ export default function RootLayout({
       className="antialiased"
     >
       <body className="bg-bg text-txt font-body selection:bg-lime/30 selection:text-lime">
-        <ThreePatchInitializer />
-        <Preloader />
-        <ScrollProgress />
-        {children}
+        <FramerProvider>
+          <ThreePatchInitializer />
+          <Preloader />
+          <ScrollProgress />
+          {children}
+        </FramerProvider>
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 interface Option {
   id: string;
@@ -73,7 +73,7 @@ export function LisaAssistant() {
       {/* Panel */}
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 16, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.95 }}
@@ -120,7 +120,7 @@ export function LisaAssistant() {
                   {isTyping ? (
                     <div className="flex items-center gap-1 px-1">
                       {[0, 1, 2].map(i => (
-                        <motion.div
+                        <m.div
                           key={i}
                           className="w-1.5 h-1.5 rounded-full bg-lime/50"
                           animate={{ opacity: [0.3, 1, 0.3] }}
@@ -155,12 +155,12 @@ export function LisaAssistant() {
                 </div>
               )}
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       {/* Toggle Button */}
-      <motion.button
+      <m.button
         onClick={() => { setOpen(prev => !prev); if (open) reset(); }}
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.95 }}
@@ -170,12 +170,12 @@ export function LisaAssistant() {
       >
         <AnimatePresence mode="wait">
           {open ? (
-            <motion.span key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} className="text-xl font-bold">×</motion.span>
+            <m.span key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} className="text-xl font-bold">×</m.span>
           ) : (
-            <motion.span key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} className="text-xl">✦</motion.span>
+            <m.span key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} className="text-xl">✦</m.span>
           )}
         </AnimatePresence>
-      </motion.button>
+      </m.button>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 export interface ForgeStep {
   num: string;
@@ -17,7 +17,7 @@ interface ProcessCardProps {
 
 export function ProcessCard({ step, index, isLast }: ProcessCardProps) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
@@ -46,6 +46,6 @@ export function ProcessCard({ step, index, isLast }: ProcessCardProps) {
         </p>
       </div>
       <div className="absolute bottom-0 left-0 w-full h-[3px] bg-lime scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
-    </motion.div>
+    </m.div>
   );
 }

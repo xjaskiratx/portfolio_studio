@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useSpring, useMotionValue, AnimatePresence } from "framer-motion";
+import { m, useSpring, useMotionValue, AnimatePresence } from "framer-motion";
 import { isSafari } from "@/lib/browser";
 
 export function Cursor() {
@@ -162,7 +162,7 @@ export function Cursor() {
       <div ref={containerRef} id="trail-container" className="fixed inset-0 pointer-events-none z-[9990]" />
 
       {/* Center Dot */}
-      <motion.div
+      <m.div
         id="cdot"
         className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[200001] bg-lime"
         style={{
@@ -179,7 +179,7 @@ export function Cursor() {
         }}
       />
       {/* Outer Ring */}
-      <motion.div
+      <m.div
         id="cring"
         className="fixed top-0 left-0 border border-lime/35 pointer-events-none z-[200000]"
         style={{
@@ -201,7 +201,7 @@ export function Cursor() {
       {/* Context Label */}
       <AnimatePresence>
         {labels[cursorState] && (
-          <motion.div
+          <m.div
             key={cursorState}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -215,7 +215,7 @@ export function Cursor() {
             }}
           >
             {labels[cursorState]}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

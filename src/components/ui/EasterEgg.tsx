@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 const KONAMI_CODE = [
   "ArrowUp", "ArrowUp", 
@@ -37,7 +37,7 @@ export function EasterEgg() {
   return (
     <AnimatePresence>
       {show && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -46,7 +46,7 @@ export function EasterEgg() {
           {/* Scanline Effect */}
           <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(0,0,0,0)_50%,rgba(0,0,0,0.05)_50%),linear-gradient(90deg,rgba(0,0,0,0.02),rgba(0,0,0,0))] bg-[size:100%_4px,4px_100%] z-10" />
           
-          <motion.div
+          <m.div
             initial={{ scale: 0.8, y: 40 }}
             animate={{ scale: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -68,14 +68,14 @@ export function EasterEgg() {
             >
               Terminate Session →
             </button>
-          </motion.div>
+          </m.div>
           
           {/* HUD Decor */}
           <div className="absolute top-10 left-10 w-20 h-20 border-t-2 border-l-2 border-bg/20" />
           <div className="absolute top-10 right-10 w-20 h-20 border-t-2 border-r-2 border-bg/20" />
           <div className="absolute bottom-10 left-10 w-20 h-20 border-b-2 border-l-2 border-bg/20" />
           <div className="absolute bottom-10 right-10 w-20 h-20 border-b-2 border-r-2 border-bg/20" />
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

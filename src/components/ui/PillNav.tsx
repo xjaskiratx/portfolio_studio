@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useLenis } from "lenis/react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -100,7 +100,7 @@ export function PillNav({ onHireMe }: PillNavProps) {
       className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[800] transition-opacity duration-400 ease-out"
     >
       <div className="relative">
-        <motion.div
+        <m.div
           className="pill-track relative flex items-center bg-[rgba(13,13,21,0.86)] backdrop-blur-[28px] border border-white/10 shadow-[0_12px_44px_rgba(0,0,0,0.5)] transition-all duration-500 rounded-full p-1.5 gap-0"
         >
           <div className="flex flex-row items-center h-full">
@@ -139,7 +139,7 @@ export function PillNav({ onHireMe }: PillNavProps) {
               </button>
             </Magnetic>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </nav>
   );

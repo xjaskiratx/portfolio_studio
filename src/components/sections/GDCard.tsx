@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import React, { useState, useRef } from "react";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import Magnetic from "@/components/ui/Magnetic";
@@ -26,7 +26,7 @@ export function GDCard({ item, index }: { item: GDItem, index: number }) {
   };
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", damping: 30, stiffness: 200, delay: index * 0.1 }}
@@ -42,7 +42,7 @@ export function GDCard({ item, index }: { item: GDItem, index: number }) {
       <div className="relative h-[280px] bg-bg overflow-hidden border-b border-white/[0.03]">
          {/* Technical Scan Animation */}
          <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
-           <motion.div 
+           <m.div 
              initial={{ top: "-10%" }}
              animate={isHovered ? { top: "110%" } : { top: "-10%" }}
              transition={{ duration: 0.65, ease: "linear" }}
@@ -61,7 +61,7 @@ export function GDCard({ item, index }: { item: GDItem, index: number }) {
          </div>
 
          {/* Reveal Layer (Color/Glow) */}
-         <motion.div 
+         <m.div 
            className="absolute inset-0 z-10 flex items-center justify-center pt-6 overflow-hidden pointer-events-none"
            initial={{ clipPath: "inset(0 100% 0 0)" }}
            animate={{ clipPath: isHovered ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)" }}
@@ -70,7 +70,7 @@ export function GDCard({ item, index }: { item: GDItem, index: number }) {
          >
            <div className="absolute inset-0 opacity-20 bg-gradient-to-tr from-lime/40 to-transparent" />
            <React.Fragment key="art-reveal">{item.art}</React.Fragment>
-         </motion.div>
+         </m.div>
 
          {/* Scanline/HUD Accent */}
          <div className="absolute top-6 left-6 font-mono text-[8px] tracking-widest text-white/20 uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
@@ -95,6 +95,6 @@ export function GDCard({ item, index }: { item: GDItem, index: number }) {
           </div>
         </Magnetic>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

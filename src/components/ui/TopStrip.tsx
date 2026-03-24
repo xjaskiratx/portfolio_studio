@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 export function TopStrip() {
   const [isVisible, setIsVisible] = useState(true);
@@ -48,7 +48,7 @@ export function TopStrip() {
       <div ref={sentinelRef} className="absolute top-0 left-0 w-px h-[80px] pointer-events-none" />
       <AnimatePresence>
         {isVisible && (
-          <motion.div
+          <m.div
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -68,7 +68,7 @@ export function TopStrip() {
               OPEN FOR PROJECTS
               <span className="inline-block w-[6px] h-[6px] bg-lime rounded-full shadow-[0_0_14px_rgba(200,255,0,0.55)] animate-[pulse_2s_ease-in-out_infinite]" />
             </span>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
 import { clsx, type ClassValue } from "clsx";
@@ -123,7 +123,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
   };
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -147,7 +147,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
 
       {/* Technical Scan Animation */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
-        <motion.div
+        <m.div
           initial={{ top: "-10%" }}
           animate={isHovered ? { top: "110%" } : { top: "-10%" }}
           transition={{ duration: 0.65, ease: "linear" }}
@@ -174,7 +174,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
           </div>
         </Magnetic>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 

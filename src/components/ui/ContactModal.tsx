@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -99,7 +99,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           className="fixed inset-0 z-[2000] bg-[rgba(5,5,10,0.9)] backdrop-blur-[20px] flex items-center justify-center p-4 md:p-8"
           onClick={(e) => e.target === e.currentTarget && onClose()}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.96, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 30 }}
@@ -130,7 +130,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
             <AnimatePresence mode="wait">
               {step === 1 && (
-                <motion.div
+                <m.div
                   key="step1"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -164,11 +164,11 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   </div>
                   {submitError && <div className="text-red-500 font-mono text-[10px] uppercase mb-4 tracking-wider">{submitError}</div>}
                   <button className="modal-next w-full md:w-auto bg-lime text-bg font-display font-bold text-[15px] tracking-[0.12em] uppercase px-9 py-[15px] mt-2 transition-all hover:bg-[#d4ff22] cursor-none" onClick={handleNext}>Next →</button>
-                </motion.div>
+                </m.div>
               )}
 
               {step === 2 && (
-                <motion.div
+                <m.div
                   key="step2"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -193,11 +193,11 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   />
                   {submitError && <div className="text-red-500 font-mono text-[10px] uppercase mb-4 tracking-wider">{submitError}</div>}
                   <button className="modal-next w-full md:w-auto bg-lime text-bg font-display font-bold text-[15px] tracking-[0.12em] uppercase px-9 py-[15px] mt-2 transition-all hover:bg-[#d4ff22] cursor-none" onClick={handleNext}>Next →</button>
-                </motion.div>
+                </m.div>
               )}
 
               {step === 3 && (
-                <motion.div
+                <m.div
                   key="step3"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -223,11 +223,11 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   >
                     {isSubmitting ? "SENDING..." : "Send It →"}
                   </button>
-                </motion.div>
+                </m.div>
               )}
 
               {step === 'done' && (
-                <motion.div
+                <m.div
                   key="done"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -242,10 +242,10 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   >
                     Back to Studio
                   </button>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
-          </motion.div>
+          </m.div>
         </div>
       )}
     </AnimatePresence>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform, useMotionValue, useSpring as useFramerSpring } from "framer-motion";
+import { m, useScroll, useTransform, useMotionValue, useSpring as useFramerSpring } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 const HeroBackground = dynamic(() => import("./HeroBackground").then(mod => mod.HeroBackground), { ssr: false });
@@ -118,7 +118,7 @@ export function Hero() {
       </div>
 
       <div className="relative z-20 flex flex-col max-w-[1400px] mx-auto w-full">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -128,9 +128,9 @@ export function Hero() {
           <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">
             JSX W&D · DIGITAL FORGE · SOLO STUDIO · IN
           </span>
-        </motion.div>
+        </m.div>
 
-        <motion.h1
+        <m.h1
           className="hero-hl uppercase mb-fib-55 select-none"
           style={{
             fontVariationSettings: fontsReady ? fontVariationSettings : "'wght' 900",
@@ -153,9 +153,9 @@ export function Hero() {
           <div className="overflow-hidden py-2">
             <span className="block text-lime">{splitText("Define.", 0.6)}</span>
           </div>
-        </motion.h1>
+        </m.h1>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
@@ -191,7 +191,7 @@ export function Hero() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Decorative vertical line */}

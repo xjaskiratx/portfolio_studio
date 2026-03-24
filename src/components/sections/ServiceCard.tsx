@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
 import React, { useRef } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -53,7 +53,7 @@ export function ServiceCard({ service }: { service: Service }) {
   };
 
   return (
-    <motion.div
+    <m.div
       style={{ rotateX, rotateY, scale, perspective: 1000 }}
       onMouseEnter={onMouseEnter}
       onMouseMove={onMouseMove}
@@ -61,7 +61,7 @@ export function ServiceCard({ service }: { service: Service }) {
       className="group relative bg-bg p-12 md:p-[58px_48px] overflow-hidden cursor-none transition-all duration-500 hover:bg-[#090912] rv sp border border-white/[0.03]"
     >
       {/* Glow */}
-      <motion.div 
+      <m.div 
         className="absolute w-[320px] h-[320px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-0"
         style={{
           left: mouseX,
@@ -92,6 +92,6 @@ export function ServiceCard({ service }: { service: Service }) {
           ))}
         </ul>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
