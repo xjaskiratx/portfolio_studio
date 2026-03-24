@@ -29,10 +29,10 @@ export function About() {
             </h2>
 
             <div className="space-y-10 max-w-[640px] mb-2">
-              <p className="text-[28px] font-light text-dim leading-[1.6] si">
+              <p className="text-[18px] font-light text-dim leading-[1.4] si">
                 I’m <span className="text-white font-medium">Jaskirat Singh</span>, a <span className="grad-text">full-spectrum digital creator</span>. I build <span className="grad-text">high-performance products</span> that transcend generic templates. I don&apos;t just &quot;design&quot; — I <span className="grad-text">engineer experiences</span> that make your brand impossible to ignore.
               </p>
-              <p className="text-[28px] font-light text-dim leading-[1.6] si" style={{ transitionDelay: '0.1s' }}>
+              <p className="text-[18px] font-light text-dim leading-[1.4] si" style={{ transitionDelay: '0.1s' }}>
                 I don&apos;t just build websites; I forge <span className="grad-text">digital identities</span> that demand attention. My approach combines the raw power of <span className="grad-text">technical precision</span> with the refined touch of <span className="grad-text">high-end design</span>. Whether it&apos;s a high-performance web app or a boutique brand identity, I deliver work that isn&apos;t just &quot;good&quot;&mdash;it&apos;s &quot;<span className="grad-text">REMEMBERED</span>.&quot;
               </p>
             </div>
@@ -41,7 +41,7 @@ export function About() {
 
         <div className="flex flex-col gap-4 rv si" style={{ transitionDelay: '0.2s' }}>
           {philosophy.map((item, i) => (
-            <div key={i} className="group rounded-none border border-white/7 bg-white/[0.02] px-7 py-6 transition-all duration-500 hover:border-lime/20 hover:bg-white/[0.035] hover:shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
+            <div key={i} className="group rounded-none border border-white/7 bg-white/[0.02] px-7 py-5 transition-all duration-500 hover:border-lime/20 hover:bg-white/[0.035] hover:shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
               <div className="font-display font-black text-[22px] md:text-[24px] tracking-[0.14em] uppercase text-lime mb-4 group-hover:scale-[1.03] transition-transform origin-left">{item.label}</div>
               <p className="text-[16px] font-light text-white/72 leading-relaxed group-hover:text-white/84 transition-colors">
                 {item.value}

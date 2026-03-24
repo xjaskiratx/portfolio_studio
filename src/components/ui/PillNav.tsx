@@ -13,10 +13,10 @@ function cn(...inputs: ClassValue[]) {
 
 const navItems = [
   { id: "hero", label: "JSX W&D" },
+  { id: "about", label: "About" },
   { id: "services", label: "Services" },
   { id: "work", label: "Work" },
-  { id: "about", label: "About" },
-  { id: "process", label: "Forge" },
+  { id: "cta", label: "Talk" },
 ];
 
 interface PillNavProps {
@@ -58,7 +58,7 @@ export function PillNav({ onHireMe }: PillNavProps) {
   });
 
   useEffect(() => {
-    const sections = ["hero", "services", "work", "about", "process", "cta"];
+    const sections = ["hero", "about", "services", "work", "cta"];
     const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
 
     const observerOptions = {

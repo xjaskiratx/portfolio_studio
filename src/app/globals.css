@@ -164,6 +164,29 @@
     outline: 2px solid color-mix(in srgb, var(--color-lime) 65%, transparent);
     outline-offset: 3px;
   }
+
+  p {
+    color: var(--dim);
+    margin-bottom: 14px;
+    font-size: 14.5px;
+    line-height: 1.88;
+    text-align: justify;
+    text-align-last: left;
+  }
+
+  .text-center p,
+  p.text-center {
+    text-align-last: center;
+  }
+
+  .text-right p,
+  p.text-right {
+    text-align-last: right;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
 }
 
 @keyframes scan {
@@ -388,29 +411,6 @@
   text-transform: uppercase;
   color: var(--color-dim);
   margin-bottom: var(--fib-21);
-}
-
-p {
-  color: var(--dim);
-  margin-bottom: 14px;
-  font-size: 14.5px;
-  line-height: 1.88;
-  text-align: justify;
-  text-align-last: left;
-}
-
-.text-center p,
-p.text-center {
-  text-align-last: center;
-}
-
-.text-right p,
-p.text-right {
-  text-align-last: right;
-}
-
-p:last-child {
-  margin-bottom: 0;
 }
 
 .char {
