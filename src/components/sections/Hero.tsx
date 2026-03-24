@@ -8,6 +8,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
+import { useLenis } from "lenis/react";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -23,11 +24,13 @@ const stats = [
 import { isSafari } from "@/lib/browser";
 
 export function Hero() {
-  const { scrollYProgress } = useScroll();
+  const scrollProgress = useMotionValue(0);
   const [mounted, setMounted] = useState(false);
   const [fontsReady, setFontsReady] = useState(false);
   const [showScene, setShowScene] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
+  const defineRef = useRef<HTMLDivElement>(null);
+  const targetScrollRef = useRef<number>(0);
 
   useEffect(() => {
     setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
@@ -48,19 +51,43 @@ export function Hero() {
       }
     }, { rootMargin: '200px' });
 
+    const updateTarget = () => {
+      if (!defineRef.current || !heroRef.current) return;
+      const rectDefine = defineRef.current.getBoundingClientRect();
+      const rectHero = heroRef.current.getBoundingClientRect();
+      const scrollY = window.scrollY;
+      const defineTopAbs = scrollY + rectDefine.top;
+      targetScrollRef.current = defineTopAbs + rectDefine.height * 0.75;
+    };
+
+    updateTarget();
+    window.addEventListener('resize', updateTarget);
+
     if (heroRef.current) {
       observer.observe(heroRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateTarget);
+    };
   }, []);
 
-  // Smooth out the scroll progress to prevent jittery font-weight transitions
-  const smoothProgress = useFramerSpring(scrollYProgress, { damping: 35, stiffness: 200 });
+  // Sync animation perfectly with Lenis to avoid Safari jitter
+  // High-performance loop: no getBoundingClientRect() inside
+  useLenis(({ scroll }) => {
+    if (targetScrollRef.current === 0) return;
+    const p = Math.min(Math.max(scroll / targetScrollRef.current, 0), 1);
+    scrollProgress.set(p);
+  });
 
-  // Weights go 900 -> 100 as you scroll past hero
-  const fontWeight = useTransform(smoothProgress, [0, 0.2], [900, 100]);
-  const letterSpacing = useTransform(smoothProgress, [0, 0.2], ["-0.02em", "0.04em"]);
+  // Use a subtle ease-in-out for a more premium, less "mechanical" feel
+  const fontWeight = useTransform(scrollProgress, [0, 1], [900, 100], {
+    ease: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2
+  });
+  const letterSpacing = useTransform(scrollProgress, [0, 1], ["-0.02em", "0.04em"], {
+    ease: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2
+  });
 
   // Rule of hooks: always call useTransform at the top level
   const fontVariationSettings = useTransform(fontWeight, (w) => `'wght' ${w}`);
@@ -150,7 +177,7 @@ export function Hero() {
               <span className="font-body italic font-extralight text-[clamp(var(--fib-55),6vw,var(--fib-89))] normal-case text-lime/25 align-middle ml-fib-13 max-[767px]:hidden">Build.</span>
             </span>
           </div>
-          <div className="overflow-hidden py-2">
+          <div className="overflow-hidden py-2" ref={defineRef}>
             <span className="block text-lime">{splitText("Define.", 0.6)}</span>
           </div>
         </m.h1>

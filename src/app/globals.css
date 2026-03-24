@@ -372,7 +372,6 @@
   font-size: clamp(var(--fib-89), 13vw, calc(var(--fib-144) + var(--fib-55)));
   line-height: 0.769;
   text-transform: uppercase;
-  transition: font-variation-settings .05s linear;
   will-change: font-variation-settings, letter-spacing;
 }
 

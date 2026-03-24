@@ -90,8 +90,8 @@
 }
 
 #pill-nav, #lisa-btn, #lisa-panel,
-#grain, #page-bg,
-#spot, #scrollprog, .trail-dot {
+#grain, #page-bg, #spot, #scrollprog, .trail-dot,
+.hero-hud, .animate-scan {
   -webkit-transform: translateZ(0);
           transform: translateZ(0);
   -webkit-backface-visibility: hidden;
