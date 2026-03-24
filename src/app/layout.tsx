@@ -39,6 +39,7 @@ export default function RootLayout({
     <html
       lang="en"
       className="antialiased"
+      suppressHydrationWarning
     >
       <body className="bg-bg text-txt font-body selection:bg-lime/30 selection:text-lime">
         <FramerProvider>
