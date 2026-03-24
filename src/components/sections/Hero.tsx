@@ -17,6 +17,7 @@ const stats = [
   { label: "Direct Collaboration", value: "1:1" },
   { label: "Digital Artifacts", value: "60+" },
   { label: "Avg. Ship Time", value: "< 21D" },
+  { label: "Global Reach", value: "15+" },
 ];
 
 import { isSafari } from "@/lib/browser";

@@ -60,8 +60,8 @@ export function CTASection() {
           </a>
         </div>
 
-        <div className="font-mono text-[11px] tracking-[0.12em] text-white/70 uppercase">
-          © 2025 JSX W&D. Solo Studio. All Rights Reserved.
+        <div className="font-mono text-[11px] tracking-[0.12em] text-white/70 uppercase mt-8 mb-22">
+          © 2026 JSX W&D. Solo Studio. All Rights Reserved.
         </div>
       </div>
     </section>

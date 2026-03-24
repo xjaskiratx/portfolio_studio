@@ -9,9 +9,9 @@ export default function Home() {
         <ClientOverlaysGate />
         <HomeClient />
 
-        <footer className="bg-bg border-t border-border py-8 px-6 flex justify-center items-center">
+        {/* <footer className="bg-bg border-t border-border py-8 px-6 flex justify-center items-center">
           <div className="font-display font-black text-[19px] tracking-[0.08em]">JSX <span className="text-lime">W&D</span></div>
-        </footer>
+        </footer> */}
       </main>
     </SmoothScroll>
   );
