@@ -85,7 +85,7 @@ export function Services() {
           </div>
           <h2 className="sec-title">The <ScrambleOutline text="Digital" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> Forge</h2>
         </div>
-        <p className="rv text-[18px] font-light text-dim max-w-[460px] leading-relaxed group">
+        <p className="rv text-[18px] font-light text-dim max-w-[460px] leading-[1.4] group">
           One expert, zero handoff losses. I handle everything from initial strategy to final deployment, ensuring <span className="grad-text">pixel-perfect execution</span> at every stage.
         </p>
       </div>

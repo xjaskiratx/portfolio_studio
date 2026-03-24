@@ -17,7 +17,7 @@ const stats = [
   { label: "Direct Collaboration", value: "1:1" },
   { label: "Digital Artifacts", value: "60+" },
   { label: "Avg. Ship Time", value: "< 21D" },
-  { label: "Global Reach", value: "15+" },
+  { label: "Client Retention", value: "92%" },
 ];
 
 import { isSafari } from "@/lib/browser";
@@ -162,7 +162,7 @@ export function Hero() {
           className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12"
         >
           <div className="max-w-[420px]">
-            <p className="text-[17px] font-light text-dim leading-relaxed mb-8 max-[479px]:text-[15px]">
+            <p className="text-[18px] font-light text-dim leading-[1.4] mb-8 max-[479px]:text-[15px]">
               Crafting premium digital experiences through 1:1 collaboration. I build what agencies charge 10x for — <span className="grad-text">unmatched quality</span> with <span className="grad-text">zero handoff loss</span>.
             </p>
             <div className="flex flex-wrap items-center gap-3">
@@ -174,7 +174,7 @@ export function Hero() {
                 View My Work
               </button>
               <button
-                className="btn-o font-mono font-bold text-[11.5px] tracking-[0.12em] uppercase text-white/72 border border-white/10 px-8 h-[58px] flex items-center justify-center hover:text-lime hover:border-lime/30 transition-all cursor-none"
+                className="btn-o font-mono font-bold text-[13.5px] tracking-[0.16em] uppercase text-white border border-white/20 px-8 h-[58px] flex items-center justify-center hover:text-lime hover:border-lime/40 hover:bg-white/5 transition-all cursor-none"
                 onClick={() => window.dispatchEvent(new CustomEvent("open-contact-modal"))}
                 aria-label="Start a conversation about your project"
               >

@@ -11,13 +11,13 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-import { 
-  NovalyticsArt, 
-  EmberArt, 
-  SolarisArt, 
-  KovaArt, 
-  PulseArt, 
-  VegaArt 
+import {
+  NovalyticsArt,
+  EmberArt,
+  SolarisArt,
+  KovaArt,
+  PulseArt,
+  VegaArt
 } from "./ProjectArts";
 
 const projects = [
@@ -136,25 +136,25 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
       data-sc="project"
       className="group relative w-full h-full overflow-hidden cursor-none"
     >
-      <div 
+      <div
         className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110"
         style={{ background: bgs[project.bg] }}
       />
-      <div 
+      <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
         style={{ background: glows[project.glow] }}
       />
 
       {/* Technical Scan Animation */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
-        <motion.div 
+        <motion.div
           initial={{ top: "-10%" }}
           animate={isHovered ? { top: "110%" } : { top: "-10%" }}
           transition={{ duration: 0.65, ease: "linear" }}
           className="absolute left-0 right-0 h-[2px] bg-lime/50 shadow-[0_0_15px_rgba(200,255,0,0.4)]"
         />
       </div>
-      
+
       <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-110">
         <React.Fragment key="project-art">{project.art}</React.Fragment>
       </div>
@@ -220,9 +220,9 @@ export function Work() {
                   aria-label={`Filter projects by ${f}`}
                   className={cn(
                     "transition-all cursor-none h-[54px] px-8 flex items-center justify-center font-display uppercase tracking-[0.14em]",
-                    filter === f 
-                      ? "bg-lime text-bg font-black text-base hover:bg-white" 
-                      : "font-mono font-bold text-[11.5px] text-white/72 border border-white/10 hover:text-lime hover:border-lime/30"
+                    filter === f
+                      ? "bg-lime text-bg font-black text-base hover:bg-white"
+                      : "font-mono font-bold text-[13.5px] text-white border border-white/20 hover:text-lime hover:border-lime/40 hover:bg-white/5"
                   )}
                 >
                   {f === "dev" ? "Development" : "Design"}
