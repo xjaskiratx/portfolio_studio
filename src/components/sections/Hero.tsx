@@ -116,6 +116,23 @@ export function Hero() {
     ));
   };
 
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    const updateTime = () => {
+      const t = new Date().toLocaleTimeString('en-US', {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+      setTime(`LUD ${t}`);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section
       id="hero"
@@ -149,10 +166,19 @@ export function Hero() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center gap-3 mb-8"
+          className="flex flex-col md:flex-row items-center md:items-center gap-2 md:gap-3 mb-8 w-full"
         >
-          <div className="w-10 h-px bg-lime/40" />
-          <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">
+          <div className="w-10 h-px bg-lime/40 hidden md:block" />
+          
+          {/* Mobile-only divided header */}
+          <div className="flex flex-col font-mono text-[10px] tracking-[0.24em] uppercase text-lime text-center items-center md:hidden">
+            <span>JSX W&D · DIGITAL FORGE</span>
+            <span>SOLO STUDIO · IN</span>
+            <span className="mt-1" suppressHydrationWarning>{time || "LUD ···"}</span>
+          </div>
+
+          {/* Desktop-only single line header */}
+          <span className="hidden md:block font-mono text-[10px] tracking-[0.24em] uppercase text-lime">
             JSX W&D · DIGITAL FORGE · SOLO STUDIO · IN
           </span>
         </m.div>
@@ -188,20 +214,20 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12"
         >
-          <div className="max-w-[420px]">
+          <div className="max-w-[420px] w-full">
             <p className="text-[18px] font-light text-dim leading-[1.4] mb-8 max-[479px]:text-[15px]">
               Crafting premium digital experiences through 1:1 collaboration. I build what agencies charge 10x for — <span className="grad-text">unmatched quality</span> with <span className="grad-text">zero handoff loss</span>.
             </p>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-col md:flex-row items-center gap-3 w-full">
               <button
-                className="btn-p bg-lime text-bg font-display font-black text-base tracking-[0.14em] uppercase px-9 h-[58px] flex items-center justify-center hover:bg-white transition-all cursor-none"
+                className="btn-p bg-lime text-bg font-display font-black text-base tracking-[0.14em] uppercase w-full md:w-auto px-9 h-[58px] flex items-center justify-center hover:bg-white transition-all cursor-none"
                 onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
                 aria-label="View selected design and development projects"
               >
                 View My Work
               </button>
               <button
-                className="btn-o font-mono font-bold text-[13.5px] tracking-[0.16em] uppercase text-white border border-white/20 px-8 h-[58px] flex items-center justify-center hover:text-lime hover:border-lime/40 hover:bg-white/5 transition-all cursor-none"
+                className="btn-o font-mono font-bold text-[13.5px] tracking-[0.16em] uppercase text-white border border-white/20 w-full md:w-auto px-8 h-[58px] flex items-center justify-center hover:text-lime hover:border-lime/40 hover:bg-white/5 transition-all cursor-none"
                 onClick={() => window.dispatchEvent(new CustomEvent("open-contact-modal"))}
                 aria-label="Start a conversation about your project"
               >

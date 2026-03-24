@@ -22,7 +22,7 @@ const steps: ForgeStep[] = [
 export function Process() {
   return (
     <section id="process" className="sec relative bg-bg2 overflow-hidden scroll-mt-20 group/sec">
-      <div className="absolute right-[-40px] top-[20%] font-display font-black text-[350px] text-transparent [-webkit-text-stroke:1px_rgba(237,233,223,0.015)] leading-none tracking-tighter pointer-events-none select-none uppercase z-10">
+      <div className="absolute right-[-40px] top-[20%] font-display font-black text-[110px] md:text-[350px] text-transparent [-webkit-text-stroke:1px_rgba(237,233,223,0.015)] leading-none tracking-tighter pointer-events-none select-none uppercase z-10">
         Engine
       </div>
 

@@ -11,7 +11,7 @@ export function About() {
   return (
     <section id="about" className="sec relative bg-bg overflow-hidden scroll-mt-20">
       {/* Background Decor */}
-      <div className="absolute left-[-20px] top-[10%] font-display font-black text-[380px] text-transparent [-webkit-text-stroke:1px_rgba(200,255,0,0.015)] leading-none tracking-tighter pointer-events-none select-none uppercase">
+      <div className="absolute left-[-20px] top-[10%] font-display font-black text-[120px] md:text-[380px] text-transparent [-webkit-text-stroke:1px_rgba(200,255,0,0.015)] leading-none tracking-tighter pointer-events-none select-none uppercase">
         Mind
       </div>
 
