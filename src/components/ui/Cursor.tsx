@@ -6,7 +6,9 @@ import { isSafari } from "@/lib/browser";
 
 export function Cursor() {
   const [isSafariBrowser, setIsSafariBrowser] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(() => 
+    typeof window !== 'undefined' ? window.matchMedia("(pointer: coarse)").matches : false
+  );
   const [cursorState, setCursorState] = useState<"" | "ch" | "cv" | "cta" | "cdrag">("");
   
   const mouseX = useMotionValue(0);
@@ -156,15 +158,17 @@ export function Cursor() {
     }
   }, [isSafariBrowser]);
 
+  if (isTouchDevice) return null;
+
   return (
     <>
       {/* Dot Pool Container */}
-      <div ref={containerRef} id="trail-container" className="fixed inset-0 pointer-events-none z-[9990]" />
+      <div ref={containerRef} id="trail-container" className="cursor-chrome fixed inset-0 pointer-events-none z-[9990]" />
 
       {/* Center Dot */}
       <m.div
         id="cdot"
-        className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[200001] bg-lime"
+        className="cursor-chrome fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[200001] bg-lime"
         style={{
           x: mouseX,
           y: mouseY,
@@ -181,7 +185,7 @@ export function Cursor() {
       {/* Outer Ring */}
       <m.div
         id="cring"
-        className="fixed top-0 left-0 border border-lime/35 pointer-events-none z-[200000]"
+        className="cursor-chrome fixed top-0 left-0 border border-lime/35 pointer-events-none z-[200000]"
         style={{
           x: springX,
           y: springY,
@@ -206,7 +210,7 @@ export function Cursor() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed top-0 left-0 pointer-events-none z-[200000] font-mono text-[8.5px] tracking-[0.12em] uppercase text-lime whitespace-nowrap text-center font-bold"
+            className="cursor-chrome fixed top-0 left-0 pointer-events-none z-[200000] font-mono text-[8.5px] tracking-[0.12em] uppercase text-lime whitespace-nowrap text-center font-bold"
             style={{
               x: springX,
               y: springY,
