@@ -13,9 +13,10 @@ function cn(...inputs: ClassValue[]) {
 
 const navItems = [
   { id: "hero", label: "JSX W&D" },
-  { id: "about", label: "About" },
   { id: "services", label: "Services" },
   { id: "work", label: "Work" },
+  { id: "about", label: "About" },
+  { id: "process", label: "Forge" },
   { id: "cta", label: "Talk" },
 ];
 
@@ -58,28 +59,37 @@ export function PillNav({ onHireMe }: PillNavProps) {
   });
 
   useEffect(() => {
-    const sections = ["hero", "about", "services", "work", "cta"];
-    const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const sections = ["hero", "services", "work", "about", "process", "cta"];
+    
+    // Defer observation to ensure dynamic components are in the DOM
+    const timer = setTimeout(() => {
+      const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
 
-    const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0% -70% 0%",
-      threshold: [0, 0.1, 0.5, 1.0]
-    };
+      const observerOptions = {
+        root: null,
+        rootMargin: "-40% 0% -40% 0%",
+        threshold: [0, 0.1]
+      };
 
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActiveTab(entry.target.id);
-        }
-      });
-    };
+      const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveTab(entry.target.id);
+          }
+        });
+      };
 
-    const observer = new IntersectionObserver(handleIntersect, observerOptions);
-    sectionElements.forEach(el => observer.observe(el));
+      const observer = new IntersectionObserver(handleIntersect, observerOptions);
+      sectionElements.forEach(el => observer.observe(el));
+
+      (window as any)._navObserver = observer;
+    }, 800);
 
     return () => {
-      observer.disconnect();
+      clearTimeout(timer);
+      if ((window as any)._navObserver) {
+        (window as any)._navObserver.disconnect();
+      }
     };
   }, []);
 

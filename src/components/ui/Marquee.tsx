@@ -17,7 +17,7 @@ interface MarqueeProps {
 export function Marquee({
   items,
   separator = "✦",
-  speed = 20,
+  speed = 12,
   direction = "left",
   className,
   variant = "lime",
@@ -28,7 +28,7 @@ export function Marquee({
     <div 
       data-cursor="ch"
       className={cn(
-        "overflow-hidden whitespace-nowrap user-select-none py-3.5 flex items-center border-y border-border-subtle group my-12 md:my-20",
+        "overflow-hidden whitespace-nowrap user-select-none py-3 flex items-center border-y border-border-subtle group my-12 md:my-20",
         variant === "lime" ? "bg-lime text-bg" : "bg-bg2 text-white/80",
         className
       )}

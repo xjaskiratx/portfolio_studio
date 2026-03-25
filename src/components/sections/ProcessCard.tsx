@@ -6,7 +6,7 @@ import { m } from "framer-motion";
 export interface ForgeStep {
   num: string;
   title: string;
-  desc: string;
+  desc: string[];
 }
 
 interface ProcessCardProps {
@@ -38,12 +38,19 @@ export function ProcessCard({ step, index, isLast }: ProcessCardProps) {
           <div className="h-px flex-1 bg-white/[0.05] group-hover:bg-lime/20 transition-colors duration-500" />
         </div>
 
-        <h3 className="font-display font-black text-[26px] md:text-[28px] uppercase mb-3 group-hover:text-lime transition-colors duration-500">
+        <h3 className="font-display font-black text-[26px] md:text-[28px] uppercase mb-4 group-hover:text-lime transition-colors duration-500">
           {step.title}
         </h3>
-        <p className="text-[14.5px] font-light text-dim leading-relaxed mb-4 group-hover:text-white/80 transition-colors">
-          {step.desc}
-        </p>
+        <ul className="space-y-3">
+          {step.desc.map((item, i) => (
+            <li key={i} className="flex items-start gap-3 group/li">
+              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime/40 group-hover:bg-lime transition-colors" />
+              <span className="text-[14.5px] font-light text-dim leading-relaxed group-hover:text-white/80 transition-colors">
+                {item}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
       <div className="absolute bottom-0 left-0 w-full h-[3px] bg-lime scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
     </m.div>

@@ -10,6 +10,7 @@ const Hero = dynamic(() => import("@/components/sections/Hero").then(mod => mod.
 const About = dynamic(() => import("@/components/sections/About").then(mod => mod.About), { ssr: false });
 const Services = dynamic(() => import("@/components/sections/Services").then(mod => mod.Services), { ssr: false });
 const Work = dynamic(() => import("@/components/sections/Work").then(mod => mod.Work), { ssr: false });
+const Process = dynamic(() => import("@/components/sections/Process").then(mod => mod.Process), { ssr: false });
 const CTASection = dynamic(() => import("@/components/sections/CTASection").then(mod => mod.CTASection), { ssr: false });
 
 export function HomeClient() {
@@ -22,7 +23,7 @@ export function HomeClient() {
         speed={18}
         aria-hidden="true"
       />
-      <About />
+      <Services />
       <Marquee
         items={["High Performance", "Pixel Perfect", "Zero Handoff Loss", "SEO Optimized", "Scaleable Architecture"]}
         variant="dark"
@@ -31,7 +32,7 @@ export function HomeClient() {
         separator="·"
         aria-hidden="true"
       />
-      <Services />
+      <Work />
       <Marquee
         items={["Got existing work?", "I'll make it what it should have been", "Redesigns are a specialty"]}
         variant="lime"
@@ -39,7 +40,22 @@ export function HomeClient() {
         direction="right"
         aria-hidden="true"
       />
-      <Work />
+      <About />
+      <Marquee
+        items={["Zero Friction", "Direct Access", "3-Step Sync", "No Handoff Gaps", "Rapid Execution", "Clear Strategy"]}
+        variant="dark"
+        speed={22}
+        aria-hidden="true"
+      />
+      <Process />
+      <Marquee
+        items={["Ready to Forge?", "Level Up Your Product", "Stop Settling for Less", "Direct Access to the Builder", "Build it Better", "Start Your Project →"]}
+        variant="lime"
+        direction="right"
+        speed={22}
+        separator=" · "
+        aria-hidden="true"
+      />
       <CTASection />
     </>
   );

@@ -2,9 +2,9 @@ import { ScrambleInView } from "@/components/ui/ScrambleInView";
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
 
 const philosophy = [
-  { label: "Digital Synthesis", value: "Bridging the gap between high-end design and technical execution. No handoff loss, one cohesive vision from start to finish." },
+  { label: "Direct Collaboration", value: "One point of contact, collaborate directly with me, absolute transparency, no people to bypass in the middle - everything handled by me." },
   { label: "Architectural Integrity", value: "Code that is as clean as the UI. High-performance architecture meets premium aesthetics for long-term scalability." },
-  { label: "Direct Partnership", value: "Collaborate directly with the creator. Zero overhead, absolute transparency, and rapid delivery of exceptional results." }
+  { label: "Rapid Execution", value: "No fluff, just fast and focused results with zero delays or overheads." }
 ];
 
 export function About() {
@@ -29,11 +29,11 @@ export function About() {
             </h2>
 
             <div className="space-y-10 max-w-[640px] mb-2">
-              <p className="text-[18px] font-light text-dim leading-[1.4] si">
-                I’m <span className="text-white font-medium">Jaskirat Singh</span>, a <span className="grad-text">full-spectrum digital creator</span>. I build <span className="grad-text">high-performance products</span> that transcend generic templates. I don&apos;t just &quot;design&quot; — I <span className="grad-text">engineer experiences</span> that make your brand impossible to ignore.
+              <p className="text-[18px] font-light text-dim leading-[1.7] si">
+                I’m <span className="text-white font-medium">Jaskirat Singh</span>, a <span className="grad-text">designer and a full-stack developer.</span> This, is my solo studio where I build <span className="grad-text">high-performance products</span> that make your brand impossible to ignore.
               </p>
-              <p className="text-[18px] font-light text-dim leading-[1.4] si" style={{ transitionDelay: '0.1s' }}>
-                I don&apos;t just build websites; I forge <span className="grad-text">digital identities</span> that demand attention. My approach combines the raw power of <span className="grad-text">technical precision</span> with the refined touch of <span className="grad-text">high-end design</span>. Whether it&apos;s a high-performance web app or a boutique brand identity, I deliver work that isn&apos;t just &quot;good&quot;&mdash;it&apos;s &quot;<span className="grad-text">REMEMBERED</span>.&quot;
+              <p className="text-[18px] font-light text-dim leading-[1.7] si" style={{ transitionDelay: '0.1s' }}>
+                My approach combines <span className="grad-text">powerful designs </span> and <span className="grad-text">pixel-perfect precision </span> with <span className="grad-text">modern technology </span> which are guranteed to deliver the <span className="grad-text">best experiences </span>. Whether it&apos;s a high-performance web app or a boutique brand identity, I deliver work that isn&apos;t just &quot;good&quot;&mdash;it&apos;s &quot;<span className="grad-text">REMEMBERED</span>.&quot;
               </p>
             </div>
           </div>

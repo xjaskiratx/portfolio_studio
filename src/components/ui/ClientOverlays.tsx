@@ -28,38 +28,49 @@ export function ClientOverlays() {
   }, []);
 
   useEffect(() => {
-    const sections = ["hero", "about", "services", "work", "process", "cta"];
-    const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const sections = ["hero", "services", "work", "about", "process", "cta"];
+    
+    // Use a timeout to ensure dynamic components are mounted in the DOM
+    const timer = setTimeout(() => {
+      const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
 
-    const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0% -70% 0%",
-      threshold: [0, 0.1, 0.5, 1.0]
-    };
+      const observerOptions = {
+        root: null,
+        rootMargin: "-40% 0% -40% 0%",
+        threshold: [0, 0.1]
+      };
 
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const active = entry.target.id;
-          const root = document.documentElement;
-          
-          if (active === "work") {
-            root.style.setProperty("--accent-lime", "#c8ff00");
-            root.style.setProperty("--accent-glow", "rgba(200, 255, 0, 0.08)");
-            root.style.setProperty("--accent-line", "rgba(200, 255, 0, 0.12)");
-          } else {
-            root.style.setProperty("--accent-lime", "#c8ff00");
-            root.style.setProperty("--accent-glow", "rgba(200, 255, 0, 0.06)");
-            root.style.setProperty("--accent-line", "rgba(200, 255, 0, 0.1)");
+      const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const active = entry.target.id;
+            const root = document.documentElement;
+            
+            if (active === "work") {
+              root.style.setProperty("--accent-lime", "#c8ff00");
+              root.style.setProperty("--accent-glow", "rgba(200, 255, 0, 0.08)");
+              root.style.setProperty("--accent-line", "rgba(200, 255, 0, 0.12)");
+            } else {
+              root.style.setProperty("--accent-lime", "#c8ff00");
+              root.style.setProperty("--accent-glow", "rgba(200, 255, 0, 0.06)");
+              root.style.setProperty("--accent-line", "rgba(200, 255, 0, 0.1)");
+            }
           }
-        }
-      });
+        });
+      };
+
+      const observer = new IntersectionObserver(handleIntersect, observerOptions);
+      sectionElements.forEach(el => observer.observe(el));
+
+      (window as any)._overlayObserver = observer;
+    }, 800);
+
+    return () => {
+      clearTimeout(timer);
+      if ((window as any)._overlayObserver) {
+        (window as any)._overlayObserver.disconnect();
+      }
     };
-
-    const observer = new IntersectionObserver(handleIntersect, observerOptions);
-    sectionElements.forEach(el => observer.observe(el));
-
-    return () => observer.disconnect();
   }, []);
 
   return (
