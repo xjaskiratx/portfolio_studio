@@ -107,13 +107,34 @@ export function PillNav({ onHireMe }: PillNavProps) {
       id="pill-nav"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-[800] transition-opacity duration-400 ease-out w-[min(92vw,480px)] md:w-auto"
+      className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-[800] transition-opacity duration-400 ease-out w-fit min-w-[220px] max-w-[90vw] md:w-auto"
     >
       <div className="relative">
         <m.div
           className="pill-track relative flex items-center bg-[rgba(13,13,21,0.86)] backdrop-blur-[28px] border border-white/10 shadow-[0_12px_44px_rgba(0,0,0,0.5)] transition-all duration-500 rounded-full p-1 md:p-1.5 gap-0"
         >
-          <div className="flex flex-row items-center h-full w-full justify-between md:justify-start">
+          {/* Mobile Layout: Dynamic Section Label + Hire Me */}
+          <div className="flex md:hidden items-center w-full justify-between px-2 h-[42px]">
+            <div className="flex items-center gap-2 px-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse" />
+              <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-white font-bold">
+                {navItems.find(i => i.id === activeTab)?.label}
+              </span>
+            </div>
+            
+            <div className="flex items-center h-full">
+              <div className="w-px h-4 bg-white/10 mx-1" />
+              <button
+                onClick={(e) => { e.stopPropagation(); onHireMe(); }}
+                className="font-mono text-[10px] tracking-[0.12em] uppercase text-lime px-3 h-full flex items-center justify-center transition-all active:scale-95"
+              >
+                Hire Me →
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop Layout: All Nav Items */}
+          <div className="hidden md:flex flex-row items-center h-full w-full justify-start">
             {navItems.map((item, idx) => (
               <div key={item.id} className="flex items-center h-full">
                 <Magnetic strength={0.22}>
@@ -121,34 +142,31 @@ export function PillNav({ onHireMe }: PillNavProps) {
                     onClick={(e) => { e.stopPropagation(); scrollTo(item.id); }}
                     aria-label={`Scroll to ${item.label} section`}
                     className={cn(
-                      "p-item font-mono text-[9px] md:text-[11.5px] tracking-[0.1em] md:tracking-[0.12em] uppercase transition-all duration-300 cursor-none select-none px-2.5 md:px-4 flex items-center justify-center rounded-full h-[34px] md:h-[38px] leading-none",
+                      "p-item font-mono text-[11.5px] tracking-[0.12em] uppercase transition-all duration-300 cursor-none select-none px-4 flex items-center justify-center rounded-full h-[38px] leading-none",
                       activeTab === item.id
                         ? "bg-lime text-bg font-bold shadow-[0_0_20px_rgba(200,255,0,0.2)]"
                         : "text-white/72 hover:text-white"
                     )}
                   >
-                    {item.label === "JSX W&D" ? (
-                      <span className="md:hidden">JSX</span>
-                    ) : item.label}
-                    {item.label === "JSX W&D" && <span className="hidden md:inline">JSX W&D</span>}
+                    {item.label}
                   </button>
                 </Magnetic>
                 {idx < navItems.length - 1 && (
-                  <span className="p-sep text-white/5 px-[0.5px] md:px-[1px] text-[8px] md:text-[10px] select-none flex items-center md:inline hidden md:flex">·</span>
+                  <span className="p-sep text-white/5 px-[1px] text-[10px] select-none flex items-center">·</span>
                 )}
               </div>
             ))}
 
-            <div className="w-px h-5 md:h-6 bg-white/5 mx-1 md:mx-2" />
+            <div className="w-px h-6 bg-white/5 mx-2" />
 
             <Magnetic strength={0.4}>
               <button
                 onClick={(e) => { e.stopPropagation(); onHireMe(); }}
                 data-cursor="cta"
                 aria-label="Open contact form to hire me"
-                className="p-cta font-mono text-[9px] md:text-[11.5px] tracking-[0.1em] md:tracking-[0.12em] uppercase text-lime border border-lime/25 px-3 md:px-5 h-[34px] md:h-[38px] flex items-center justify-center rounded-full transition-all duration-300 ease-out hover:bg-lime/10 hover:border-lime/60 hover:shadow-[0_0_25px_rgba(200,255,0,0.1)] cursor-none leading-none whitespace-nowrap"
+                className="p-cta font-mono text-[11.5px] tracking-[0.12em] uppercase text-lime border border-lime/25 px-5 h-[38px] flex items-center justify-center rounded-full transition-all duration-300 ease-out hover:bg-lime/10 hover:border-lime/60 hover:shadow-[0_0_25px_rgba(200,255,0,0.1)] cursor-none leading-none whitespace-nowrap"
               >
-                Hire<span className="hidden md:inline">&nbsp;Me</span> →
+                Hire&nbsp;Me →
               </button>
             </Magnetic>
           </div>

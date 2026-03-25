@@ -5,7 +5,6 @@ import { m, AnimatePresence } from "framer-motion";
 
 export function TopStrip() {
   const [isVisible, setIsVisible] = useState(true);
-  const [time, setTime] = useState("");
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,26 +22,6 @@ export function TopStrip() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const updateTime = () => {
-      const t = new Date().toLocaleTimeString('en-US', {
-        timeZone: 'Asia/Kolkata',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      });
-      setTime(`LUD ${t}`);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
   return (
     <>
       <div ref={sentinelRef} className="absolute top-0 left-0 w-px h-[80px] pointer-events-none" />
@@ -57,12 +36,8 @@ export function TopStrip() {
           >
             <span
               className="font-mono text-[9.5px] tracking-[0.22em] uppercase text-white/72 [text-shadow:0_0_18px_rgba(0,0,0,0.45)] whitespace-nowrap"
-              suppressHydrationWarning
             >
-              JSX.W&D / SOLO STUDIO /{" "}
-              <span className="text-lime/78" suppressHydrationWarning>
-                {time || "LUD ···"}
-              </span>
+              JSX.W&D / SOLO STUDIO
             </span>
             <span className="font-mono text-[9.5px] tracking-[0.22em] uppercase text-white/68 [text-shadow:0_0_18px_rgba(0,0,0,0.45)] flex items-center gap-1.5 whitespace-nowrap hidden sm:flex">
               OPEN FOR PROJECTS

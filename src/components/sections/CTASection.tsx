@@ -42,10 +42,10 @@ export function CTASection() {
           <ScrambleOutline text="something" className="[-webkit-text-stroke:2.5px_rgba(237,233,223,0.82)] text-transparent" />
         </h2>
 
-        <div className="flex flex-wrap justify-center items-center gap-6 mb-16">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-16">
           <button
             onClick={openModal}
-            className="btn-xl bg-lime text-bg font-display font-black text-2xl tracking-[0.14em] uppercase px-10 py-4 cursor-none hover:bg-white transition-colors"
+            className="btn-xl bg-lime text-bg font-display font-black text-2xl tracking-[0.14em] uppercase px-10 py-4 cursor-none hover:bg-white transition-colors w-full max-w-[340px] sm:w-auto"
             data-cta
           >
             <span>Start a Project</span>
@@ -54,14 +54,14 @@ export function CTASection() {
             href="https://calendly.com"
             target="_blank"
             rel="noreferrer"
-            className="btn-xl bg-white text-bg font-display font-black text-2xl tracking-[0.14em] uppercase px-10 py-4 cursor-none hover:bg-lime transition-colors text-center max-[520px]:px-8 max-[520px]:text-base"
+            className="btn-xl bg-white text-bg font-display font-black text-2xl tracking-[0.14em] uppercase px-10 py-4 cursor-none hover:bg-lime transition-colors text-center max-[520px]:px-8 max-[520px]:text-base w-full max-w-[340px] sm:w-auto"
           >
-            Skip the email — Book 15 mins →
+            Skip the email — <br className="sm:hidden" /> Book 15 mins →
           </a>
         </div>
 
         <div className="font-mono text-[11px] tracking-[0.12em] text-white/70 uppercase mt-8 mb-22">
-          © 2026 JSX W&D. Solo Studio. All Rights Reserved.
+          © 2026 JSX W&D. Solo Studio. <br className="sm:hidden" />All Rights Reserved.
         </div>
       </div>
     </section>

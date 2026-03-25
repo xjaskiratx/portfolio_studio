@@ -116,23 +116,6 @@ export function Hero() {
     ));
   };
 
-  const [time, setTime] = useState("");
-  useEffect(() => {
-    const updateTime = () => {
-      const t = new Date().toLocaleTimeString('en-US', {
-        timeZone: 'Asia/Kolkata',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      });
-      setTime(`LUD ${t}`);
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section
       id="hero"
@@ -174,7 +157,6 @@ export function Hero() {
           <div className="flex flex-col font-mono text-[10px] tracking-[0.24em] uppercase text-lime text-center items-center md:hidden">
             <span>JSX W&D · DIGITAL FORGE</span>
             <span>SOLO STUDIO · IN</span>
-            <span className="mt-1" suppressHydrationWarning>{time || "LUD ···"}</span>
           </div>
 
           {/* Desktop-only single line header */}
@@ -215,7 +197,7 @@ export function Hero() {
           className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12"
         >
           <div className="max-w-[420px] w-full">
-            <p className="text-[18px] font-light text-dim leading-[1.4] mb-8 max-[479px]:text-[15px]">
+            <p className="text-[18px] font-light text-dim leading-[1.4] mb-8 max-[479px]:text-[15px] text-justify [text-align-last:center]">
               Crafting premium digital experiences through 1:1 collaboration. I build what agencies charge 10x for — <span className="grad-text">unmatched quality</span> with <span className="grad-text">zero handoff loss</span>.
             </p>
             <div className="flex flex-col md:flex-row items-center gap-3 w-full">

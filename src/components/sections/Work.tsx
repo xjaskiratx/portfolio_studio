@@ -200,35 +200,33 @@ export function Work() {
   }
 
   return (
-    <section id="work" className="sec bg-bg overflow-hidden !px-0">
-      <div className="w-full px-[var(--sec-px)]">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-20">
-            <div className="rv">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-px bg-lime/40" />
-                <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">Proof of Concept</span>
-              </div>
-              <h2 className="sec-title">Selected <ScrambleOutline text="Work" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /></h2>
+    <section id="work" className="sec bg-bg overflow-hidden">
+      <div className="max-w-[1400px] mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-20">
+          <div className="rv">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-px bg-lime/40" />
+              <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">Proof of Concept</span>
             </div>
+            <h2 className="sec-title">Selected <ScrambleOutline text="Work" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /></h2>
+          </div>
 
-            <div className="flex flex-wrap items-center gap-4 rv si" style={{ transitionDelay: '0.2s' }}>
-              {["dev", "design"].map(f => (
-                <button
-                  key={f}
-                  onClick={() => setFilter(prev => prev === f ? "all" : f as "dev" | "design")}
-                  aria-label={`Filter projects by ${f}`}
-                  className={cn(
-                    "transition-all cursor-none h-[54px] px-8 flex items-center justify-center font-display uppercase tracking-[0.14em]",
-                    filter === f
-                      ? "bg-lime text-bg font-black text-base hover:bg-white"
-                      : "font-mono font-bold text-[13.5px] text-white border border-white/20 hover:text-lime hover:border-lime/40 hover:bg-white/5"
-                  )}
-                >
-                  {f === "dev" ? "Development" : "Design"}
-                </button>
-              ))}
-            </div>
+          <div className="flex flex-wrap items-center gap-4 rv si" style={{ transitionDelay: '0.2s' }}>
+            {["dev", "design"].map(f => (
+              <button
+                key={f}
+                onClick={() => setFilter(prev => prev === f ? "all" : f as "dev" | "design")}
+                aria-label={`Filter projects by ${f}`}
+                className={cn(
+                  "transition-all cursor-none h-[54px] px-8 flex items-center justify-center font-display uppercase tracking-[0.14em]",
+                  filter === f
+                    ? "bg-lime text-bg font-black text-base hover:bg-white"
+                    : "font-mono font-bold text-[13.5px] text-white border border-white/20 hover:text-lime hover:border-lime/40 hover:bg-white/5"
+                )}
+              >
+                {f === "dev" ? "Development" : "Design"}
+              </button>
+            ))}
           </div>
         </div>
       </div>

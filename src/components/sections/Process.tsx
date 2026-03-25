@@ -44,10 +44,10 @@ export function Process() {
             <div className="w-10 h-px bg-lime/40" />
             <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">the process</span>
           </div>
-          <h2 className="sec-title uppercase">simple, <ScrambleOutline text="direct," className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> effective</h2>
+          <h2 className="sec-title uppercase">simple, <ScrambleOutline text="direct," className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> <span className="text-lime">effective</span></h2>
         </div>
         <p className="rv text-[18px] font-light text-dim max-w-[460px] leading-[1.4] group si" style={{ transitionDelay: "0.1s" }}>
-          A direct, <span className="grad-text">3-step workflow</span> designed for speed and zero friction. No fluff—just <span className="grad-text">impact.</span>
+          A direct, <span className="grad-text">3-step workflow</span> designed for speed and zero friction. <br className="md:hidden" />No fluff—just <span className="grad-text">impact.</span>
         </p>
       </div>
 
