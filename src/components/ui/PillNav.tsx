@@ -126,7 +126,7 @@ export function PillNav({ onHireMe }: PillNavProps) {
               <div className="w-px h-4 bg-white/10 mx-1" />
               <button
                 onClick={(e) => { e.stopPropagation(); onHireMe(); }}
-                className="font-mono text-[10px] tracking-[0.12em] uppercase text-lime px-3 h-full flex items-center justify-center transition-all active:scale-95"
+                className="font-mono text-[10px] tracking-[0.12em] uppercase text-lime px-3 h-full flex items-center justify-center transition-all active:scale-95 whitespace-nowrap"
               >
                 Hire Me →
               </button>

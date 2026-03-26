@@ -17,7 +17,7 @@ export function ScrambleOutline({ text, className = "", duration = 0.4 }: Scramb
   const isInView = useInView(ref, { once: true, margin: "-10%" });
 
   const scramble = useCallback(() => {
-    let iteration = -4;
+    let iteration = -(text.length * 0.4);
     const interval = setInterval(() => {
       setDisplay(
         text
@@ -34,9 +34,9 @@ export function ScrambleOutline({ text, className = "", duration = 0.4 }: Scramb
         clearInterval(interval);
       }
 
-      // Ultra-fast settle
-      iteration += (text.length / (duration * 360)) * 4.5;
-    }, 16);
+      // Slightly slower, more consistent settle (approx 600-800ms)
+      iteration += (text.length / (duration * 120)) * 2.2;
+    }, 24);
 
     return () => clearInterval(interval);
   }, [text, duration]);

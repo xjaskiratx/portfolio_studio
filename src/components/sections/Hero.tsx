@@ -153,15 +153,8 @@ export function Hero() {
         >
           <div className="w-10 h-px bg-lime/40 hidden md:block" />
           
-          {/* Mobile-only divided header */}
-          <div className="flex flex-col font-mono text-[10px] tracking-[0.24em] uppercase text-lime text-center items-center md:hidden">
-            <span>JSX W&D · DIGITAL FORGE</span>
-            <span>SOLO STUDIO · IN</span>
-          </div>
-
-          {/* Desktop-only single line header */}
-          <span className="hidden md:block font-mono text-[10px] tracking-[0.24em] uppercase text-lime">
-            JSX W&D · DIGITAL FORGE · SOLO STUDIO · IN
+          <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime text-wrap-none">
+            JSX W&D · DIGITAL FORGE
           </span>
         </m.div>
 
@@ -197,7 +190,7 @@ export function Hero() {
           className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12"
         >
           <div className="max-w-[420px] w-full">
-            <p className="text-[18px] font-light text-dim leading-[1.4] mb-8 max-[479px]:text-[15px] text-justify [text-align-last:center]">
+            <p className="text-[18px] font-light text-dim leading-[1.4] mb-8 max-[479px]:text-[15px] text-justify md:text-left [text-align-last:center] md:[text-align-last:left]">
               Crafting premium digital experiences through 1:1 collaboration. I build what agencies charge 10x for — <span className="grad-text">unmatched quality</span> with <span className="grad-text">zero handoff loss</span>.
             </p>
             <div className="flex flex-col md:flex-row items-center gap-3 w-full">

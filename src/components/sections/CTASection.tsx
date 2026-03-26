@@ -54,7 +54,7 @@ export function CTASection() {
             href="https://calendly.com"
             target="_blank"
             rel="noreferrer"
-            className="btn-xl bg-white text-bg font-display font-black text-2xl tracking-[0.14em] uppercase px-10 py-4 cursor-none hover:bg-lime transition-colors text-center max-[520px]:px-8 max-[520px]:text-base w-full max-w-[340px] sm:w-auto"
+            className="btn-xl bg-white text-bg font-display font-black text-2xl tracking-[0.14em] uppercase px-10 py-4 cursor-none hover:bg-lime transition-colors text-center max-[520px]:px-8 max-[520px]:text-base w-full max-w-[340px] sm:max-w-none sm:w-auto"
           >
             Skip the email — <br className="sm:hidden" /> Book 15 mins →
           </a>

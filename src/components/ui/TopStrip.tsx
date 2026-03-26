@@ -7,6 +7,27 @@ export function TopStrip() {
   const [isVisible, setIsVisible] = useState(true);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
+  const [time, setTime] = useState<string>("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      };
+      const timeString = new Intl.DateTimeFormat("en-US", options).format(now);
+      setTime(`${timeString} IST`);
+    };
+
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -32,12 +53,16 @@ export function TopStrip() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed top-0 left-0 right-0 z-[400] px-16 py-[18px] mt-4 md:mt-0.5 flex justify-between pointer-events-none max-[1279px]:px-[44px] max-[1023px]:px-[36px] max-[767px]:px-[24px] max-[479px]:px-[20px] max-[479px]:hidden"
+            className="fixed top-0 left-0 right-0 z-[400] px-16 py-[18px] mt-4 md:mt-0.5 flex justify-between pointer-events-none max-[1279px]:px-[44px] max-[1023px]:px-[36px] max-[767px]:px-[24px] max-[479px]:px-[20px] hidden md:flex"
           >
             <span
               className="font-mono text-[9.5px] tracking-[0.22em] uppercase text-white/72 [text-shadow:0_0_18px_rgba(0,0,0,0.45)] whitespace-nowrap"
+              suppressHydrationWarning
             >
-              JSX.W&D / SOLO STUDIO
+              SOLO STUDIO / CA/IN /{" "}
+              <span className="text-lime/80 font-bold" suppressHydrationWarning>
+                {time || "······"}
+              </span>
             </span>
             <span className="font-mono text-[9.5px] tracking-[0.22em] uppercase text-white/68 [text-shadow:0_0_18px_rgba(0,0,0,0.45)] flex items-center gap-1.5 whitespace-nowrap hidden sm:flex">
               OPEN FOR PROJECTS
