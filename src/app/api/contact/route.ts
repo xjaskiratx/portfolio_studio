@@ -5,8 +5,24 @@ import { getSupabase } from "@/lib/supabase";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
+// Simple in-memory rate limiting (1 request per 60 seconds per IP)
+const rateLimitMap = new Map<string, number>();
+const RATE_LIMIT_MS = 60 * 1000;
+
 export async function POST(req: Request) {
   try {
+    const ip = req.headers.get("x-forwarded-for") || "anonymous";
+    const now = Date.now();
+    const lastRequest = rateLimitMap.get(ip);
+
+    if (lastRequest && now - lastRequest < RATE_LIMIT_MS) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a minute." },
+        { status: 429 }
+      );
+    }
+    rateLimitMap.set(ip, now);
+
     if (!resend) {
       return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
     }

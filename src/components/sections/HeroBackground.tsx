@@ -55,14 +55,10 @@ function Constellation() {
     return Array.from({ length: 8 }).map((_, i) => {
       const size = Math.random() * 0.72 + 0.22; // eslint-disable-line react-hooks/purity
       const type = i % 4;
-      let geometry;
-      if (type === 0) geometry = new IcosahedronGeometry(size, 0);
-      else if (type === 1) geometry = new OctahedronGeometry(size, 0);
-      else if (type === 2) geometry = new TetrahedronGeometry(size, 0);
-      else geometry = new BoxGeometry(size * 0.9, size * 0.9, size * 0.9);
 
       return {
-        geometry,
+        type,
+        size,
         position: [
           (Math.random() - 0.5) * 26, // eslint-disable-line react-hooks/purity
           (Math.random() - 0.5) * 22, // eslint-disable-line react-hooks/purity
@@ -154,10 +150,14 @@ function Constellation() {
         {shapes.map((s, i) => (
           <mesh
             key={i}
-            geometry={s.geometry}
             position={s.position}
             rotation={s.rotation}
           >
+            {s.type === 0 && <icosahedronGeometry args={[s.size, 0]} />}
+            {s.type === 1 && <octahedronGeometry args={[s.size, 0]} />}
+            {s.type === 2 && <tetrahedronGeometry args={[s.size, 0]} />}
+            {s.type === 3 && <boxGeometry args={[s.size * 0.9, s.size * 0.9, s.size * 0.9]} />}
+            
             <meshBasicMaterial
               color={i % 5 === 0 ? "#c8ff00" : "#ffffff"}
               wireframe

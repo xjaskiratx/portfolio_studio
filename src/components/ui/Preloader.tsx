@@ -8,18 +8,22 @@ export function Preloader() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(() => setLoading(false), 500);
+          timeoutId = setTimeout(() => setLoading(false), 500);
           return 100;
         }
         return prev + 2;
       });
     }, 30);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
