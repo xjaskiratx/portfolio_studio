@@ -1,4 +1,5 @@
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
+import typS from "@/styles/Typography.module.css";
 import { ProcessCard, type ForgeStep } from "./ProcessCard";
 
 const steps: ForgeStep[] = [
@@ -34,7 +35,7 @@ const steps: ForgeStep[] = [
 export function Process() {
   return (
     <section id="process" className="sec relative bg-bg overflow-hidden scroll-mt-20 group/sec">
-      <div className="absolute right-[-40px] top-[20%] font-display font-black text-[110px] md:text-[350px] text-transparent [-webkit-text-stroke:1px_rgba(237,233,223,0.015)] leading-none tracking-tighter pointer-events-none select-none uppercase z-10">
+      <div className="absolute right-[-40px] top-[20%] font-display font-black text-[110px] md:text-[350px] text-transparent [-webkit-text-stroke:1px_rgba(237,233,223,0.04)] leading-none tracking-tighter pointer-events-none select-none uppercase z-10">
         Engine
       </div>
 
@@ -44,7 +45,7 @@ export function Process() {
             <div className="w-10 h-px bg-lime/40" />
             <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">the process</span>
           </div>
-          <h2 className="sec-title uppercase">simple, <ScrambleOutline text="direct," className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> <span className="text-lime">effective</span></h2>
+          <h2 className={`${typS.secTitle} uppercase`}>simple, <ScrambleOutline text="direct," className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> <span className="text-lime">effective</span></h2>
         </div>
         <p className="rv text-[18px] font-light text-dim max-w-[460px] leading-[1.4] group si" style={{ transitionDelay: "0.1s" }}>
           A direct, <span className="grad-text">3-step workflow</span> designed for speed and zero friction. <br className="md:hidden" />No fluff—just <span className="grad-text">impact.</span>

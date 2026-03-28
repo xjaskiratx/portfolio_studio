@@ -1,6 +1,5 @@
 "use client";
 
-import { m } from "framer-motion";
 
 interface MiniServiceItemProps {
   name: string;
@@ -9,7 +8,7 @@ interface MiniServiceItemProps {
 
 export function MiniServiceItem({ name, index }: MiniServiceItemProps) {
   return (
-    <m.div
+    <div
       className="rv si group/mini bg-bg p-[34px_48px] flex items-center gap-5 cursor-none transition-all duration-500 hover:bg-[#0e0e16]"
       style={{ transitionDelay: `${0.1 * index}s` }}
     >
@@ -17,6 +16,6 @@ export function MiniServiceItem({ name, index }: MiniServiceItemProps) {
       <span className="font-display font-black text-[22px] uppercase group-hover/mini:text-lime transition-colors tracking-tighter">
         {name}
       </span>
-    </m.div>
+    </div>
   );
 }

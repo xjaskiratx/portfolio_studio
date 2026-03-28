@@ -1,8 +1,9 @@
 "use client";
 
-import { m, useScroll, useTransform, useMotionValue, useSpring as useFramerSpring } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
+import styles from "./Hero.module.css";
+import btnS from "@/components/ui/Buttons.module.css";
 const HeroBackground = dynamic(() => import("./HeroBackground").then(mod => mod.HeroBackground), { ssr: false });
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -21,20 +22,26 @@ const stats = [
   { label: "Client Retention", value: "92%" },
 ];
 
-import { isSafari } from "@/lib/browser";
+import { isSafari, isMobile } from "@/lib/browser";
 
 export function Hero() {
-  const scrollProgress = useMotionValue(0);
   const [mounted, setMounted] = useState(false);
   const [fontsReady, setFontsReady] = useState(false);
   const [showScene, setShowScene] = useState(false);
+
   const heroRef = useRef<HTMLDivElement>(null);
   const defineRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
   const targetScrollRef = useRef<number>(0);
+  const rafId = useRef<number>(0);
+  
+  // Mobile Smoothness Refs (Manual Lerp)
+  const mobileTargetProgress = useRef<number>(0);
+  const mobileCurrentProgress = useRef<number>(0);
+  const mobileRafId = useRef<number>(0);
 
   useEffect(() => {
     setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
-
     if (isSafari && typeof document !== 'undefined') {
       document.fonts.ready.then(() => setFontsReady(true));
     } else {
@@ -42,75 +49,99 @@ export function Hero() {
     }
 
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        setShowScene(true);
-        // Optional: disconnect after first trigger if we want it to stay loaded
-        // observer.disconnect();
-      } else {
-        setShowScene(false);
-      }
+      setShowScene(entries[0].isIntersecting);
     }, { rootMargin: '200px' });
 
     const updateTarget = () => {
       if (!defineRef.current || !heroRef.current) return;
       const rectDefine = defineRef.current.getBoundingClientRect();
-      const rectHero = heroRef.current.getBoundingClientRect();
       const scrollY = window.scrollY;
-      const defineTopAbs = scrollY + rectDefine.top;
-      targetScrollRef.current = defineTopAbs + rectDefine.height * 0.75;
+      targetScrollRef.current = (scrollY + rectDefine.top) + rectDefine.height * 0.75;
     };
 
-    updateTarget();
-    window.addEventListener('resize', updateTarget);
+    const resizer = new ResizeObserver(() => {
+      requestAnimationFrame(updateTarget);
+    });
 
-    if (heroRef.current) {
-      observer.observe(heroRef.current);
-    }
+    // Stagger observation to avoid hydration-time reflows
+    const timer = setTimeout(() => {
+      if (heroRef.current) {
+        resizer.observe(heroRef.current);
+        observer.observe(heroRef.current);
+      }
+    }, 800);
 
     return () => {
+      clearTimeout(timer);
+      resizer.disconnect();
       observer.disconnect();
       window.removeEventListener('resize', updateTarget);
+      if (rafId.current) cancelAnimationFrame(rafId.current);
     };
   }, []);
 
-  // Sync animation perfectly with Lenis to avoid Safari jitter
-  // High-performance loop: no getBoundingClientRect() inside
-  useLenis(({ scroll }) => {
-    if (targetScrollRef.current === 0) return;
-    const p = Math.min(Math.max(scroll / targetScrollRef.current, 0), 1);
-    scrollProgress.set(p);
-  });
+  const updateProgress = (scroll: number) => {
+    if (targetScrollRef.current === 0 || !headlineRef.current) return;
 
-  // Use a subtle ease-in-out for a more premium, less "mechanical" feel
-  const fontWeight = useTransform(scrollProgress, [0, 1], [900, 100], {
-    ease: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2
-  });
-  const letterSpacing = useTransform(scrollProgress, [0, 1], ["-0.02em", "0.04em"], {
-    ease: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2
-  });
-
-  // Rule of hooks: always call useTransform at the top level
-  const fontVariationSettings = useTransform(fontWeight, (w) => `'wght' ${w}`);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const springConfig = { damping: 25, stiffness: 150 };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const { clientX, clientY } = e;
-    const { innerWidth, innerHeight } = window;
-    mouseX.set((clientX / innerWidth - 0.5) * 40);
-    mouseY.set((clientY / innerHeight - 0.5) * 40);
+    // Smooth the update with RAF
+    if (rafId.current) cancelAnimationFrame(rafId.current);
+    rafId.current = requestAnimationFrame(() => {
+      if (!headlineRef.current) return;
+      const p = Math.min(Math.max(scroll / targetScrollRef.current, 0), 1);
+      headlineRef.current.style.setProperty("--hero-p", p.toString());
+    });
   };
+
+  // 1. Lenis sync for Desktop
+  useLenis(({ scroll }) => {
+    if (isMobile) return;
+    updateProgress(scroll);
+  });
+
+  // 2. Mobile Smoothness Loop (Native Sync + Manual Lerp)
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
+
+    const updateMobileProgress = () => {
+      if (!headlineRef.current) return;
+      
+      const prev = mobileCurrentProgress.current;
+      // High-precision lerp for premium 'gummy' feel
+      mobileCurrentProgress.current = lerp(prev, mobileTargetProgress.current, 0.08);
+
+      // Apply interpolated progress
+      headlineRef.current.style.setProperty("--hero-p", mobileCurrentProgress.current.toString());
+
+      // Continue loop if still far from target
+      if (Math.abs(mobileCurrentProgress.current - mobileTargetProgress.current) > 0.0001) {
+        mobileRafId.current = requestAnimationFrame(updateMobileProgress);
+      } else {
+        mobileRafId.current = 0;
+      }
+    };
+
+    const handleScroll = () => {
+      if (targetScrollRef.current === 0) return;
+      const scrollY = window.scrollY;
+      mobileTargetProgress.current = Math.min(Math.max(scrollY / targetScrollRef.current, 0), 1);
+      
+      if (!mobileRafId.current) {
+        mobileRafId.current = requestAnimationFrame(updateMobileProgress);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (mobileRafId.current) cancelAnimationFrame(mobileRafId.current);
+    };
+  }, []);
 
   const splitText = (text: string, delay: number = 0) => {
     return text.split("").map((char, i) => (
-      <span
-        key={i}
-        className="char in"
-        style={{ transitionDelay: `${delay + i * 0.03}s` }}
-      >
+      <span key={i} className="char in" style={{ transitionDelay: `${delay + i * 0.03}s` }}>
         {char === " " ? "\u00A0" : char}
       </span>
     ));
@@ -121,22 +152,18 @@ export function Hero() {
       id="hero"
       ref={heroRef}
       className={cn(
-        "relative min-h-[100svh] flex flex-col justify-end px-16 pb-20 overflow-hidden max-[1279px]:px-[44px] max-[1023px]:px-[36px] max-[767px]:px-[24px] max-[479px]:px-[20px] max-[479px]:pb-16 transition-opacity duration-1000",
+        "relative min-h-svh flex flex-col justify-end px-16 pb-20 overflow-hidden max-[1279px]:px-11 max-[1023px]:px-9 max-[767px]:px-6 max-[479px]:px-5 max-[479px]:pb-16 transition-opacity duration-1000",
         !mounted ? "opacity-0" : "opacity-100"
       )}
-      onMouseMove={handleMouseMove}
     >
       {showScene && <HeroBackground />}
 
-      {/* Grid Overlay */}
-      <div className="absolute inset-0 pointer-events-none z-[1] opacity-[0.03] bg-[linear-gradient(90deg,rgba(200,255,0,0.5)_1px,transparent_1px),linear-gradient(rgba(200,255,0,0.5)_1px,transparent_1px)] bg-[size:100px_100px]" />
+      {/* Global "True Light" Graph Grid is now handled in globals.css */}
 
-      {/* HUD Scanline */}
       <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-lime/40 to-transparent animate-scan" style={{ top: '-10%' }} />
+        <div className="absolute left-0 right-0 h-px bg-linear-to-r from-transparent via-lime/40 to-transparent animate-scan" style={{ top: '-10%' }} />
       </div>
 
-      {/* Hudson Corners */}
       <div className="hero-hud fixed inset-0 pointer-events-none z-50 p-6 md:p-10 opacity-20">
         <div className="absolute top-0 left-0 w-24 h-24 border-t border-l border-white/20" />
         <div className="absolute top-0 right-0 w-24 h-24 border-t border-r border-white/20" />
@@ -144,27 +171,22 @@ export function Hero() {
         <div className="absolute bottom-0 right-0 w-24 h-24 border-b border-r border-white/20" />
       </div>
 
-      <div className="relative z-20 flex flex-col max-w-[1400px] mx-auto w-full">
-        <m.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row items-center md:items-center gap-2 md:gap-3 mb-8 w-full"
-        >
+      <div className="relative z-20 flex flex-col max-w-350 mx-auto w-full">
+        <div className={cn("flex flex-col md:flex-row items-center md:items-center gap-2 md:gap-3 mb-8 w-full rv", mounted && "in")}>
           <div className="w-10 h-px bg-lime/40 hidden md:block" />
-          
           <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime text-wrap-none">
             JSX W&D · DIGITAL FORGE
           </span>
-        </m.div>
+        </div>
 
-        <m.h1
-          className="hero-hl uppercase mb-fib-55 select-none"
+        <h1
+          ref={headlineRef}
+          className={`${styles.heroHl} uppercase mb-fib-55 select-none`}
           style={{
-            fontVariationSettings: fontsReady ? fontVariationSettings : "'wght' 900",
-            letterSpacing,
+            fontVariationSettings: fontsReady ? " 'wght' calc(900 - var(--hero-p, 0) * 800) " : " 'wght' 900 ",
+            letterSpacing: " calc(-0.025em + var(--hero-p, 0) * 0.08em) ",
             willChange: "font-variation-settings, letter-spacing"
-          }}
+          } as React.CSSProperties}
         >
           <div className="overflow-hidden py-2">
             <span className="block">{splitText("Design.", 0.2)}</span>
@@ -175,34 +197,28 @@ export function Hero() {
                 text="Develop."
                 className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent"
               />
-              <span className="font-body italic font-extralight text-[clamp(var(--fib-55),6vw,var(--fib-89))] normal-case text-lime/25 align-middle ml-fib-13 max-[767px]:hidden">Build.</span>
             </span>
           </div>
           <div className="overflow-hidden py-2" ref={defineRef}>
             <span className="block text-lime">{splitText("Define.", 0.6)}</span>
           </div>
-        </m.h1>
+        </h1>
 
-        <m.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12"
-        >
-          <div className="max-w-[420px] w-full">
+        <div className={cn("flex flex-col md:flex-row justify-between items-start md:items-end gap-12 rv", mounted && "in")} style={{ transitionDelay: '1s' }}>
+          <div className="max-w-105 w-full">
             <p className="text-[18px] font-light text-dim leading-[1.4] mb-8 max-[479px]:text-[15px] text-justify md:text-left [text-align-last:center] md:[text-align-last:left]">
               Crafting premium digital experiences through 1:1 collaboration. I build what agencies charge 10x for — <span className="grad-text">unmatched quality</span> with <span className="grad-text">zero handoff loss</span>.
             </p>
             <div className="flex flex-col md:flex-row items-center gap-3 w-full">
               <button
-                className="btn-p bg-lime text-bg font-display font-black text-base tracking-[0.14em] uppercase w-full md:w-auto px-9 h-[58px] flex items-center justify-center hover:bg-white transition-all cursor-none"
+                className={`${btnS.btnP} bg-lime text-bg font-display font-black text-base tracking-[0.14em] uppercase w-full md:w-auto px-9 h-14.5 flex items-center justify-center hover:bg-white transition-all cursor-none`}
                 onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
                 aria-label="View selected design and development projects"
               >
                 View My Work
               </button>
               <button
-                className="btn-o font-mono font-bold text-[13.5px] tracking-[0.16em] uppercase text-white border border-white/20 w-full md:w-auto px-8 h-[58px] flex items-center justify-center hover:text-lime hover:border-lime/40 hover:bg-white/5 transition-all cursor-none"
+                className={`${btnS.btnO} font-mono font-bold text-[13.5px] tracking-[0.16em] uppercase text-white border border-white/20 w-full md:w-auto px-8 h-14.5 flex items-center justify-center hover:text-lime hover:border-lime/40 hover:bg-white/5 transition-all cursor-none`}
                 onClick={() => window.dispatchEvent(new CustomEvent("open-contact-modal"))}
                 aria-label="Start a conversation about your project"
               >
@@ -219,11 +235,10 @@ export function Hero() {
               </div>
             ))}
           </div>
-        </m.div>
+        </div>
       </div>
 
-      {/* Decorative vertical line */}
-      <div className="absolute left-1/2 bottom-0 w-px h-24 bg-gradient-to-b from-lime/40 to-transparent z-10 hidden md:block" />
+      <div className="absolute left-1/2 bottom-0 w-px h-24 bg-linear-to-b from-lime/40 to-transparent z-10 hidden md:block" />
     </section>
   );
 }

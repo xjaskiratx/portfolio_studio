@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { m, AnimatePresence } from "framer-motion";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
+import typS from "@/styles/Typography.module.css";
+import btnS from "@/components/ui/Buttons.module.css";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -123,15 +124,10 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
   };
 
   return (
-    <m.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4, ease: "easeInOut" }}
-      onHoverStart={handleHover}
+    <div
       onMouseEnter={handleHover}
       onMouseOver={handleHover}
-      onHoverEnd={() => setIsHovered(false)}
+      onMouseLeave={() => setIsHovered(false)}
       data-cursor="cv"
       data-sc="project"
       className="group relative w-full h-full overflow-hidden cursor-none"
@@ -147,11 +143,9 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
 
       {/* Technical Scan Animation */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
-        <m.div
-          initial={{ top: "-10%" }}
-          animate={isHovered ? { top: "110%" } : { top: "-10%" }}
-          transition={{ duration: 0.65, ease: "linear" }}
-          className="absolute left-0 right-0 h-[2px] bg-lime/50 shadow-[0_0_15px_rgba(200,255,0,0.4)]"
+        <div
+          className="absolute left-0 right-0 h-[2px] bg-lime/50 shadow-[0_0_15px_rgba(200,255,0,0.4)] transition-all duration-700"
+          style={{ top: isHovered ? "110%" : "-10%" }}
         />
       </div>
 
@@ -174,7 +168,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
           </div>
         </Magnetic>
       </div>
-    </m.div>
+    </div>
   );
 }
 
@@ -208,7 +202,7 @@ export function Work() {
               <div className="w-10 h-px bg-lime/40" />
               <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">Proof of Concept</span>
             </div>
-            <h2 className="sec-title">Selected <ScrambleOutline text="Work" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /></h2>
+            <h2 className={typS.secTitle}>Selected <ScrambleOutline text="Work" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /></h2>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 rv si" style={{ transitionDelay: '0.2s' }}>
@@ -231,16 +225,17 @@ export function Work() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 w-full bg-white/[0.04] border-y border-white/[0.04] overflow-hidden">
+      <div className="flex md:grid md:grid-cols-3 w-full bg-white/[0.04] border-y border-white/[0.04] overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-hide py-10 md:py-0">
         {[0, 1, 2].map((index) => (
-          <div key={index} className="relative aspect-[4/5] md:aspect-auto md:h-[70vh] border-r border-white/[0.04] last:border-r-0 overflow-hidden">
-            <AnimatePresence mode="wait">
-              {displayProjects[index] ? (
-                <ProjectCard key={displayProjects[index].id} project={displayProjects[index]} />
-              ) : (
-                <div key={`empty-${index}`} className="w-full h-full bg-bg/50" />
-              )}
-            </AnimatePresence>
+          <div 
+            key={index} 
+            className="relative flex-none w-[88vw] md:w-full aspect-[4/5] md:aspect-auto md:h-[70vh] border-r border-white/[0.04] last:border-r-0 overflow-hidden snap-center mx-3 md:mx-0 first:ml-6 last:mr-6 md:first:ml-0 md:last:mr-0"
+          >
+            {displayProjects[index] ? (
+              <ProjectCard key={displayProjects[index].id} project={displayProjects[index]} />
+            ) : (
+              <div key={`empty-${index}`} className="w-full h-full bg-bg/50" />
+            )}
           </div>
         ))}
       </div>

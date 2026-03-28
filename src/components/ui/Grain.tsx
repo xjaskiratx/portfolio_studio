@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { isIOSSafari, isMobile } from "@/lib/browser";
+import styles from "./Grain.module.css";
 
 export function Grain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -10,11 +11,9 @@ export function Grain() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // On iOS Safari — use SVG filter instead of canvas (zero CPU, no crash risk)
-    if (isIOSSafari) {
+    // On mobile — use SVG filter instead of canvas (zero CPU, perfectly smooth)
+    if (isMobile) {
       canvas.style.display = 'none';
-      const grainDiv = document.getElementById('grain-filter');
-      if (grainDiv) grainDiv.style.display = 'block';
       return;
     }
 
@@ -28,12 +27,7 @@ export function Grain() {
 
     // Throttle: skip N frames between redraws
     const interval = isMobile ? 5 : 3;
-    let frame = 0;
-    let animationId: number;
-
     function draw() {
-      frame++;
-      if (frame % interval === 0) {
         const id = ctx!.createImageData(W, H);
         const d = id.data;
         for (let i = 0; i < d.length; i += 4) {
@@ -42,8 +36,6 @@ export function Grain() {
           d[i + 3] = 255;
         }
         ctx!.putImageData(id, 0, 0);
-      }
-      animationId = requestAnimationFrame(draw);
     }
 
     const handleResize = () => {
@@ -51,14 +43,14 @@ export function Grain() {
       H = window.innerHeight;
       canvas.width = W;
       canvas.height = H;
+      draw();
     };
 
     window.addEventListener("resize", handleResize);
-    animationId = requestAnimationFrame(draw);
+    draw();
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationId);
     };
   }, []);
 
@@ -76,7 +68,7 @@ export function Grain() {
           <feColorMatrix type="saturate" values="0" />
         </filter>
       </svg>
-      <div id="grain-filter" />
+      <div className={styles.grainFilter} />
     </>
   );
 }

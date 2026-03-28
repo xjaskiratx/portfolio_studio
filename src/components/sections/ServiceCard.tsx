@@ -1,7 +1,6 @@
 "use client";
 
-import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -18,19 +17,15 @@ interface Service {
 }
 
 export function ServiceCard({ service }: { service: Service }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), { damping: 25, stiffness: 150 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-13, 13]), { damping: 25, stiffness: 150 });
-  const scale = useSpring(1, { damping: 25, stiffness: 150 });
+  const [tilt, setTilt] = useState({ x: 0, y: 0, s: 1 });
+  const [mPos, setMPos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
   const rectRef = useRef<DOMRect | null>(null);
 
   const onMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     rectRef.current = e.currentTarget.getBoundingClientRect();
-    scale.set(1.02);
+    setTilt(prev => ({ ...prev, s: 1.02 }));
+    setIsHovered(true);
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -39,36 +34,37 @@ export function ServiceCard({ service }: { service: Service }) {
     
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
-    x.set(px);
-    y.set(py);
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
+    
+    setTilt({ x: py * -10, y: px * 13, s: 1.02 });
+    setMPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
   const onMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-    scale.set(1);
+    setTilt({ x: 0, y: 0, s: 1 });
+    setIsHovered(false);
     rectRef.current = null;
   };
 
   return (
-    <m.div
-      style={{ rotateX, rotateY, scale, perspective: 1000 }}
+    <div
       onMouseEnter={onMouseEnter}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      className="group relative bg-bg p-12 md:p-[58px_48px] overflow-hidden cursor-none transition-all duration-500 hover:bg-[#090912] rv sp border border-white/[0.03]"
+      style={{ 
+        transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${tilt.s})`,
+        transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s ease'
+      }}
+      className="group relative bg-bg p-12 md:p-[58px_48px] overflow-hidden cursor-none hover:bg-[#090912] rv sp border border-white/[0.03]"
     >
       {/* Glow */}
-      <m.div 
+      <div 
         className="absolute w-[320px] h-[320px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-0"
         style={{
-          left: mouseX,
-          top: mouseY,
+          left: mPos.x,
+          top: mPos.y,
           background: "radial-gradient(circle, rgba(200,255,0,0.1), transparent 70%)",
-          translateX: "-50%",
-          translateY: "-50%",
+          transform: "translate(-50%, -50%)",
+          transition: 'opacity 0.5s ease'
         }}
       />
       
@@ -92,6 +88,6 @@ export function ServiceCard({ service }: { service: Service }) {
           ))}
         </ul>
       </div>
-    </m.div>
+    </div>
   );
 }

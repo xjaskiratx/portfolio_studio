@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
     const { data, error } = await resend.emails.send({
       from: "JSX W&D Portfolio <onboarding@resend.dev>", // Replace with verified domain for production
-      to: ["hello@jsxwd.com"],
+      to: ["jaskirat06jan@gmail.com"],
       subject: `New Inquiry: ${selectedOpt} from ${name}`,
       react: ContactEmail({ 
         name, 

@@ -61,18 +61,6 @@ export default function RootLayout({
         <style dangerouslySetInnerHTML={{ __html: `html,body{background:#05050a;color:#ede9df;}` }} />
       </head>
       <body className="bg-bg text-txt font-body selection:bg-lime/30 selection:text-lime">
-        {/* Global Blueprint Grid */}
-        <div
-          className="fixed inset-0 pointer-events-none z-[5] opacity-[0.05]"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(200, 255, 0, 1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(200, 255, 0, 1) 1px, transparent 1px)
-            `,
-            backgroundSize: '130px 130px',
-            backgroundPosition: '70px 149px',
-          }}
-        />
         <ThreePatchInitializer />
         <Preloader />
         <ScrollProgress />

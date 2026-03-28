@@ -1,4 +1,12 @@
 import { ScrambleInView } from "@/components/ui/ScrambleInView";
+import typS from "@/styles/Typography.module.css";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
 
 const philosophy = [
@@ -23,7 +31,7 @@ export function About() {
               <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">The Solo Studio Forge</span>
             </div>
 
-            <h2 className="sec-title mb-12 max-[767px]:!text-[48px] max-[767px]:!leading-[1.1]">
+            <h2 className={cn(typS.secTitle, "mb-12 max-[767px]:!text-[48px] max-[767px]:!leading-[1.1]")}>
               <span className="inline-block whitespace-nowrap">Solo <ScrambleOutline text="Power," className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /></span><br />
               <span className="inline-block whitespace-nowrap">Agency <span className="text-lime"><ScrambleInView text="Results." /></span></span>
             </h2>

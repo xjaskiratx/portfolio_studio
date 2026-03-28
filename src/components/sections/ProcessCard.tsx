@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { m } from "framer-motion";
 
 export interface ForgeStep {
   num: string;
@@ -17,17 +16,14 @@ interface ProcessCardProps {
 
 export function ProcessCard({ step, index, isLast }: ProcessCardProps) {
   return (
-    <m.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true }}
-      className="group relative bg-bg/80 backdrop-blur-sm p-8 md:p-10 lg:p-11 overflow-hidden cursor-none transition-all duration-500 hover:bg-bg/40 z-20"
+    <div
+      className="group relative bg-bg/95 lg:bg-bg/80 lg:backdrop-blur-sm p-8 md:p-10 lg:p-11 overflow-hidden cursor-none transition-all duration-500 hover:bg-bg/40 z-20 rv"
+      style={{ transitionDelay: `${index * 0.15}s` } as any}
     >
       {!isLast && (
         <div className="absolute top-1/2 -right-[2px] w-[4px] h-[60%] -translate-y-1/2 bg-gradient-to-b from-transparent via-lime/20 to-transparent hidden lg:block z-0" />
       )}
-      <div className="absolute top-[-20px] left-[-20px] font-mono text-[160px] text-white/[0.02] font-black select-none pointer-events-none group-hover:text-lime/[0.04] transition-colors duration-700">{step.num}</div>
+      <div className="absolute top-[-20px] left-[-20px] font-mono text-[160px] text-white/[0.06] font-black select-none pointer-events-none group-hover:text-lime/[0.12] transition-colors duration-700">{step.num}</div>
 
       <div className="relative z-10">
         <div className="flex items-center gap-3 mb-6">
@@ -53,6 +49,6 @@ export function ProcessCard({ step, index, isLast }: ProcessCardProps) {
         </ul>
       </div>
       <div className="absolute bottom-0 left-0 w-full h-[3px] bg-lime scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
-    </m.div>
+    </div>
   );
 }

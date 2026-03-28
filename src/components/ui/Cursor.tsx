@@ -21,8 +21,10 @@ export function Cursor() {
   
   const mousePos = useRef({ x: 0, y: 0 });
   const springPos = useRef({ x: 0, y: 0 });
-  const [displayPos, setDisplayPos] = useState({ x: 0, y: 0 });
-  const [springDisplayPos, setSpringDisplayPos] = useState({ x: 0, y: 0 });
+  
+  const cdotRef = useRef<HTMLDivElement>(null);
+  const cringRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
 
   // Trail Dot Pool state
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,11 +40,21 @@ export function Cursor() {
       const dx = mousePos.current.x - springPos.current.x;
       const dy = mousePos.current.y - springPos.current.y;
       
-      springPos.current.x += dx * 0.15;
-      springPos.current.y += dy * 0.15;
+      springPos.current.x += dx * 0.08;
+      springPos.current.y += dy * 0.08;
       
-      setSpringDisplayPos({ x: springPos.current.x, y: springPos.current.y });
-      setDisplayPos({ x: mousePos.current.x, y: mousePos.current.y });
+      // Direct DOM updates to bypass React re-renders and state lag
+      if (cdotRef.current) {
+        cdotRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) translate(-50%, -50%)`;
+      }
+      
+      const ringTransform = `translate3d(${springPos.current.x}px, ${springPos.current.y}px, 0) translate(-50%, -50%)`;
+      if (cringRef.current) {
+        cringRef.current.style.transform = ringTransform;
+      }
+      if (labelRef.current) {
+        labelRef.current.style.transform = ringTransform;
+      }
 
       rafRef.current = requestAnimationFrame(updateSpring);
     };
@@ -193,40 +205,36 @@ export function Cursor() {
       {/* Center Dot */}
       <div
         id="cdot"
-        className="cursor-chrome fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[200001] bg-lime transition-transform duration-300"
+        ref={cdotRef}
+        className="cursor-chrome fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[200001] bg-lime"
         style={{
-          transform: `translate3d(${displayPos.x}px, ${displayPos.y}px, 0) translate(-50%, -50%) scale(${
-            cursorState === "ch" ? 0.6 : cursorState === "cv" ? 0.5 : 1
-          })`,
           mixBlendMode: "difference",
           opacity: cursorState === "cv" ? 0.5 : 1,
+          willChange: "transform"
         }}
       />
       {/* Outer Ring */}
       <div
         id="cring"
-        className="cursor-chrome fixed top-0 left-0 border border-lime/35 pointer-events-none z-[200000] transition-[border-color,background-color,transform] duration-300 ease-out"
+        ref={cringRef}
+        className="cursor-chrome fixed top-0 left-0 border border-lime/35 pointer-events-none z-[200000] transition-[border-color,background-color] duration-300 ease-out"
         style={{
           width: '42px',
           height: '42px',
           borderRadius: cursorState === "cta" ? "4px" : "50%",
-          transform: `translate3d(${springDisplayPos.x}px, ${springDisplayPos.y}px, 0) translate(-50%, -50%) scale(${
-            cursorState === "ch" ? 1.47 : cursorState === "cv" ? 1.95 : cursorState === "cta" ? 2.14 : 1
-          })`,
           borderColor: cursorState ? "rgba(200, 255, 0, 0.65)" : "rgba(200, 255, 0, 0.35)",
           backgroundColor: cursorState === "cv" ? "rgba(200, 255, 0, 0.06)" : "rgba(0, 0, 0, 0)",
+          willChange: "transform"
         }}
       />
       
       {/* Context Label */}
       <div
+        ref={labelRef}
         className={cn(
           "cursor-chrome fixed top-0 left-0 pointer-events-none z-[200000] font-mono text-[8.5px] tracking-[0.12em] uppercase text-lime whitespace-nowrap text-center font-bold transition-opacity duration-300",
           labels[cursorState] ? "opacity-100" : "opacity-0"
         )}
-        style={{
-          transform: `translate3d(${springDisplayPos.x}px, ${springDisplayPos.y}px, 0) translate(-50%, -50%)`,
-        }}
       >
         {labels[cursorState]}
       </div>

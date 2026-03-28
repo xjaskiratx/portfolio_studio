@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { m, AnimatePresence } from "framer-motion";
 import { useLenis } from "lenis/react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import Magnetic from "./Magnetic";
+import btnS from "./Buttons.module.css";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -110,7 +110,7 @@ export function PillNav({ onHireMe }: PillNavProps) {
       className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-[800] transition-opacity duration-400 ease-out w-fit min-w-[220px] max-w-[90vw] md:w-auto"
     >
       <div className="relative">
-        <m.div
+        <div
           className="pill-track relative flex items-center bg-[rgba(13,13,21,0.86)] backdrop-blur-[28px] border border-white/10 shadow-[0_12px_44px_rgba(0,0,0,0.5)] transition-all duration-500 rounded-full p-1 md:p-1.5 gap-0"
         >
           {/* Mobile Layout: Dynamic Section Label + Hire Me */}
@@ -142,7 +142,8 @@ export function PillNav({ onHireMe }: PillNavProps) {
                     onClick={(e) => { e.stopPropagation(); scrollTo(item.id); }}
                     aria-label={`Scroll to ${item.label} section`}
                     className={cn(
-                      "p-item font-mono text-[11.5px] tracking-[0.12em] uppercase transition-all duration-300 cursor-none select-none px-4 flex items-center justify-center rounded-full h-[38px] leading-none",
+                      btnS.pItem,
+                      "font-mono text-[11.5px] tracking-[0.12em] uppercase transition-all duration-300 cursor-none select-none px-4 flex items-center justify-center rounded-full h-[38px] leading-none",
                       activeTab === item.id
                         ? "bg-lime text-bg font-bold shadow-[0_0_20px_rgba(200,255,0,0.2)]"
                         : "text-white/72 hover:text-white"
@@ -164,13 +165,13 @@ export function PillNav({ onHireMe }: PillNavProps) {
                 onClick={(e) => { e.stopPropagation(); onHireMe(); }}
                 data-cursor="cta"
                 aria-label="Open contact form to hire me"
-                className="p-cta font-mono text-[11.5px] tracking-[0.12em] uppercase text-lime border border-lime/25 px-5 h-[38px] flex items-center justify-center rounded-full transition-all duration-300 ease-out hover:bg-lime/10 hover:border-lime/60 hover:shadow-[0_0_25px_rgba(200,255,0,0.1)] cursor-none leading-none whitespace-nowrap"
+                className={`${btnS.pCta} font-mono text-[11.5px] tracking-[0.12em] uppercase text-lime border border-lime/25 px-5 h-[38px] flex items-center justify-center rounded-full transition-all duration-300 ease-out hover:bg-lime/10 hover:border-lime/60 hover:shadow-[0_0_25px_rgba(200,255,0,0.1)] cursor-none leading-none whitespace-nowrap`}
               >
                 Hire&nbsp;Me →
               </button>
             </Magnetic>
           </div>
-        </m.div>
+        </div>
       </div>
     </nav>
   );

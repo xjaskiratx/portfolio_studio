@@ -1,53 +1,74 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!%^&*ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!%^&*";
 
 export function ScrambleText({ text, trigger, duration = 0.28 }: { text: string; trigger?: boolean; duration?: number }) {
-  const [display, setDisplay] = useState(text);
+  const displayRef = useRef<HTMLSpanElement>(null);
+  const rafRef = useRef<number>(0);
 
   const scramble = useCallback(() => {
+    if (!displayRef.current) return;
+    
     let iteration = -4;
-    const interval = setInterval(() => {
-      setDisplay(
-        text
-          .split("")
-          .map((char, index) => {
-            if (index < iteration) return text[index];
-            if (char === " ") return " ";
-            return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
-          })
-          .join("")
-      );
+    const startTime = performance.now();
+    const totalDuration = duration * 1000;
 
-      if (iteration >= text.length) {
-        clearInterval(interval);
+    let lastScrambleTime = 0;
+    const animate = (now: number) => {
+      if (!displayRef.current) return;
+      
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / totalDuration, 1);
+      const iteration = Math.floor(text.length * progress);
+
+      // Optimized scramble loop: 24ms throttle for denser 'flicker' on mobile
+      if (now - lastScrambleTime > 24 || progress === 1) {
+        lastScrambleTime = now;
+        
+        const result = new Array(text.length);
+        const glyphsLen = GLYPHS.length;
+        
+        for (let i = 0; i < text.length; i++) {
+          if (i < iteration) {
+            result[i] = text[i];
+          } else if (text[i] === " ") {
+            result[i] = " ";
+          } else {
+            // Faster random selection
+            result[i] = GLYPHS[(Math.random() * glyphsLen) | 0];
+          }
+        }
+        displayRef.current.textContent = result.join("");
       }
 
-      // Ultra-fast settle
-      iteration += (text.length / (duration * 62)) * 4.5;
-    }, 16);
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(animate);
+      } else {
+        displayRef.current.textContent = text;
+      }
+    };
 
-    return () => clearInterval(interval);
+    rafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafRef.current);
   }, [text, duration]);
 
   useEffect(() => {
-    if (!trigger) return;
+    if (!trigger) {
+      if (displayRef.current) displayRef.current.textContent = text;
+      return;
+    }
     return scramble();
   }, [trigger, text, scramble]);
-
-  useEffect(() => {
-    setDisplay(text);
-  }, [text]);
 
   return (
     <span className="relative inline-block whitespace-nowrap">
       <span className="invisible" aria-hidden="true">
         {text}
       </span>
-      <span className="absolute inset-0 tracking-normal text-left">
-        {display}
+      <span ref={displayRef} className="absolute inset-0 tracking-normal text-left">
+        {text}
       </span>
     </span>
   );

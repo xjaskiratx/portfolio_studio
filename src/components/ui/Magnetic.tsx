@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useRef, useState, ReactNode } from "react";
-import { m } from "framer-motion";
+import React, { useRef, useState, useEffect, ReactNode } from "react";
 
 interface MagneticProps {
   children: ReactNode;
@@ -19,8 +18,12 @@ export default function Magnetic({ children, strength = 0.35 }: MagneticProps) {
     }
   };
 
+  useEffect(() => {
+    window.addEventListener('resize', updateRect);
+    return () => window.removeEventListener('resize', updateRect);
+  }, []);
+
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!rectRef.current) updateRect();
     const rect = rectRef.current;
     if (!rect) return;
     
@@ -40,15 +43,18 @@ export default function Magnetic({ children, strength = 0.35 }: MagneticProps) {
   };
 
   return (
-    <m.div
+    <div
       ref={ref}
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      animate={{ x: position.x, y: position.y }}
-      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+      style={{
+        transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
+        transition: 'transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)'
+      }}
+      className="inline-block"
     >
       {children}
-    </m.div>
+    </div>
   );
 }

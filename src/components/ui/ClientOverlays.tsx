@@ -62,14 +62,13 @@ export function ClientOverlays() {
       const observer = new IntersectionObserver(handleIntersect, observerOptions);
       sectionElements.forEach(el => observer.observe(el));
 
-      (window as any)._overlayObserver = observer;
+      return () => {
+        observer.disconnect();
+      };
     }, 800);
 
     return () => {
       clearTimeout(timer);
-      if ((window as any)._overlayObserver) {
-        (window as any)._overlayObserver.disconnect();
-      }
     };
   }, []);
 

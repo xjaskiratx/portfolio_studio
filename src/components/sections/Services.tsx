@@ -1,4 +1,5 @@
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
+import typS from "@/styles/Typography.module.css";
 import { ServiceCard } from "./ServiceCard";
 // import { MiniServiceItem } from "./MiniServiceItem";
 
@@ -86,7 +87,8 @@ export function Services() {
             <div className="w-10 h-px bg-lime/40" />
             <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">What I Do</span>
           </div>
-          <h2 className="sec-title">Built For <ScrambleOutline text="Real" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> World</h2>
+          {/* Heading with focal scramble animation for 'Real' */}
+          <h2 className={typS.secTitle}>Built For <ScrambleOutline text="Real" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> World</h2>
         </div>
         <p className="rv text-[18px] font-light text-dim max-w-[460px] leading-[1.4] group">
           End-to-end execution, from <span className="grad-text">concept to deployment.</span> Fast, scalable and built for  <span className="grad-text">real-world performance.</span>

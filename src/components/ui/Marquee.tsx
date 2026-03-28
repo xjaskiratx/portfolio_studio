@@ -47,7 +47,7 @@ export function Marquee({
         {content.map((item, i) => (
           <div key={i} className="flex items-center">
             <span className={cn(
-              "font-display font-bold uppercase tracking-widest px-[22px]",
+              "font-display font-bold uppercase tracking-widest px-5.5",
               variant === "lime" ? "text-sm" : "text-[15px]"
             )}>
               {item}
