@@ -1,9 +1,24 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./animations.css";
+import localFont from "next/font/local";
 import { ThreePatchInitializer } from "@/components/ThreePatchInitializer";
-import { FramerProvider } from "@/components/FramerProvider";
 import { Preloader } from "@/components/ui/Preloader";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+
+const bigShoulders = localFont({
+  src: "../../public/fonts/BigShoulders-VariableFont_opsz,wght.ttf",
+  variable: "--font-big-shoulders",
+  weight: "100 900",
+  display: "swap",
+});
+
+const spaceGrotesk = localFont({
+  src: "../../public/fonts/SpaceGrotesk-VariableFont_wght.ttf",
+  variable: "--font-space-grotesk",
+  weight: "100 900",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://jsx-wd.com"),
@@ -38,16 +53,30 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="antialiased"
+      className={`${bigShoulders.variable} ${spaceGrotesk.variable} antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <meta httpEquiv="Content-Security-Policy" content="font-src 'self' data: blob:;" />
+        <style dangerouslySetInnerHTML={{ __html: `html,body{background:#05050a;color:#ede9df;}` }} />
+      </head>
       <body className="bg-bg text-txt font-body selection:bg-lime/30 selection:text-lime">
-        <FramerProvider>
-          <ThreePatchInitializer />
-          <Preloader />
-          <ScrollProgress />
-          {children}
-        </FramerProvider>
+        {/* Global Blueprint Grid */}
+        <div
+          className="fixed inset-0 pointer-events-none z-[5] opacity-[0.05]"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(200, 255, 0, 1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(200, 255, 0, 1) 1px, transparent 1px)
+            `,
+            backgroundSize: '130px 130px',
+            backgroundPosition: '70px 149px',
+          }}
+        />
+        <ThreePatchInitializer />
+        <Preloader />
+        <ScrollProgress />
+        {children}
       </body>
     </html>
   );

@@ -1,0 +1,15 @@
+.secTitle {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(var(--fib-55), 6.5vw, var(--fib-89));
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.ctaHead {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(44px, 11vw, 84px);
+  line-height: 0.9;
+}

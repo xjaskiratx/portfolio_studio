@@ -1,0 +1,35 @@
+@keyframes scan {
+  0% { transform: translateY(-10vh); opacity: 0; }
+  3% { opacity: 1; }
+  94% { transform: translateY(110vh); opacity: 0.08; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
+@keyframes gfloat {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-14px) rotate(8deg); }
+}
+
+@keyframes gspin { to { transform: rotate(360deg); } }
+
+@keyframes bigdrift {
+  from { transform: translateX(-16px) rotate(-2.5deg); }
+  to { transform: translateX(16px) rotate(2.5deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.6); }
+}
+
+
+@keyframes fade-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+

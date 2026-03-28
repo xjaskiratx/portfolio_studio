@@ -1,0 +1,7 @@
+.heroHl {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(var(--fib-89), 13vw, calc(var(--fib-144) + var(--fib-55)));
+  line-height: 0.769;
+  text-transform: uppercase;
+}
