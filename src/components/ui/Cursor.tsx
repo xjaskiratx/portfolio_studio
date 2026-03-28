@@ -1,39 +1,61 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { m, useSpring, useMotionValue, AnimatePresence } from "framer-motion";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 import { isSafari } from "@/lib/browser";
 
 export function Cursor() {
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [isSafariBrowser, setIsSafariBrowser] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(() => 
-    typeof window !== 'undefined' ? window.matchMedia("(pointer: coarse)").matches : false
-  );
+  
+  useEffect(() => {
+    setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
+    setIsSafariBrowser(isSafari);
+  }, []);
   const [cursorState, setCursorState] = useState<"" | "ch" | "cv" | "cta" | "cdrag">("");
   
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
   const mousePos = useRef({ x: 0, y: 0 });
-
-  const springConfig = { damping: 25, stiffness: 250 };
-  const springX = useSpring(mouseX, springConfig);
-  const springY = useSpring(mouseY, springConfig);
+  const springPos = useRef({ x: 0, y: 0 });
+  const [displayPos, setDisplayPos] = useState({ x: 0, y: 0 });
+  const [springDisplayPos, setSpringDisplayPos] = useState({ x: 0, y: 0 });
 
   // Trail Dot Pool state
   const containerRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<Array<{ el: HTMLDivElement; x: number; y: number; active: boolean; age: number }>>([]);
   const rafRef = useRef<number | null>(null);
 
-  // 1. Cursor Trail — Dot Pool Logic (Hard Disabled on Safari for Performance)
+  // 1. Cursor Smoothing (Spring Logic)
   useEffect(() => {
-    setIsSafariBrowser(isSafari);
-    setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
+    if (isTouchDevice) return;
 
-    if (isTouchDevice || isSafariBrowser) {
-      if (containerRef.current) containerRef.current.innerHTML = "";
-      dotsRef.current = [];
-      return;
-    }
+    const updateSpring = () => {
+      // Lerp for the outer ring "spring" effect
+      const dx = mousePos.current.x - springPos.current.x;
+      const dy = mousePos.current.y - springPos.current.y;
+      
+      springPos.current.x += dx * 0.15;
+      springPos.current.y += dy * 0.15;
+      
+      setSpringDisplayPos({ x: springPos.current.x, y: springPos.current.y });
+      setDisplayPos({ x: mousePos.current.x, y: mousePos.current.y });
+
+      rafRef.current = requestAnimationFrame(updateSpring);
+    };
+
+    rafRef.current = requestAnimationFrame(updateSpring);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [isTouchDevice]);
+
+  // 2. Trail Dot — Dot Pool Logic
+  useEffect(() => {
+    if (isTouchDevice || isSafariBrowser) return;
 
     const poolSize = 16;
     const container = containerRef.current;
@@ -42,7 +64,6 @@ export function Cursor() {
     container.innerHTML = "";
     dotsRef.current = [];
 
-    // Initialize Pool
     for (let i = 0; i < poolSize; i++) {
       const el = document.createElement("div");
       el.className = "trail-dot";
@@ -52,9 +73,9 @@ export function Cursor() {
 
     let lastTime = 0;
     let spawnTimer = 0;
-    const spawnRate = 30; // ms
+    const spawnRate = 30;
 
-    const update = (time: number) => {
+    const updateTrail = (time: number) => {
       const dt = time - lastTime;
       lastTime = time;
       spawnTimer += dt;
@@ -69,8 +90,8 @@ export function Cursor() {
           if (!d.active) {
             d.active = true;
             d.age = 0;
-            d.x = mouseX.get();
-            d.y = mouseY.get();
+            d.x = mousePos.current.x;
+            d.y = mousePos.current.y;
             d.el.style.opacity = "1";
             d.el.style.transform = `translate3d(${d.x}px, ${d.y}px, 0) scale(1)`;
             spawned++;
@@ -90,23 +111,27 @@ export function Cursor() {
         d.el.style.opacity = s.toString();
         d.el.style.transform = `translate3d(${d.x}px, ${d.y}px, 0) scale(${s})`;
       });
-
-      rafRef.current = requestAnimationFrame(update);
     };
 
-    rafRef.current = requestAnimationFrame(update);
+    // Note: Trail is updated in the same RAF loop if desired, but we'll separate for clarity if needed.
+    // Actually, we can hook it into the main loop or have its own.
+    const trailLoop = (time: number) => {
+        updateTrail(time);
+        requestAnimationFrame(trailLoop);
+    };
+    const trailRaf = requestAnimationFrame(trailLoop);
 
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(trailRaf);
       if (container) container.innerHTML = "";
       dotsRef.current = [];
     };
-  }, [mouseX, mouseY, isTouchDevice, isSafariBrowser]);
+  }, [isTouchDevice, isSafariBrowser]);
 
   useEffect(() => {
+    if (isTouchDevice) return;
+
     const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
       mousePos.current = { x: e.clientX, y: e.clientY };
     };
 
@@ -138,7 +163,7 @@ export function Cursor() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
     };
-  }, [mouseX, mouseY]);
+  }, [isTouchDevice]);
 
   const labels = {
     cv: "View Project",
@@ -166,62 +191,45 @@ export function Cursor() {
       <div ref={containerRef} id="trail-container" className="cursor-chrome fixed inset-0 pointer-events-none z-[9990]" />
 
       {/* Center Dot */}
-      <m.div
+      <div
         id="cdot"
-        className="cursor-chrome fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[200001] bg-lime"
+        className="cursor-chrome fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[200001] bg-lime transition-transform duration-300"
         style={{
-          x: mouseX,
-          y: mouseY,
-          translateX: "-50%",
-          translateY: "-50%",
+          transform: `translate3d(${displayPos.x}px, ${displayPos.y}px, 0) translate(-50%, -50%) scale(${
+            cursorState === "ch" ? 0.6 : cursorState === "cv" ? 0.5 : 1
+          })`,
           mixBlendMode: "difference",
-          opacity: 1,
-        }}
-        animate={{
-          scale: cursorState === "ch" ? 0.6 : cursorState === "cv" ? 0.5 : 1,
           opacity: cursorState === "cv" ? 0.5 : 1,
         }}
       />
       {/* Outer Ring */}
-      <m.div
+      <div
         id="cring"
-        className="cursor-chrome fixed top-0 left-0 border border-lime/35 pointer-events-none z-[200000]"
+        className="cursor-chrome fixed top-0 left-0 border border-lime/35 pointer-events-none z-[200000] transition-[border-color,background-color,transform] duration-300 ease-out"
         style={{
-          x: springX,
-          y: springY,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-        animate={{
-          width: cursorState === "ch" ? 62 : cursorState === "cv" ? 82 : cursorState === "cta" ? 90 : 42,
-          height: cursorState === "ch" ? 62 : cursorState === "cv" ? 82 : cursorState === "cta" ? 90 : 42,
+          width: '42px',
+          height: '42px',
           borderRadius: cursorState === "cta" ? "4px" : "50%",
+          transform: `translate3d(${springDisplayPos.x}px, ${springDisplayPos.y}px, 0) translate(-50%, -50%) scale(${
+            cursorState === "ch" ? 1.47 : cursorState === "cv" ? 1.95 : cursorState === "cta" ? 2.14 : 1
+          })`,
           borderColor: cursorState ? "rgba(200, 255, 0, 0.65)" : "rgba(200, 255, 0, 0.35)",
           backgroundColor: cursorState === "cv" ? "rgba(200, 255, 0, 0.06)" : "rgba(0, 0, 0, 0)",
         }}
-        transition={{ type: "spring", damping: 30, stiffness: 200 }}
       />
       
       {/* Context Label */}
-      <AnimatePresence>
-        {labels[cursorState] && (
-          <m.div
-            key={cursorState}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="cursor-chrome fixed top-0 left-0 pointer-events-none z-[200000] font-mono text-[8.5px] tracking-[0.12em] uppercase text-lime whitespace-nowrap text-center font-bold"
-            style={{
-              x: springX,
-              y: springY,
-              translateX: "-50%",
-              translateY: "-50%",
-            }}
-          >
-            {labels[cursorState]}
-          </m.div>
+      <div
+        className={cn(
+          "cursor-chrome fixed top-0 left-0 pointer-events-none z-[200000] font-mono text-[8.5px] tracking-[0.12em] uppercase text-lime whitespace-nowrap text-center font-bold transition-opacity duration-300",
+          labels[cursorState] ? "opacity-100" : "opacity-0"
         )}
-      </AnimatePresence>
+        style={{
+          transform: `translate3d(${springDisplayPos.x}px, ${springDisplayPos.y}px, 0) translate(-50%, -50%)`,
+        }}
+      >
+        {labels[cursorState]}
+      </div>
     </>
   );
 }
