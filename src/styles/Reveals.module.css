@@ -1,0 +1,64 @@
+/* Keyframes for reveal animations */
+@keyframes draw-path {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes typing {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes gradmove {
+  to { background-position: 200% center; }
+}
+
+/* Global-like classes but scoped to this module for better chunking if needed.
+   However, useReveal uses string matches, so we'll keep these global but move them 
+   to a file that is NOT imported in Root Layout's critical path. */
+
+:global(.rv) {
+  opacity: 0;
+  transform: translateY(var(--fib-34));
+  transition: opacity .85s var(--transition-ease), transform .85s var(--transition-ease);
+  will-change: transform;
+}
+:global(.rv.in) { opacity: 1; transform: translateY(0); }
+
+:global(.wipe) {
+  -webkit-clip-path: inset(0 0 100% 0);
+          clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.05s var(--transition-ease), -webkit-clip-path 1.05s var(--transition-ease);
+  will-change: clip-path, -webkit-clip-path;
+}
+:global(.wipe.in) {
+  -webkit-clip-path: inset(0 0 0% 0);
+          clip-path: inset(0 0 0% 0);
+}
+
+:global(.swipe) {
+  -webkit-clip-path: inset(0 100% 0 0);
+          clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.05s var(--transition-ease), -webkit-clip-path 1.05s var(--transition-ease);
+  will-change: clip-path, -webkit-clip-path;
+}
+:global(.swipe.in) {
+  -webkit-clip-path: inset(0 0% 0 0);
+          clip-path: inset(0 0% 0 0);
+}
+
+:global(.char) {
+  display: inline-block;
+  transform: translateY(var(--fib-55)) rotateX(-45deg);
+  opacity: 0;
+  transform-origin: bottom center;
+  transition: transform .7s var(--transition-spring), opacity .5s var(--transition-ease);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+:global(.char.in) { transform: translateY(0) rotateX(0); opacity: 1; }
+
+@media (max-width: 767px) {
+  :global(.rv) { transform: translateY(8px); }
+  :global(.char) { transform: none !important; rotate: 0 !important; transition: opacity .4s var(--transition-ease) !important; }
+}

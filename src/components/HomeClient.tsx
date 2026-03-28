@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Marquee } from "@/components/ui/Marquee";
+const Marquee = dynamic(() => import("@/components/ui/Marquee").then(mod => mod.Marquee), { ssr: false });
 
 const Hero = dynamic(() => import("@/components/sections/Hero").then(mod => mod.Hero), { 
   ssr: false,

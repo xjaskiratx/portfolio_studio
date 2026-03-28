@@ -6,6 +6,9 @@ export function useReveal() {
   const observedElements = useRef<Set<Element>>(new Set());
 
   useEffect(() => {
+    // Dynamically load reveal styles to keep them out of critical path
+    import("@/styles/Reveals.module.css");
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -15,7 +18,10 @@ export function useReveal() {
           }
         });
       },
-      { threshold: 0.1 }
+      { 
+        threshold: 0.02,
+        rootMargin: "0px 0px -50px 0px" 
+      }
     );
 
     const scanAndObserve = () => {
@@ -38,20 +44,19 @@ export function useReveal() {
       });
     };
 
-    // Initial scan
-    scanAndObserve();
+    // Initial scan — defer to after first paint
+    requestAnimationFrame(scanAndObserve);
 
-    // Watch for new elements being added to the DOM with throttled scans
-    const mutationObserver = new MutationObserver(throttledScan);
-
-    mutationObserver.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
+    // Re-scan after a few intervals to catch elements that load late (e.g. Hero scene)
+    const t1 = setTimeout(scanAndObserve, 100);
+    const t2 = setTimeout(scanAndObserve, 500);
+    const t3 = setTimeout(scanAndObserve, 2000);
 
     return () => {
       observer.disconnect();
-      mutationObserver.disconnect();
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
       observedElements.current.clear();
     };
   }, []);

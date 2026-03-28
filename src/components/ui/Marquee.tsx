@@ -14,6 +14,8 @@ interface MarqueeProps {
   variant?: "lime" | "dark";
 }
 
+import styles from "./Marquee.module.css";
+
 export function Marquee({
   items,
   separator = "✦",
@@ -28,15 +30,15 @@ export function Marquee({
     <div 
       data-cursor="ch"
       className={cn(
-        "overflow-hidden whitespace-nowrap user-select-none py-3 flex items-center border-y border-border-subtle group my-12 md:my-20",
+        styles.marqueeContainer,
         variant === "lime" ? "bg-lime text-bg" : "bg-bg2 text-white/80",
         className
       )}
     >
       <div
         className={cn(
-          "flex shrink-0 items-center min-w-full",
-          direction === "left" ? "animate-marquee-left" : "animate-marquee-right"
+          styles.marqueeTrack,
+          direction === "left" ? styles.animateLeft : styles.animateRight
         )}
         style={{ 
           animationDuration: `${speed}s`,
