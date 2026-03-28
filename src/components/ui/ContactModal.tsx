@@ -42,8 +42,17 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
         setShouldRender(false);
         document.body.style.overflow = "auto";
       }, 500);
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        // Fallback: if unmounted while closing, ensure overflow is restored
+        document.body.style.overflow = "auto";
+      };
     }
+    
+    // Global cleanup for unmount
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [isOpen]);
 
   const handleSubmit = async () => {

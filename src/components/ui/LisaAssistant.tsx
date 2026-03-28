@@ -39,9 +39,9 @@ export function LisaAssistant() {
   const [isTyping, setIsTyping] = useState(false);
   const [reply, setReply] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  
   const [shouldRender, setShouldRender] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (open) {
@@ -54,14 +54,26 @@ export function LisaAssistant() {
     }
   }, [open]);
 
+  // Cleanup for unmount
+  useEffect(() => {
+    return () => {
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    };
+  }, []);
+
   const handleOption = (id: string) => {
     if (isTyping) return;
+    
+    // Clear any existing typing timeout
+    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    
     setSelected(id);
     setIsTyping(true);
     setReply(null);
-    setTimeout(() => {
+    typingTimeoutRef.current = setTimeout(() => {
       setReply(REPLIES[id]);
       setIsTyping(false);
+      typingTimeoutRef.current = null;
     }, 900);
   };
 

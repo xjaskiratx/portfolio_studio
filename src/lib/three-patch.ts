@@ -1,20 +1,16 @@
-import * as THREE from "three";
-
-/**
- * Patch THREE.Clock globally to use THREE.Timer-based implementation.
- * This resolves deprecation warnings from libraries like @react-three/fiber
- * that still use THREE.Clock internally with Three.js r183+.
- */
-
-// Silence THREE.Clock warnings by intercepting console.warn
+// Only silence specific deprecation warnings related to THREE.Clock
+// to avoid hiding real issues in custom Three.js code.
 if (typeof window !== "undefined") {
   console.log("🛠️ THREE patch: Initializing console.warn interceptor...");
   const originalConsoleWarn = console.warn;
-  console.warn = function (...args: any[]) {
+  console.warn = function (...args: unknown[]) {
     const msg = args[0] ? String(args[0]) : "";
+    // Only silence specific deprecation warnings related to THREE.Clock
+    // to avoid hiding real issues in custom Three.js code.
     if (
       msg.includes("THREE") &&
-      (msg.includes("Clock") || msg.includes("Timer"))
+      msg.includes("Clock") &&
+      msg.includes("deprecated")
     ) {
       // Intentionally silent
       return;

@@ -30,9 +30,18 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { name, email, selectedOpt, project } = body;
 
+    // Constraints to prevent payload-based DoS
+    const MAX_NAME_LENGTH = 100;
+    const MAX_EMAIL_LENGTH = 100;
+    const MAX_PROJECT_LENGTH = 5000;
+
     // Basic Validation
     if (!name || !email || !selectedOpt || !project) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
+    }
+
+    if (name.length > MAX_NAME_LENGTH || email.length > MAX_EMAIL_LENGTH || project.length > MAX_PROJECT_LENGTH) {
+      return NextResponse.json({ error: "Input too long. Please shorten your message." }, { status: 400 });
     }
 
     if (!/^\S+@\S+\.\S+$/.test(email)) {
@@ -61,8 +70,12 @@ export async function POST(req: Request) {
     if (db) {
       const { error: dbError } = await db
         .from("contacts")
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .insert({ name, email, type: selectedOpt, message: project } as any);
+        .insert({ 
+          name: name.slice(0, MAX_NAME_LENGTH), 
+          email: email.slice(0, MAX_EMAIL_LENGTH), 
+          type: selectedOpt, 
+          message: project.slice(0, MAX_PROJECT_LENGTH) 
+        } as never);
       if (dbError) console.error("Supabase log error:", dbError);
     }
 

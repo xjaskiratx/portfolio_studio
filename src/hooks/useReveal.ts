@@ -35,15 +35,6 @@ export function useReveal() {
     };
 
     let scanScheduled = false;
-    const throttledScan = () => {
-      if (scanScheduled) return;
-      scanScheduled = true;
-      requestAnimationFrame(() => {
-        scanAndObserve();
-        scanScheduled = false;
-      });
-    };
-
     // Initial scan — defer to after first paint
     requestAnimationFrame(scanAndObserve);
 
@@ -52,12 +43,14 @@ export function useReveal() {
     const t2 = setTimeout(scanAndObserve, 500);
     const t3 = setTimeout(scanAndObserve, 2000);
 
+    const currentObserved = observedElements.current;
+
     return () => {
       observer.disconnect();
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
-      observedElements.current.clear();
+      currentObserved.clear();
     };
   }, []);
 }
