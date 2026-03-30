@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./animations.css";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import { ThreePatchInitializer } from "@/components/ThreePatchInitializer";
 import { Preloader } from "@/components/ui/Preloader";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
@@ -65,6 +66,7 @@ export default function RootLayout({
         <Preloader />
         <ScrollProgress />
         {children}
+        <Analytics />
       </body>
     </html>
   );
