@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./animations.css";
 import localFont from "next/font/local";
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/react";
 import { ThreePatchInitializer } from "@/components/ThreePatchInitializer";
 import { Preloader } from "@/components/ui/Preloader";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
