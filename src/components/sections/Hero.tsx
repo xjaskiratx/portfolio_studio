@@ -34,7 +34,7 @@ export function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const targetScrollRef = useRef<number>(0);
   const rafId = useRef<number>(0);
-  
+
   // Mobile Smoothness Refs (Manual Lerp)
   const mobileTargetProgress = useRef<number>(0);
   const mobileCurrentProgress = useRef<number>(0);
@@ -106,7 +106,7 @@ export function Hero() {
 
     const updateMobileProgress = () => {
       if (!headlineRef.current) return;
-      
+
       const prev = mobileCurrentProgress.current;
       // High-precision lerp for premium 'gummy' feel
       mobileCurrentProgress.current = lerp(prev, mobileTargetProgress.current, 0.08);
@@ -126,7 +126,7 @@ export function Hero() {
       if (targetScrollRef.current === 0) return;
       const scrollY = window.scrollY;
       mobileTargetProgress.current = Math.min(Math.max(scrollY / targetScrollRef.current, 0), 1);
-      
+
       if (!mobileRafId.current) {
         mobileRafId.current = requestAnimationFrame(updateMobileProgress);
       }
@@ -204,36 +204,41 @@ export function Hero() {
           </div>
         </h1>
 
-        <div className={cn("flex flex-col md:flex-row justify-between items-start md:items-end gap-12 rv", mounted && "in")} style={{ transitionDelay: '1s' }}>
-          <div className="max-w-105 w-full">
-            <p className="text-[18px] font-light text-dim leading-[1.4] mb-8 max-[479px]:text-[15px] text-justify md:text-left [text-align-last:center] md:[text-align-last:left]">
-              Crafting premium digital experiences through 1:1 collaboration. I build what agencies charge 10x for — <span className="grad-text">unmatched quality</span> with <span className="grad-text">zero handoff loss</span>.
-            </p>
-            <div className="flex flex-col md:flex-row items-center gap-3 w-full">
-              <button
-                className={`${btnS.btnP} bg-lime text-bg font-display font-black text-base tracking-[0.14em] uppercase w-full md:w-auto px-9 h-14.5 flex items-center justify-center hover:bg-white transition-all cursor-none`}
-                onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
-                aria-label="View selected design and development projects"
-              >
-                View My Work
-              </button>
-              <button
-                className={`${btnS.btnO} font-mono font-bold text-[13.5px] tracking-[0.16em] uppercase text-white border border-white/20 w-full md:w-auto px-8 h-14.5 flex items-center justify-center hover:text-lime hover:border-lime/40 hover:bg-white/5 transition-all cursor-none`}
-                onClick={() => window.dispatchEvent(new CustomEvent("open-contact-modal"))}
-                aria-label="Start a conversation about your project"
-              >
-                Let&apos;s Talk →
-              </button>
+        <div className={cn("flex flex-col rv", mounted && "in")} style={{ transitionDelay: '1s' }}>
+          {/* Paragraph + Metrics Row */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 md:gap-12 mb-10 md:mb-12">
+            <div className="max-w-105 w-full">
+              <p className="text-[18px] font-light text-dim leading-[1.4] max-[479px]:text-[15px] text-justify md:text-left [text-align-last:center] md:[text-align-last:left]">
+                Crafting premium digital experiences through 1:1 collaboration. I build what agencies charge 10x for — <span className="grad-text">unmatched quality</span> with <span className="grad-text">zero handoff loss</span>.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 lg:flex gap-10 lg:gap-14 pt-8 md:pt-0 border-t border-white/5 md:border-none w-full md:w-auto">
+              {stats.map((stat, i) => (
+                <div key={i} className="flex flex-col gap-1">
+                  <span className="font-display font-black text-[58px] text-lime leading-none max-[479px]:text-[48px]">{stat.value}</span>
+                  <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-muted whitespace-nowrap">{stat.label}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 lg:flex gap-10 lg:gap-14 pt-8 md:pt-0 border-t border-white/5 md:border-none w-full md:w-auto">
-            {stats.map((stat, i) => (
-              <div key={i} className="flex flex-col gap-1">
-                <span className="font-display font-black text-[58px] text-lime leading-none max-[479px]:text-[48px]">{stat.value}</span>
-                <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-muted whitespace-nowrap">{stat.label}</span>
-              </div>
-            ))}
+          {/* Buttons Row */}
+          <div className="flex flex-col md:flex-row items-center gap-3 w-full">
+            <button
+              className={`${btnS.btnP} bg-lime text-bg font-display font-black text-base tracking-[0.14em] uppercase w-full md:w-auto px-9 h-14.5 flex items-center justify-center hover:bg-white transition-all cursor-none`}
+              onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
+              aria-label="View selected design and development projects"
+            >
+              View My Work
+            </button>
+            <button
+              className={`${btnS.btnO} font-mono font-bold text-[13.5px] tracking-[0.16em] uppercase text-white border border-white/20 w-full md:w-auto px-8 h-14.5 flex items-center justify-center hover:text-lime hover:border-lime/40 hover:bg-white/5 transition-all cursor-none`}
+              onClick={() => window.dispatchEvent(new CustomEvent("open-contact-modal"))}
+              aria-label="Start a conversation about your project"
+            >
+              Let&apos;s Talk →
+            </button>
           </div>
         </div>
       </div>
