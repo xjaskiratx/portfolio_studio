@@ -1,5 +1,7 @@
 // Only silence specific deprecation warnings related to THREE.Clock
 // to avoid hiding real issues in custom Three.js code.
+export {};
+
 if (typeof window !== "undefined") {
   console.log("🛠️ THREE patch: Initializing console.warn interceptor...");
   const originalConsoleWarn = console.warn;
