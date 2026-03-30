@@ -3,6 +3,7 @@ import "./globals.css";
 import "./animations.css";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThreePatchInitializer } from "@/components/ThreePatchInitializer";
 import { Preloader } from "@/components/ui/Preloader";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
@@ -22,7 +23,7 @@ const spaceGrotesk = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jsx-wd.com"),
+  metadataBase: new URL("https://jsx-studios.vercel.app"),
   title: "JSX W&D — Web Designer & Graphic Designer in Ludhiana, India",
   description: "Full-spectrum creative studio. Web design, development, brand identity, and graphic design. Based in Ludhiana, Punjab. I build what agencies charge 10× for.",
   keywords: ["web designer ludhiana", "graphic designer punjab", "full stack developer india", "brand identity designer", "website redesign india", "freelance web developer ludhiana"],
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "JSX W&D — Digital Forge Studio",
     description: "Web design, development, graphic design, brand identity. Ludhiana, India.",
-    url: "https://jsx-wd.com",
+    url: "https://jsx-studios.vercel.app",
     siteName: "JSX W&D",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
     locale: "en_US",
@@ -67,6 +68,7 @@ export default function RootLayout({
         <ScrollProgress />
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
