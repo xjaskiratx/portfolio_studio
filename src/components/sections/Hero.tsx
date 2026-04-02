@@ -17,8 +17,8 @@ function cn(...inputs: ClassValue[]) {
 
 const stats = [
   { label: "Direct Collaboration", value: "1:1" },
-  { label: "Digital Artifacts", value: "60+" },
-  { label: "Avg. Ship Time", value: "< 21D" },
+  { label: "Digital Artifacts", value: "20+" },
+  { label: "Avg. Ship Time", value: "< 14D" },
   { label: "Client Retention", value: "92%" },
 ];
 
@@ -206,7 +206,7 @@ export function Hero() {
 
         <div className={cn("flex flex-col rv", mounted && "in")} style={{ transitionDelay: '1s' }}>
           {/* Paragraph + Metrics Row */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 md:gap-12 mb-10 md:mb-12">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-10 md:gap-12 mb-10 md:mb-0">
             <div className="max-w-105 w-full">
               <p className="text-[18px] font-light text-dim leading-[1.4] max-[479px]:text-[15px] text-justify md:text-left [text-align-last:center] md:[text-align-last:left]">
                 Crafting premium digital experiences through 1:1 collaboration. I build what agencies charge 10x for — <span className="grad-text">unmatched quality</span> with <span className="grad-text">zero handoff loss</span>.
@@ -215,7 +215,7 @@ export function Hero() {
 
             <div className="grid grid-cols-2 lg:flex gap-10 lg:gap-14 pt-8 md:pt-0 border-t border-white/5 md:border-none w-full md:w-auto">
               {stats.map((stat, i) => (
-                <div key={i} className="flex flex-col gap-1">
+                <div key={i} className="flex flex-col gap-0.5">
                   <span className="font-display font-black text-[58px] text-lime leading-none max-[479px]:text-[48px]">{stat.value}</span>
                   <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-muted whitespace-nowrap">{stat.label}</span>
                 </div>
@@ -223,23 +223,6 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Buttons Row */}
-          <div className="flex flex-col md:flex-row items-center gap-3 w-full">
-            <button
-              className={`${btnS.btnP} bg-lime text-bg font-display font-black text-base tracking-[0.14em] uppercase w-full md:w-auto px-9 h-14.5 flex items-center justify-center hover:bg-white transition-all cursor-none`}
-              onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
-              aria-label="View selected design and development projects"
-            >
-              View My Work
-            </button>
-            <button
-              className={`${btnS.btnO} font-mono font-bold text-[13.5px] tracking-[0.16em] uppercase text-white border border-white/20 w-full md:w-auto px-8 h-14.5 flex items-center justify-center hover:text-lime hover:border-lime/40 hover:bg-white/5 transition-all cursor-none`}
-              onClick={() => window.dispatchEvent(new CustomEvent("open-contact-modal"))}
-              aria-label="Start a conversation about your project"
-            >
-              Let&apos;s Talk →
-            </button>
-          </div>
         </div>
       </div>
 

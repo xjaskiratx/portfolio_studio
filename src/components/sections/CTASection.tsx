@@ -24,11 +24,11 @@ export function CTASection() {
   return (
     <section
       id="cta"
-      className="sec pb-4 relative min-h-[400px] md:min-h-[500px] text-center overflow-hidden bg-transparent group/cta flex items-center justify-center border-t border-white/[0.03]"
+      className="sec relative min-h-[400px] md:min-h-[500px] text-center overflow-hidden bg-transparent group/cta flex items-center justify-center border-t border-white/[0.03]"
     >
-      <div className="relative z-10 rv pt-14 md:pt-24 pb-2">
+      <div className="relative z-10 rv pt-14 md:pt-24 pb-8 md:pb-12">
         <div className="sec-tag flex justify-center uppercase mb-8">Let&apos;s Work Together</div>
-        <h2 className={`${typS.ctaHead} mb-12`}>
+        <h2 className="font-display font-black text-[60px] md:text-[140px] leading-[0.9] tracking-tighter uppercase text-center mb-16 relative z-10">
           <ScrambleOutline text="Let's" className="[-webkit-text-stroke:1.2px_rgba(237,233,223,0.92)] md:[-webkit-text-stroke:2.5px_rgba(237,233,223,0.92)] text-transparent" /><br />
           <div
             className="inline-block relative group/cr"
@@ -47,7 +47,7 @@ export function CTASection() {
         <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-16">
           <button
             onClick={openModal}
-            className={`${btnS.btnXl} bg-lime text-bg font-display font-black text-2xl tracking-[0.14em] uppercase px-10 py-4 cursor-none hover:bg-white transition-colors w-full max-w-[340px] sm:w-auto`}
+            className={`${btnS.btnXl} bg-lime text-bg font-display font-black text-[22px] tracking-[0.14em] uppercase px-10 py-3 cursor-none hover:bg-white transition-colors`}
             data-cta
           >
             <span>Start a Project</span>
@@ -56,7 +56,7 @@ export function CTASection() {
             href="https://calendly.com/jaskiratsingh06jan/15-minute-consultation"
             target="_blank"
             rel="noreferrer"
-            className={`${btnS.btnXl} bg-white text-bg font-display font-black text-2xl tracking-[0.14em] uppercase px-10 py-4 cursor-none hover:bg-lime transition-colors text-center max-[520px]:px-8 max-[520px]:text-base w-full max-w-[340px] sm:max-w-none sm:w-auto`}
+            className={`${btnS.btnXl} bg-white text-bg font-display font-black text-[22px] tracking-[0.14em] uppercase px-12 py-3 cursor-none hover:bg-lime transition-colors text-center max-[520px]:px-8 max-[520px]:text-xl w-full max-w-[400px] sm:max-w-none sm:w-auto`}
           >
             Skip the email — <br className="sm:hidden" /> Book 15 mins →
           </a>

@@ -58,10 +58,12 @@ export function Process() {
         ))}
       </div>
 
-      <div className="max-w-[1400px] mx-auto relative z-20 text-center">
-        <p className="rv font-display font-black text-[22px] md:text-[28px] lg:text-[32px] uppercase text-white/90 tracking-tight si" style={{ transitionDelay: "0.4s" }}>
-          No layers. No delays. <span className="text-lime">You work directly with the builder.</span>
-        </p>
+      <div className="max-w-[1400px] mx-auto relative z-20 flex justify-center w-full">
+        <div className="inline-flex text-center">
+          <p className="rv font-display font-black text-[22px] md:text-[28px] lg:text-[32px] uppercase text-white/90 tracking-tight si" style={{ transitionDelay: "0.4s", textAlign: 'center' }}>
+            No layers. No delays. <span className="text-lime">You work directly with the builder.</span>
+          </p>
+        </div>
       </div>
 
       {/* SVG Connector for Safari Refinement */}

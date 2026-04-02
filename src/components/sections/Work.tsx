@@ -23,20 +23,48 @@ import {
 
 const projects = [
   {
-    id: "novalytics",
-    title: "Novalytics",
-    cat: "SaaS Dashboard",
-    year: "2024",
+    id: "cfc",
+    title: "CFC Fasteners",
+    cat: "Industrial E-Comm",
+    desc: "High-performance digital forge for industrial fastener supply.",
+    year: "2026",
     type: "dev",
     size: "large",
-    bg: "bg1",
-    glow: "g1",
-    art: <NovalyticsArt />
+    bg: "bg4",
+    glow: "g4",
+    image: "/cfcfasteners.webp",
+    url: "https://cfc-fasteners.vercel.app"
+  },
+  {
+    id: "saphire",
+    title: "Saphire Astro",
+    cat: "Astrology & Wellness",
+    desc: "Modern astrology platform delivering celestial insights.",
+    year: "2025",
+    type: "dev",
+    size: "tall",
+    bg: "bg-special",
+    glow: "g-special",
+    image: "/saphireastro.webp",
+    url: "https://saphireastro.in"
+  },
+  {
+    id: "pawmatch",
+    title: "PawMatch",
+    cat: "Social Club",
+    desc: "Social club platform for connecting pets and people.",
+    year: "2026",
+    type: "dev",
+    size: "large",
+    bg: "bg5",
+    glow: "g5",
+    image: "/pawmatch.webp"
   },
   {
     id: "ember",
     title: "Ember Brand",
     cat: "Brand Identity",
+    desc: "Minimalist brand system for a high-end luxury candle boutique.",
     year: "2024",
     type: "design",
     size: "tall",
@@ -48,6 +76,7 @@ const projects = [
     id: "solaris",
     title: "Solaris Mag",
     cat: "Editorial Design",
+    desc: "Conceptual editorial layout for a futuristic science magazine.",
     year: "2023",
     type: "design",
     size: "large",
@@ -56,36 +85,15 @@ const projects = [
     art: <SolarisArt />
   },
   {
-    id: "kova",
-    title: "Kova Shop",
-    cat: "E-Commerce",
-    year: "2024",
-    type: "dev",
-    size: "small",
-    bg: "bg4",
-    glow: "g4",
-    art: <KovaArt />
-  },
-  {
-    id: "pulse",
-    title: "Pulse App",
-    cat: "Mobile UI/UX",
-    year: "2023",
-    type: "dev",
-    size: "small",
-    bg: "bg5",
-    glow: "g5",
-    art: <PulseArt />
-  },
-  {
     id: "vega",
     title: "Vega Event",
     cat: "Poster Design",
+    desc: "Visual identity for an underground electronic music festival.",
     year: "2023",
     type: "design",
     size: "small",
-    bg: "bg-special",
-    glow: "g-special",
+    bg: "bg5",
+    glow: "g5",
     art: <VegaArt />
   }
 ];
@@ -112,7 +120,7 @@ import Magnetic from "@/components/ui/Magnetic";
 
 const PREVIEW_COUNT = 3;
 
-function ProjectCard({ project }: { project: typeof projects[0] }) {
+function ProjectCard({ project }: { project: any }) {
   const [isHovered, setIsHovered] = useState(false);
 
   const lastHover = useRef(0);
@@ -123,7 +131,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
     setIsHovered(true);
   };
 
-  return (
+  const CardContent = (
     <div
       onMouseEnter={handleHover}
       onMouseOver={handleHover}
@@ -149,16 +157,30 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
         />
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-110">
-        <React.Fragment key="project-art">{project.art}</React.Fragment>
+      <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105">
+        {project.image ? (
+          <img 
+            src={project.image} 
+            alt={project.title} 
+            className="w-[85%] h-auto md:w-[78%] object-contain drop-shadow-[0_0_40px_rgba(0,0,0,0.6)]"
+          />
+        ) : (
+          <React.Fragment key="project-art">{project.art}</React.Fragment>
+        )}
       </div>
 
       <div className="absolute inset-0 bg-gradient-to-t from-bg/98 via-bg/20 to-transparent flex flex-col justify-end p-8 md:p-10">
         <div className="font-mono text-[9px] tracking-[0.22em] uppercase text-lime mb-2.5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">— {project.cat}</div>
-        <h3 className="font-display font-black text-2xl md:text-[32px] uppercase leading-none mb-1.5 group-hover:text-lime transition-colors duration-500">
+        <h3 className="font-display font-black text-2xl md:text-[32px] uppercase leading-none mb-2 group-hover:text-lime transition-colors duration-500">
           <ScrambleText text={project.title} trigger={isHovered} />
         </h3>
-        <div className="font-mono text-[9px] tracking-widest text-white/50 group-hover:text-white/75 transition-colors uppercase">{project.year} {"//"} FULL CASE STUDY AVAILABLE</div>
+
+        {/* Project Description */}
+        <p className="text-[13px] font-light text-white/50 mb-4 max-w-[90%] md:max-w-[340px] lg:max-w-[400px] leading-relaxed translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-150 line-clamp-1">
+          {project.desc}
+        </p>
+
+        <div className="font-mono text-[14px] tracking-widest text-white/40 group-hover:text-white/60 transition-colors uppercase">{project.year}</div>
       </div>
 
       <div className="absolute top-8 right-8">
@@ -170,6 +192,16 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
       </div>
     </div>
   );
+
+  if (project.url) {
+    return (
+      <a href={project.url} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
+        {CardContent}
+      </a>
+    );
+  }
+
+  return CardContent;
 }
 
 export function Work() {
@@ -227,8 +259,8 @@ export function Work() {
 
       <div className="flex md:grid md:grid-cols-3 w-full bg-white/[0.04] border-y border-white/[0.04] overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-hide py-10 md:py-0">
         {[0, 1, 2].map((index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className="relative flex-none w-[88vw] md:w-full aspect-[4/5] md:aspect-auto md:h-[70vh] border-r border-white/[0.04] last:border-r-0 overflow-hidden snap-center mx-3 md:mx-0 first:ml-6 last:mr-6 md:first:ml-0 md:last:mr-0"
           >
             {displayProjects[index] ? (

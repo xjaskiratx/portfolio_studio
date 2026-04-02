@@ -34,14 +34,14 @@ export function ProcessCard({ step, index, isLast }: ProcessCardProps) {
           <div className="h-px flex-1 bg-white/[0.05] group-hover:bg-lime/20 transition-colors duration-500" />
         </div>
 
-        <h3 className="font-display font-black text-[26px] md:text-[28px] uppercase mb-4 group-hover:text-lime transition-colors duration-500">
+        <h3 className="font-display font-black text-[26px] md:text-[32px] uppercase mb-4 group-hover:text-lime transition-colors duration-500">
           {step.title}
         </h3>
         <ul className="space-y-3">
           {step.desc.map((item, i) => (
             <li key={i} className="flex items-start gap-3 group/li">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime/40 group-hover:bg-lime transition-colors" />
-              <span className="text-[14.5px] font-light text-dim leading-relaxed group-hover:text-white/80 transition-colors">
+              <span className="text-[15px] md:text-[16px] font-mono tracking-wider text-dim group-hover:text-white/80 transition-colors">
                 {item}
               </span>
             </li>
