@@ -148,7 +148,7 @@ function ProjectCard({ project }: { project: any }) {
         )}
       </div>
 
-      <div className="absolute top-0 left-0 p-8 md:p-10 flex flex-col gap-1.5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+      <div className="absolute top-0 left-0 p-8 md:p-10 flex flex-col gap-1.5 opacity-100 md:opacity-0 md:translate-y-2 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 delay-100">
         <span className="font-mono text-[13px] tracking-[0.24em] uppercase text-lime font-bold whitespace-nowrap">
           {project.type === "dev" ? "Engineering" : "Identity"}
         </span>
@@ -163,7 +163,7 @@ function ProjectCard({ project }: { project: any }) {
         </h2>
 
         {/* Project Description */}
-        <p className="text-[14px] font-normal text-white/70 mb-5 max-w-[92%] md:max-w-[360px] lg:max-w-[420px] leading-relaxed translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-150 line-clamp-2 whitespace-pre-line h-[3.5em] overflow-hidden">
+        <p className="text-[14px] font-normal text-white/70 mb-5 max-w-[92%] md:max-w-[360px] lg:max-w-[420px] leading-relaxed opacity-100 md:opacity-0 md:translate-y-3 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 delay-150 line-clamp-2 whitespace-pre-line h-[3.5em] overflow-hidden">
           {project.desc}
         </p>
 
@@ -173,7 +173,7 @@ function ProjectCard({ project }: { project: any }) {
       {project.type !== "design" && (
         <div className="absolute top-8 right-8">
           <Magnetic strength={0.5}>
-            <div className="w-11 h-11 bg-lime flex items-center justify-center font-bold text-bg opacity-0 translate-x-4 -translate-y-4 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500 delay-75 shadow-lg">
+            <div className="w-11 h-11 bg-lime flex items-center justify-center font-bold text-bg opacity-100 md:opacity-0 md:translate-x-4 md:-translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-x-0 md:group-hover:translate-y-0 transition-all duration-500 delay-75 shadow-lg">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </div>
           </Magnetic>
