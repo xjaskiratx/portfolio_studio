@@ -26,46 +26,40 @@ export function Industries() {
         Focus
       </div>
 
-      <div className="max-w-[1400px] mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.65fr] gap-12 lg:gap-20 items-start overflow-hidden">
+      <div className="max-w-[1400px] mx-auto relative z-20">
+        <div className="flex flex-col items-center md:items-start gap-12 mb-16">
           <div className="rv">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-px bg-lime/40 hidden md:block" />
-              <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">Introduction & Expertise</span>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-px bg-lime/40" />
+              <span className="font-mono text-[14px] tracking-[0.24em] uppercase text-lime">Core Niches</span>
             </div>
-
-            <h2 className={cn(typS.secTitle, "mb-10 !text-[46px] lg:!text-[68px] xl:!text-[92px] !leading-[1.1] whitespace-nowrap")}>
-              Establishing <ScrambleOutline text="Authority" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /><br />
-              Across <span className="text-lime"><ScrambleInView text="Prime Niches." /></span>
-            </h2>
-
-            <div className="max-w-[600px] mb-8">
-              <p className="text-[19px] font-light text-dim leading-[1.7]">
-                <span className="text-white font-medium">JSX Studios</span> doesn't just build websites; we engineer <span className="grad-text">digital powerhouses</span>.
-              </p>
-              <br />
-              <p className="text-[18px] font-light text-dim leading-[1.7]">
-                By combining deep technical stacks with premium aesthetics, we help businesses in high-stakes industries solidify their market presence and outshine competitors with <span className="grad-text">zero compromise</span> on performance.
-              </p>
-            </div>
+            <h2 className={cn(typS.secTitle, "uppercase")}>Target <ScrambleOutline text="Industries" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /></h2>
           </div>
+        </div>
 
-          <div className="rv flex flex-col gap-3 pt-4 lg:pt-12 w-full lg:max-w-none" style={{ transitionDelay: '0.2s' }}>
-            <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-muted mb-4 block">Proven Experience In:</span>
-            <div className="flex flex-wrap lg:flex-col gap-3 lg:gap-4 w-full">
-              {industries.map((item, i) => (
-                <div
-                  key={i}
-                  className="group relative px-6 py-3 border border-white/5 bg-white/[0.015] hover:border-lime/30 transition-all duration-500 overflow-hidden w-full"
-                >
-                  <div className="absolute inset-0 bg-lime/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-700 ease-out" />
-                  <span className="relative z-10 font-display font-black text-[22px] md:text-[26px] tracking-[0.08em] uppercase text-white/80 group-hover:text-lime transition-colors whitespace-nowrap">
-                    {item}
-                  </span>
-                </div>
-              ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {industries.map((item, i) => (
+            <div
+              key={i}
+              className="group relative flex items-center justify-between px-8 py-8 border border-white/5 bg-white/[0.015] hover:border-lime/30 transition-all duration-500 overflow-hidden cursor-none hover:bg-white/[0.03] backdrop-blur-sm rv"
+              style={{ transitionDelay: `${i * 0.1}s` } as any}
+            >
+              <div className="flex items-center gap-8 relative z-10">
+                <span className="font-mono text-[16px] text-lime/40 group-hover:text-lime transition-colors">
+                  {(i + 1).toString().padStart(2, '0')}
+                </span>
+                <span className="font-display font-black text-[22px] md:text-[28px] lg:text-[34px] tracking-tight uppercase text-white/80 group-hover:text-white transition-all duration-500 group-hover:translate-x-2">
+                  {item}
+                </span>
+              </div>
+              <div className="relative z-10 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="var(--color-lime)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-lime/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

@@ -174,7 +174,7 @@ export function Hero() {
       <div className="relative z-20 flex flex-col max-w-350 mx-auto w-full">
         <div className={cn("flex flex-col md:flex-row items-center md:items-center gap-2 md:gap-3 mb-8 w-full rv", mounted && "in")}>
           <div className="w-10 h-px bg-lime/40 hidden md:block" />
-          <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime text-wrap-none">
+          <span className="font-mono text-[14px] tracking-[0.24em] uppercase text-lime">
             JSX W&D · DIGITAL FORGE
           </span>
         </div>
@@ -209,7 +209,7 @@ export function Hero() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-10 md:gap-12 mb-10 md:mb-0">
             <div className="max-w-105 w-full">
               <p className="text-[18px] font-light text-dim leading-[1.4] max-[479px]:text-[15px] text-justify md:text-left [text-align-last:center] md:[text-align-last:left]">
-                Crafting premium digital experiences through 1:1 collaboration. I build what agencies charge 10x for — <span className="grad-text">unmatched quality</span> with <span className="grad-text">zero handoff loss</span>.
+                JSX Studios builds what agencies charge 10x for - with <span className="grad-text">unmatched quality</span> and <span className="grad-text">zero handoff loss</span>.
               </p>
             </div>
 
@@ -217,7 +217,7 @@ export function Hero() {
               {stats.map((stat, i) => (
                 <div key={i} className="flex flex-col gap-0.5">
                   <span className="font-display font-black text-[58px] text-lime leading-none max-[479px]:text-[48px]">{stat.value}</span>
-                  <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-muted whitespace-nowrap">{stat.label}</span>
+                  <span className="font-mono text-[14px] tracking-[0.18em] uppercase text-muted whitespace-nowrap">{stat.label}</span>
                 </div>
               ))}
             </div>

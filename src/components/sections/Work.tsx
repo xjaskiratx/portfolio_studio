@@ -1,25 +1,17 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
 import typS from "@/styles/Typography.module.css";
-import btnS from "@/components/ui/Buttons.module.css";
+import Magnetic from "@/components/ui/Magnetic";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
-import {
-  NovalyticsArt,
-  EmberArt,
-  SolarisArt,
-  KovaArt,
-  PulseArt,
-  VegaArt
-} from "./ProjectArts";
 
 const projects = [
   {
@@ -36,6 +28,18 @@ const projects = [
     url: "https://cfc-fasteners.vercel.app"
   },
   {
+    id: "buh",
+    title: "Between Us, Honestly",
+    cat: "Social Platform",
+    desc: "An online safe space for individuals to connect &\n feel heard amidst the chaos around them.",
+    year: "2026",
+    type: "design",
+    size: "small",
+    bg: "bg-buh",
+    glow: "g-buh",
+    image: "/buh.webp"
+  },
+  {
     id: "saphire",
     title: "Saphire Astro",
     cat: "Astrology & Wellness",
@@ -49,6 +53,18 @@ const projects = [
     url: "https://saphireastro.in"
   },
   {
+    id: "vye",
+    title: "Vibe Your Event",
+    cat: "Event Branding",
+    desc: "Event experience design preserving core values and branding for high-energy social gatherings.",
+    year: "2026",
+    type: "design",
+    size: "small",
+    bg: "bg-vye",
+    glow: "g-vye",
+    image: "/vye.webp"
+  },
+  {
     id: "pawmatch",
     title: "PawMatch",
     cat: "Social Club",
@@ -58,43 +74,8 @@ const projects = [
     size: "large",
     bg: "bg5",
     glow: "g5",
-    image: "/pawmatch.webp"
-  },
-  {
-    id: "ember",
-    title: "Ember Brand",
-    cat: "Brand Identity",
-    desc: "Minimalist brand system for a high-end luxury candle boutique.",
-    year: "2024",
-    type: "design",
-    size: "tall",
-    bg: "bg2",
-    glow: "g2",
-    art: <EmberArt />
-  },
-  {
-    id: "solaris",
-    title: "Solaris Mag",
-    cat: "Editorial Design",
-    desc: "Conceptual editorial layout for a futuristic science magazine.",
-    year: "2023",
-    type: "design",
-    size: "large",
-    bg: "bg3",
-    glow: "g3",
-    art: <SolarisArt />
-  },
-  {
-    id: "vega",
-    title: "Vega Event",
-    cat: "Poster Design",
-    desc: "Visual identity for an underground electronic music festival.",
-    year: "2023",
-    type: "design",
-    size: "small",
-    bg: "bg5",
-    glow: "g5",
-    art: <VegaArt />
+    image: "/pawmatch.webp",
+    url: "https://pawmatch-club.vercel.app"
   }
 ];
 
@@ -104,7 +85,9 @@ const bgs: Record<string, string> = {
   bg3: "radial-gradient(ellipse at 50% 50%, #00081e, #060608 85%)",
   bg4: "radial-gradient(ellipse at 40% 60%, #180c00, #060608 85%)",
   bg5: "radial-gradient(ellipse at 55% 15%, #0a0016, #060608 85%)",
-  "bg-special": "radial-gradient(ellipse at 50% 30%, #130820, #060608 80%)"
+  "bg-special": "radial-gradient(ellipse at 50% 30%, #130820, #060608 80%)",
+  "bg-buh": "radial-gradient(ellipse at 50% 50%, #18120c, #050508 85%)",
+  "bg-vye": "radial-gradient(ellipse at 50% 50%, #0d081f, #050508 85%)"
 };
 
 const glows: Record<string, string> = {
@@ -113,17 +96,17 @@ const glows: Record<string, string> = {
   g3: "radial-gradient(ellipse at 50% 100%, rgba(68,102,255,0.12), transparent 70%)",
   g4: "radial-gradient(ellipse at 50% 100%, rgba(255,176,32,0.12), transparent 70%)",
   g5: "radial-gradient(ellipse at 50% 100%, rgba(153,85,255,0.12), transparent 70%)",
-  "g-special": "radial-gradient(ellipse at 50% 100%, rgba(200,80,255,0.11), transparent 70%)"
+  "g-special": "radial-gradient(ellipse at 50% 100%, rgba(200,80,255,0.11), transparent 70%)",
+  "g-buh": "radial-gradient(ellipse at 50% 100%, rgba(245, 230, 200, 0.12), transparent 70%)",
+  "g-vye": "radial-gradient(ellipse at 50% 100%, rgba(130, 100, 255, 0.12), transparent 70%)"
 };
-
-import Magnetic from "@/components/ui/Magnetic";
-
-const PREVIEW_COUNT = 3;
 
 function ProjectCard({ project }: { project: any }) {
   const [isHovered, setIsHovered] = useState(false);
-
   const lastHover = useRef(0);
+  const activeBg = bgs[project.bg] || bgs.bg1;
+  const activeGlow = glows[project.glow] || glows.g1;
+
   const handleHover = () => {
     const now = Date.now();
     if (now - lastHover.current < 600) return;
@@ -142,54 +125,60 @@ function ProjectCard({ project }: { project: any }) {
     >
       <div
         className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110"
-        style={{ background: bgs[project.bg] }}
+        style={{ background: activeBg }}
       />
+      {/* Background Glow */}
       <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-        style={{ background: glows[project.glow] }}
+        className={cn(
+          "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000",
+          activeGlow
+        )}
       />
 
-      {/* Technical Scan Animation */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
-        <div
-          className="absolute left-0 right-0 h-[2px] bg-lime/50 shadow-[0_0_15px_rgba(200,255,0,0.4)] transition-all duration-700"
-          style={{ top: isHovered ? "110%" : "-10%" }}
-        />
-      </div>
-
-      <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105">
-        {project.image ? (
-          <img 
-            src={project.image} 
-            alt={project.title} 
-            className="w-[85%] h-auto md:w-[78%] object-contain drop-shadow-[0_0_40px_rgba(0,0,0,0.6)]"
+      <div className="absolute inset-0 flex items-center justify-center transition-all duration-1000 group-hover:scale-105">
+        {project.image && (
+          <img
+            src={project.image}
+            alt={project.title}
+            className={cn(
+              "h-auto object-contain drop-shadow-[0_0_80px_rgba(0,0,0,0.6)] transition-all duration-700",
+              project.size === "small" ? "w-[65%] md:w-[50%]" : "w-[90%] md:w-[75%]"
+            )}
           />
-        ) : (
-          <React.Fragment key="project-art">{project.art}</React.Fragment>
         )}
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-bg/98 via-bg/20 to-transparent flex flex-col justify-end p-8 md:p-10">
-        <div className="font-mono text-[9px] tracking-[0.22em] uppercase text-lime mb-2.5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">— {project.cat}</div>
-        <h3 className="font-display font-black text-2xl md:text-[32px] uppercase leading-none mb-2 group-hover:text-lime transition-colors duration-500">
+      <div className="absolute top-0 left-0 p-8 md:p-10 flex flex-col gap-1.5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+        <span className="font-mono text-[13px] tracking-[0.24em] uppercase text-lime font-bold whitespace-nowrap">
+          {project.type === "dev" ? "Engineering" : "Identity"}
+        </span>
+        <span className="font-mono text-[13px] tracking-[0.24em] uppercase text-white/60 font-medium whitespace-nowrap">
+          {project.cat}
+        </span>
+      </div>
+
+      <div className="absolute inset-0 bg-gradient-to-t from-bg/98 via-transparent to-transparent flex flex-col justify-end p-8 md:p-10 lg:p-12">
+        <h2 className="font-display font-black text-3xl md:text-[40px] uppercase leading-tight mb-3 group-hover:text-lime transition-colors duration-500">
           <ScrambleText text={project.title} trigger={isHovered} />
-        </h3>
+        </h2>
 
         {/* Project Description */}
-        <p className="text-[13px] font-light text-white/50 mb-4 max-w-[90%] md:max-w-[340px] lg:max-w-[400px] leading-relaxed translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-150 line-clamp-1">
+        <p className="text-[14px] font-normal text-white/70 mb-5 max-w-[92%] md:max-w-[360px] lg:max-w-[420px] leading-relaxed translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-150 line-clamp-2 whitespace-pre-line h-[3.5em] overflow-hidden">
           {project.desc}
         </p>
 
-        <div className="font-mono text-[14px] tracking-widest text-white/40 group-hover:text-white/60 transition-colors uppercase">{project.year}</div>
+        <div className="font-mono text-[15px] tracking-[0.3em] font-bold text-white/40 group-hover:text-white/80 transition-colors uppercase">{project.year}</div>
       </div>
 
-      <div className="absolute top-8 right-8">
-        <Magnetic strength={0.5}>
-          <div className="w-11 h-11 bg-lime flex items-center justify-center font-bold text-bg opacity-0 translate-x-4 -translate-y-4 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500 delay-75 shadow-lg">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-          </div>
-        </Magnetic>
-      </div>
+      {project.type !== "design" && (
+        <div className="absolute top-8 right-8">
+          <Magnetic strength={0.5}>
+            <div className="w-11 h-11 bg-lime flex items-center justify-center font-bold text-bg opacity-0 translate-x-4 -translate-y-4 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500 delay-75 shadow-lg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </div>
+          </Magnetic>
+        </div>
+      )}
     </div>
   );
 
@@ -205,71 +194,81 @@ function ProjectCard({ project }: { project: any }) {
 }
 
 export function Work() {
-  const [filter, setFilter] = useState<"all" | "dev" | "design">("all");
   const [mounted, setMounted] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const displayProjects = React.useMemo(() => {
-    if (filter === "all") {
-      const dev = projects.filter(p => p.type === "dev").slice(0, 2);
-      const design = projects.filter(p => p.type === "design").slice(0, 1);
-      return [...dev, ...design];
-    }
-    return projects.filter(p => p.type === filter).slice(0, 3);
-  }, [filter]);
+  const displayProjects = isExpanded ? projects : projects.slice(0, 3);
 
   if (!mounted) {
-    return <section id="work" className="sec bg-bg overflow-hidden min-h-[50vh]" />;
+    return <section id="work" className="sec bg-bg min-h-[50vh]" />;
   }
 
   return (
-    <section id="work" className="sec bg-bg overflow-hidden">
-      <div className="max-w-[1400px] mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-20">
+    <section id="work" className="sec bg-bg relative overflow-hidden scroll-mt-20">
+      <div className="max-w-[1400px] mx-auto relative z-20 mb-16">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
           <div className="rv">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-px bg-lime/40" />
-              <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">Proof of Concept</span>
+              <span className="font-mono text-[14px] tracking-[0.24em] uppercase text-lime">Project Index</span>
             </div>
-            <h2 className={typS.secTitle}>Selected <ScrambleOutline text="Work" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /></h2>
+            <h2 className={typS.secTitle}>Selected <ScrambleOutline text="Work" className="[-webkit-text-stroke:2px_#333] text-transparent" /></h2>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 rv si" style={{ transitionDelay: '0.2s' }}>
-            {["dev", "design"].map(f => (
-              <button
-                key={f}
-                onClick={() => setFilter(prev => prev === f ? "all" : f as "dev" | "design")}
-                aria-label={`Filter projects by ${f}`}
-                className={cn(
-                  "transition-all cursor-none h-[54px] px-8 flex items-center justify-center font-display uppercase tracking-[0.14em]",
-                  filter === f
-                    ? "bg-lime text-bg font-black text-base hover:bg-white"
-                    : "font-mono font-bold text-[13.5px] text-white border border-white/20 hover:text-lime hover:border-lime/40 hover:bg-white/5"
-                )}
-              >
-                {f === "dev" ? "Development" : "Design"}
-              </button>
-            ))}
-          </div>
+          <motion.button
+            layout
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="group flex items-center justify-center gap-4 bg-white/[0.05] border border-white/20 px-8 py-4 hover:bg-lime/10 hover:border-lime/40 transition-all duration-500 overflow-hidden min-w-[180px]"
+          >
+            <span className="font-mono text-[13px] tracking-[0.3em] font-bold uppercase text-white/90 group-hover:text-lime transition-colors">
+              {isExpanded ? "Collapse" : "See More"}
+            </span>
+          </motion.button>
         </div>
       </div>
 
-      <div className="flex md:grid md:grid-cols-3 w-full bg-white/[0.04] border-y border-white/[0.04] overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-hide py-10 md:py-0">
-        {[0, 1, 2].map((index) => (
-          <div
-            key={index}
-            className="relative flex-none w-[88vw] md:w-full aspect-[4/5] md:aspect-auto md:h-[70vh] border-r border-white/[0.04] last:border-r-0 overflow-hidden snap-center mx-3 md:mx-0 first:ml-6 last:mr-6 md:first:ml-0 md:last:mr-0"
-          >
-            {displayProjects[index] ? (
-              <ProjectCard key={displayProjects[index].id} project={displayProjects[index]} />
-            ) : (
-              <div key={`empty-${index}`} className="w-full h-full bg-bg/50" />
+      <div className="max-w-[1400px] mx-auto relative z-20 w-full">
+        <motion.div
+          layout
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+        >
+          <AnimatePresence initial={false}>
+            {displayProjects.map((project, index) => (
+              <motion.div
+                key={project.id || index}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4 }}
+                className="relative aspect-[3/4] overflow-hidden bg-white/[0.04] border border-white/[0.05]"
+              >
+                <ProjectCard project={project} />
+              </motion.div>
+            ))}
+
+            {isExpanded && (
+              <motion.div
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                className="relative aspect-[3/4] snap-center flex items-center justify-center border border-lime/20 bg-lime/[0.03] p-10 overflow-hidden"
+              >
+                <div className="text-center group transition-all duration-700 hover:scale-105">
+                  <h3 className="font-display font-black text-3xl md:text-[40px] uppercase leading-none text-lime opacity-80 tracking-tighter mb-4">
+                    ...AND MANY <ScrambleOutline text="MORE" className="[-webkit-text-stroke:1.5px_#c8ff00] text-transparent" />
+                  </h3>
+                  <div className="w-12 h-px bg-lime/40 mx-auto" />
+                </div>
+              </motion.div>
             )}
-          </div>
-        ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );

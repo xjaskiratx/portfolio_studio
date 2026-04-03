@@ -53,7 +53,7 @@ export function CTASection() {
             <span>Start a Project</span>
           </button>
           <a
-            href="https://calendly.com/jaskiratsingh06jan/15-minute-consultation"
+            href="https://calendar.app.google/5WVaARNcZUdL4y9x7"
             target="_blank"
             rel="noreferrer"
             className={`${btnS.btnXl} bg-white text-bg font-display font-black text-[22px] tracking-[0.14em] uppercase px-12 py-3 cursor-none hover:bg-lime transition-colors text-center max-[520px]:px-8 max-[520px]:text-xl w-full max-w-[400px] sm:max-w-none sm:w-auto`}
@@ -62,7 +62,7 @@ export function CTASection() {
           </a>
         </div>
 
-        <div className="font-mono text-[11px] tracking-[0.12em] text-white/70 uppercase mt-8 mb-22">
+        <div className="font-mono text-[14px] tracking-[0.12em] text-white/70 uppercase mt-8 mb-22">
           © 2026 JSX W&D. Solo Studio. <br className="sm:hidden" />All Rights Reserved.
         </div>
       </div>

@@ -56,7 +56,7 @@ export function Services() {
         <div className="rv">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-px bg-lime/40" />
-            <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">What I Do</span>
+            <span className="font-mono text-[14px] tracking-[0.24em] uppercase text-lime">What I Do</span>
           </div>
           {/* Heading with focal scramble animation for 'Real' */}
           <h2 className={typS.secTitle}>Built For <ScrambleOutline text="Real" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> World</h2>

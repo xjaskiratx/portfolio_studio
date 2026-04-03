@@ -60,7 +60,7 @@ export function Pricing() {
         <div className="rv mb-16 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-3 mb-6">
             <div className="w-10 h-px bg-lime/40 hidden md:block" />
-            <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime text-center md:text-left">Price Planning Guide</span>
+            <span className="font-mono text-[14px] tracking-[0.24em] uppercase text-lime text-center md:text-left">Price Planning Guide</span>
           </div>
           <h2 className={cn(typS.secTitle, "max-[767px]:!text-[46px] max-[767px]:!leading-[1.1]")}>
             Select Your <ScrambleOutline text="Build." className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" />
@@ -113,7 +113,7 @@ export function Pricing() {
             onClick={() => window.dispatchEvent(new CustomEvent("open-contact-modal"))}>
             <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
               <span className="font-display font-black text-[22px] tracking-[0.12em] uppercase text-lime">Looking for a custom project?</span>
-              <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-muted">I handle complex, non-standard enterprise solutions too.</span>
+              <span className="font-mono text-[14px] tracking-[0.18em] uppercase text-muted">I handle complex and personalized enterprise solutions too.</span>
             </div>
             <span className="font-display font-black text-sm tracking-[0.24em] uppercase text-white group-hover:text-lime transition-colors">Let's Talk →</span>
           </div>

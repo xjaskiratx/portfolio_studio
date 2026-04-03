@@ -43,7 +43,7 @@ export function Process() {
         <div className="rv">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-px bg-lime/40" />
-            <span className="font-mono text-[10px] tracking-[0.24em] uppercase text-lime">the process</span>
+            <span className="font-mono text-[14px] tracking-[0.24em] uppercase text-lime">the process</span>
           </div>
           <h2 className={`${typS.secTitle} uppercase`}>simple, <ScrambleOutline text="direct," className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> <span className="text-lime">effective</span></h2>
         </div>
