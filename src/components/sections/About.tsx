@@ -10,9 +10,9 @@ function cn(...inputs: ClassValue[]) {
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
 
 const philosophy = [
-  { label: "High-Quality Process", value: "Clear strategy and planned execution fused into a single unit. No agency bloat, no communication gaps — just direct, high-quality results delivered with absolute speed." },
+  { label: "High-Quality Process", value: "Clear strategy with planned execution resulting in high-quality results. Just a direct pipeline for fast and accurate results." },
   { label: "Architectural Integrity", value: "Code that is as clean as the UI. High-performance architecture meets premium aesthetics for long-term scalability and pixel-perfect results." },
-  { label: "Direct Access", value: "Work directly with the builder. No project managers to bypass — just a focused, rapid execution pipeline from conception to launch." }
+  { label: "Direct Access", value: "Work directly with the builder with no project managers to bypass." }
 ];
 
 export function About() {
@@ -38,10 +38,10 @@ export function About() {
 
             <div className="space-y-10 max-w-[640px] mb-2">
               <p className="text-[18px] font-light text-dim leading-[1.7] si">
-                JSX Studios is a <span className="grad-text">premier digital studio</span> where design and development meet each other into a sharp, high-performance process. We build digital experiences that make your brand impossible to ignore.
+                JSX Studios is a <span className="grad-text">premier digital studio</span> where <span className="grad-text">design</span> and <span className="grad-text">development</span> meet each other into a high-performance process. We build digital experiences that make your brand impossible to ignore.
               </p>
               <p className="text-[18px] font-light text-dim leading-[1.7] si" style={{ transitionDelay: '0.1s' }}>
-                Our approach combines <span className="grad-text">powerful aesthetics</span> and <span className="grad-text">full-stack precision</span> with <span className="grad-text">modern technology</span> — guaranteed to deliver the <span className="grad-text">best experiences</span>. Whether it’s a high-performance web app or a boutique brand identity, we deliver work that isn’t just "good"—it’s "<span className="grad-text">REMEMBERED</span>."
+                Our approach combines <span className="grad-text">modern aesthetics</span> and full-stack precision with <span className="grad-text">modern technology</span> — guaranteed to deliver the <span className="grad-text">best experiences</span>. We deliver work that isn’t just "good"—it’s "<span className="grad-text">REMEMBERED</span>."
               </p>
             </div>
           </div>
@@ -49,7 +49,7 @@ export function About() {
 
         <div className="flex flex-col gap-4 rv si" style={{ transitionDelay: '0.2s' }}>
           {philosophy.map((item, i) => (
-            <div key={i} className="group rounded-none border border-white/7 bg-white/[0.02] px-7 py-5 transition-all duration-500 hover:border-lime/20 hover:bg-white/[0.035] hover:shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
+            <div key={i} className="group rounded-none border border-white/7 bg-white/[0.02] px-5 py-3 transition-all duration-500 hover:border-lime/20 hover:bg-white/[0.035] hover:shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
               <div className="font-display font-black text-[22px] md:text-[24px] tracking-[0.14em] uppercase text-lime mb-4 group-hover:scale-[1.03] transition-transform text-center md:text-left origin-center md:origin-left">{item.label}</div>
               <p className="text-[16px] font-light text-white/72 leading-relaxed group-hover:text-white/84 transition-colors">
                 {item.value}

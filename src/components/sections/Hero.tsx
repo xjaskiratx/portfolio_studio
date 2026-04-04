@@ -217,7 +217,7 @@ export function Hero() {
               {stats.map((stat, i) => (
                 <div key={i} className="flex flex-col gap-0.5">
                   <span className="font-display font-black text-[58px] text-lime leading-none max-[479px]:text-[48px]">{stat.value}</span>
-                  <span className="font-mono text-[14px] tracking-[0.18em] uppercase text-muted whitespace-nowrap">{stat.label}</span>
+                  <span className="font-mono text-[14px] tracking-[0.08em] uppercase text-muted whitespace-nowrap">{stat.label}</span>
                 </div>
               ))}
             </div>

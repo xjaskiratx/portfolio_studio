@@ -19,7 +19,7 @@ import styles from "./Marquee.module.css";
 export function Marquee({
   items,
   separator = "✦",
-  speed = 12,
+  speed = 30,
   direction = "left",
   className,
   variant = "lime",
@@ -27,7 +27,7 @@ export function Marquee({
   const content = [...items, ...items, ...items, ...items]; // Duplicate for seamless loop
 
   return (
-    <div 
+    <div
       data-cursor="ch"
       className={cn(
         styles.marqueeContainer,
@@ -40,7 +40,7 @@ export function Marquee({
           styles.marqueeTrack,
           direction === "left" ? styles.animateLeft : styles.animateRight
         )}
-        style={{ 
+        style={{
           animationDuration: `${speed}s`,
         }}
       >

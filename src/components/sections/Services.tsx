@@ -71,12 +71,6 @@ export function Services() {
           <ServiceCard key={service.num} service={service} />
         ))}
       </div>
-
-      {/* <div className="max-w-[1400px] mx-auto relative z-20 grid grid-cols-1 md:grid-cols-3 gap-[4px] mt-[4px] bg-white/[0.04] border-b border-white/[0.04]">
-        {miniServices.map((name, i) => (
-          <MiniServiceItem key={name} name={name} index={i} />
-        ))}
-      </div> */}
     </section>
   );
 }

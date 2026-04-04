@@ -23,7 +23,7 @@ export function HomeClient() {
       <Marquee
         items={["Web Design", "Graphic Design", "Brand Identity", "UI / UX", "Development", "Print Design", "Redesigns"]}
         variant="lime"
-        speed={18}
+        speed={30}
         aria-hidden="true"
       />
       <Industries />
@@ -31,7 +31,7 @@ export function HomeClient() {
         items={["SaaS & Enterprise", "Fintech / Neo-Banking", "AI & Machine Learning", "Web3 / Digital Assets", "High-End E-commerce"]}
         variant="dark"
         direction="right"
-        speed={20}
+        speed={35}
         separator="·"
         aria-hidden="true"
       />
@@ -39,7 +39,7 @@ export function HomeClient() {
       <Marquee
         items={["High Performance", "Pixel Perfect", "Zero Handoff Loss", "SEO Optimized", "Scaleable Architecture"]}
         variant="lime"
-        speed={18}
+        speed={35}
         aria-hidden="true"
       />
       <Work />
@@ -47,7 +47,7 @@ export function HomeClient() {
         items={["Got existing work?", "I'll make it what it should have been", "Redesigns are a specialty"]}
         variant="dark"
         direction="right"
-        speed={18}
+        speed={35}
         separator="·"
         aria-hidden="true"
       />
@@ -55,7 +55,7 @@ export function HomeClient() {
       <Marquee
         items={["Zero Friction", "Direct Access", "3-Step Sync", "No Handoff Gaps", "Rapid Execution", "Clear Strategy"]}
         variant="lime"
-        speed={22}
+        speed={40}
         aria-hidden="true"
       />
       <Pricing />
@@ -63,7 +63,7 @@ export function HomeClient() {
         items={["Ready to Forge?", "Level Up Your Product", "Stop Settling for Less", "Direct Access to the Builder", "Build it Better", "Start Your Project →"]}
         variant="dark"
         direction="right"
-        speed={22}
+        speed={40}
         separator=" · "
         aria-hidden="true"
       />
