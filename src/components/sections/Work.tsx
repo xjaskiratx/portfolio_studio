@@ -210,6 +210,24 @@ export function Work() {
   // On mobile, show ALL projects in the carousel. On desktop, respect isExpanded.
   const displayProjects = isMobile ? projects : (isExpanded ? projects : projects.slice(0, 3));
 
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    // Account for the card width ([85vw]) AND the gap (gap-6 = 24px)
+    const cardWidth = window.innerWidth * 0.85;
+    const gap = 24; 
+    const index = Math.min(
+      Math.round(scrollLeft / (cardWidth + gap)), 
+      displayProjects.length - 1
+    );
+    if (index !== activeIndex) {
+      setActiveIndex(index);
+    }
+  };
+
   if (!mounted) {
     return <section id="work" className="sec bg-bg min-h-[50vh]" />;
   }
@@ -238,9 +256,11 @@ export function Work() {
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto relative z-20 w-full">
+    <div className="max-w-[1400px] mx-auto relative z-20 w-full">
         {/* Responsive Container: Carousel on Mobile, Grid on Desktop */}
         <motion.div
+          ref={scrollRef}
+          onScroll={handleScroll}
           layout
           className={cn(
             "flex overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-8 -mx-4 px-4 gap-6", // Mobile Carousel Styles
@@ -284,6 +304,21 @@ export function Work() {
             )}
           </AnimatePresence>
         </motion.div>
+
+        {/* Mobile Indicator Dots */}
+        {isMobile && (
+          <div className="flex justify-center gap-2 mt-6 md:hidden">
+            {displayProjects.map((_, i) => (
+              <div
+                key={i}
+                className={cn(
+                  "w-1.5 h-1.5 rounded-full transition-all duration-500",
+                  i === activeIndex ? "bg-lime w-6" : "bg-white/20"
+                )}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

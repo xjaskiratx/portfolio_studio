@@ -59,7 +59,7 @@ export function Services() {
             <span className="font-mono text-[14px] tracking-[0.24em] uppercase text-lime">What I Do</span>
           </div>
           {/* Heading with focal scramble animation for 'Real' */}
-          <h2 className={typS.secTitle}>Built For <ScrambleOutline text="Real" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> World</h2>
+          <h2 className={typS.secTitle}>Built For <br className="sm:hidden" /> <ScrambleOutline text="Real" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /> World</h2>
         </div>
         <p className="rv text-[18px] font-light text-dim max-w-[460px] leading-[1.4] group">
           End-to-end execution, from <span className="grad-text">concept to deployment.</span> Fast, scalable and built for  <span className="grad-text">real-world performance.</span>

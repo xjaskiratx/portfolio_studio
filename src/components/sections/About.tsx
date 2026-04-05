@@ -1,3 +1,5 @@
+import { ReactNode, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ScrambleInView } from "@/components/ui/ScrambleInView";
 import typS from "@/styles/Typography.module.css";
 import { clsx, type ClassValue } from "clsx";
@@ -10,12 +12,20 @@ function cn(...inputs: ClassValue[]) {
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
 
 const philosophy = [
-  { label: "High-Quality Process", value: "Clear strategy with planned execution resulting in high-quality results. Just a direct pipeline for fast and accurate results." },
+  { label: "Solid Process", value: "Clear strategy with a planned execution is the process pipeline for high-quality, fast & accurate results." },
   { label: "Architectural Integrity", value: "Code that is as clean as the UI. High-performance architecture meets premium aesthetics for long-term scalability and pixel-perfect results." },
   { label: "Direct Access", value: "Work directly with the builder with no project managers to bypass." }
 ];
 
 export function About() {
+  const [expandedIndices, setExpandedIndices] = useState<number[]>([]);
+
+  const toggleExpand = (index: number) => {
+    setExpandedIndices(prev => 
+      prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
+    );
+  };
+
   return (
     <section id="about" className="sec relative bg-bg overflow-hidden scroll-mt-20">
       {/* Background Decor */}
@@ -48,14 +58,68 @@ export function About() {
         </div>
 
         <div className="flex flex-col gap-4 rv si" style={{ transitionDelay: '0.2s' }}>
-          {philosophy.map((item, i) => (
-            <div key={i} className="group rounded-none border border-white/7 bg-white/[0.02] px-5 py-3 transition-all duration-500 hover:border-lime/20 hover:bg-white/[0.035] hover:shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
-              <div className="font-display font-black text-[22px] md:text-[24px] tracking-[0.14em] uppercase text-lime mb-4 group-hover:scale-[1.03] transition-transform text-center md:text-left origin-center md:origin-left">{item.label}</div>
-              <p className="text-[16px] font-light text-white/72 leading-relaxed group-hover:text-white/84 transition-colors">
-                {item.value}
-              </p>
-            </div>
-          ))}
+          {philosophy.map((item, i) => {
+            const isExpanded = expandedIndices.includes(i);
+            
+            return (
+              <div 
+                key={i} 
+                className={cn(
+                  "group rounded-none border border-white/7 bg-white/[0.02] px-6 py-5 transition-all duration-500 overflow-hidden",
+                  "hover:border-lime/20 hover:bg-white/[0.035]",
+                  isExpanded && "border-lime/30 bg-white/[0.05]"
+                )}
+              >
+                <button 
+                  onClick={() => toggleExpand(i)}
+                  className="w-full flex items-center justify-between gap-4 text-left group/btn md:cursor-default md:pointer-events-none"
+                >
+                  <div className={cn(
+                    "font-display font-black text-[22px] md:text-[24px] tracking-[0.14em] uppercase transition-all duration-300 origin-left",
+                    (isExpanded || (typeof window !== 'undefined' && window.innerWidth >= 768)) ? "text-lime scale-[1.02]" : "text-white/90 group-hover:text-white"
+                  )}>
+                    {item.label}
+                  </div>
+                  
+                  {/* Expand/Collapse Icon (Mobile Only) */}
+                  <div className="relative w-5 h-5 flex items-center justify-center md:hidden">
+                    <div className={cn(
+                      "absolute w-full h-0.5 transition-colors duration-300",
+                      isExpanded ? "bg-lime" : "bg-white/40 group-hover:bg-white/60"
+                    )} />
+                    <div className={cn(
+                      "absolute w-0.5 h-full transition-all duration-300 origin-center",
+                      isExpanded ? "bg-lime scale-y-0" : "bg-white/40 group-hover:bg-white/60"
+                    )} />
+                  </div>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {(isExpanded || (typeof window !== 'undefined' && window.innerWidth >= 768)) && (
+                    <motion.div
+                      key="content"
+                      initial={typeof window !== 'undefined' && window.innerWidth < 768 ? { height: 0, opacity: 0 } : false}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                      className="overflow-hidden md:block"
+                    >
+                      <p className="text-[16px] font-light text-white/72 leading-relaxed pt-4 md:pt-4 group-hover:text-white/84 transition-colors">
+                        {item.value}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Desktop Fallback (if window is not yet available/SSR) */}
+                <noscript>
+                  <p className="text-[16px] font-light text-white/72 leading-relaxed pt-4">
+                    {item.value}
+                  </p>
+                </noscript>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

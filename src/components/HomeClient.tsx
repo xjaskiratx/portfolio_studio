@@ -19,6 +19,14 @@ export function HomeClient() {
   return (
     <>
       <Hero />
+      <Marquee
+        items={["Digital Forge", "High-Performance Solo Studio", "Built for Speed", "Real-World Impact", "Zero Fluff", "Direct execution"]}
+        variant="dark"
+        direction="right"
+        speed={35}
+        separator=" · "
+        aria-hidden="true"
+      />
       <About />
       <Marquee
         items={["Web Design", "Graphic Design", "Brand Identity", "UI / UX", "Development", "Print Design", "Redesigns"]}

@@ -58,10 +58,10 @@ export function Process() {
         ))}
       </div>
 
-      <div className="max-w-[1400px] mx-auto relative z-20 flex justify-center w-full">
-        <div className="inline-flex text-center">
-          <p className="rv font-display font-black text-[22px] md:text-[28px] lg:text-[32px] uppercase text-white/90 tracking-tight si" style={{ transitionDelay: "0.4s", textAlign: 'center' }}>
-            No layers. No delays. <span className="text-lime">You work directly with the builder.</span>
+      <div className="max-w-[1400px] mx-auto relative z-20 flex justify-center w-full mt-10 md:mt-24">
+        <div className="w-full text-center">
+          <p className="rv font-display font-black text-[20px] sm:text-[22px] md:text-[28px] lg:text-[32px] uppercase text-white/90 tracking-tight si text-center [text-align-last:center] md:[text-align-last:center]" style={{ transitionDelay: "0.4s" }}>
+            No layers. No delays. <br className="sm:hidden" /> <span className="text-lime">You work directly with the builder.</span>
           </p>
         </div>
       </div>

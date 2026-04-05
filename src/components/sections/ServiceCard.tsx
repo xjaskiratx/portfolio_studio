@@ -30,10 +30,10 @@ export function ServiceCard({ service }: { service: Service }) {
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = rectRef.current;
     if (!rect) return;
-    
+
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
-    
+
     setTilt({ x: py * -10, y: px * 13, s: 1.02 });
     setMPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
@@ -49,14 +49,14 @@ export function ServiceCard({ service }: { service: Service }) {
       onMouseEnter={onMouseEnter}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      style={{ 
+      style={{
         transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${tilt.s})`,
         transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s ease'
       }}
       className="group relative bg-bg p-12 md:p-[58px_48px] overflow-hidden cursor-none hover:bg-[#090912] rv sp border border-white/[0.03]"
     >
       {/* Glow */}
-      <div 
+      <div
         className="absolute w-[320px] h-[320px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-0"
         style={{
           left: mPos.x,
@@ -66,7 +66,7 @@ export function ServiceCard({ service }: { service: Service }) {
           transition: 'opacity 0.5s ease'
         }}
       />
-      
+
       {/* Background Number */}
       <div className="absolute top-[-20px] left-[-20px] font-mono text-[160px] text-lime/10 font-black select-none pointer-events-none group-hover:text-lime/[0.15] transition-colors duration-700 z-0">{service.num}</div>
 

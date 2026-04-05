@@ -25,8 +25,8 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
         easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
         smoothWheel: true,
         wheelMultiplier: 1.0,
-        touchMultiplier: 0,
-        syncTouch: false,
+        touchMultiplier: 1.5, // Heavy momentum for touch
+        syncTouch: true,
       }}
     >
       {children}
