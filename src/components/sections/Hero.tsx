@@ -207,9 +207,9 @@ export function Hero() {
         <div className={cn("flex flex-col rv", mounted && "in")} style={{ transitionDelay: '1s' }}>
           {/* Paragraph + Metrics Row */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-10 md:gap-12 mb-10 md:mb-0">
-            <div className="max-w-105 w-full">
-              <p className="text-[18px] font-light text-dim leading-[1.4] max-[479px]:text-[15px] text-justify md:text-left [text-align-last:center] md:[text-align-last:left]">
-                JSX Studios builds what agencies charge 10x for - with <span className="grad-text">unmatched quality</span> and <span className="grad-text">zero handoff loss</span>.
+            <div className="max-w-none md:max-w-105 w-full">
+              <p className="text-[17px] md:text-[18px] font-light text-dim leading-[1.5] text-left">
+                <span className="grad-text">JSX Studios</span> builds what agencies charge 10x for - with <span className="grad-text">unmatched quality</span> and <span className="grad-text">zero handoff loss</span>.
               </p>
             </div>
 

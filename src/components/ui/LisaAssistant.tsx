@@ -63,10 +63,10 @@ export function LisaAssistant() {
 
   const handleOption = (id: string) => {
     if (isTyping) return;
-    
+
     // Clear any existing typing timeout
     if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
-    
+
     setSelected(id);
     setIsTyping(true);
     setReply(null);
@@ -183,21 +183,20 @@ export function LisaAssistant() {
         </div>
       )}
 
-      {/* Toggle Button */}
       <button
         onClick={() => { setOpen(prev => !prev); if (!open) reset(); }}
-        className="w-14 h-14 bg-lime text-bg flex items-center justify-center shadow-[0_8px_32px_rgba(200,255,0,0.3)] hover:shadow-[0_12px_48px_rgba(200,255,0,0.5)] transition-all active:scale-95 cursor-none overflow-hidden"
+        className="w-[50px] h-[50px] md:w-14 md:h-14 bg-lime text-bg flex items-center justify-center shadow-[0_8px_32px_rgba(200,255,0,0.3)] hover:shadow-[0_12px_48px_rgba(200,255,0,0.5)] transition-all active:scale-95 cursor-none overflow-hidden"
         aria-label="Open LISA assistant"
       >
         <div className="relative w-full h-full flex items-center justify-center">
-            <span className={cn(
-              "absolute transition-all duration-300 text-xl font-bold",
-              open ? "opacity-100 rotate-0" : "opacity-0 -rotate-90"
-            )}>×</span>
-            <span className={cn(
-               "absolute transition-all duration-300 text-xl",
-               open ? "opacity-0 rotate-90" : "opacity-100 rotate-0"
-            )}>✦</span>
+          <span className={cn(
+            "absolute transition-all duration-300 text-lg md:text-xl font-bold",
+            open ? "opacity-100 rotate-0" : "opacity-0 -rotate-90"
+          )}>×</span>
+          <span className={cn(
+            "absolute transition-all duration-300 text-lg md:text-xl",
+            open ? "opacity-0 rotate-90" : "opacity-100 rotate-0"
+          )}>✦</span>
         </div>
       </button>
     </div>

@@ -50,7 +50,7 @@ export function PillNav({ onHireMe }: PillNavProps) {
       if (!navRef.current.classList.contains("dimmed")) {
         navRef.current.classList.add("dimmed");
       }
-      
+
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
       scrollTimeoutRef.current = setTimeout(() => {
         navRef.current?.classList.remove("dimmed");
@@ -60,7 +60,7 @@ export function PillNav({ onHireMe }: PillNavProps) {
 
   useEffect(() => {
     const sections = ["hero", "services", "work", "about", "process", "cta"];
-    
+
     // Defer observation to ensure dynamic components are in the DOM
     const timer = setTimeout(() => {
       const sectionElements = sections.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
@@ -107,30 +107,29 @@ export function PillNav({ onHireMe }: PillNavProps) {
       id="pill-nav"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-[800] transition-opacity duration-400 ease-out w-fit min-w-[220px] max-w-[90vw] md:w-auto"
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[800] transition-opacity duration-400 ease-out w-fit min-w-[220px] max-w-[90vw] md:w-auto"
     >
       <div className="relative">
         <div
           className="pill-track relative flex items-center bg-[rgba(13,13,21,0.86)] backdrop-blur-[28px] border border-white/10 shadow-[0_12px_44px_rgba(0,0,0,0.5)] transition-all duration-500 rounded-full p-1 md:p-1.5 gap-0"
         >
           {/* Mobile Layout: Dynamic Section Label + Hire Me */}
-          <div className="flex md:hidden items-center w-full justify-between px-2 h-[42px]">
-            <div className="flex items-center gap-2 px-3">
+          <div className="flex md:hidden items-center w-fit mx-auto h-[42px] px-1.5">
+            <div className="flex items-center gap-2 pr-3">
               <div className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse" />
               <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-white font-bold">
                 {navItems.find(i => i.id === activeTab)?.label}
               </span>
             </div>
-            
-            <div className="flex items-center h-full">
-              <div className="w-px h-4 bg-white/10 mx-1" />
-              <button
-                onClick={(e) => { e.stopPropagation(); onHireMe(); }}
-                className="font-mono text-[10px] tracking-[0.12em] uppercase text-lime px-3 h-full flex items-center justify-center transition-all active:scale-95 whitespace-nowrap"
-              >
-                Hire Me →
-              </button>
-            </div>
+
+            <div className="w-px h-4 bg-white/10" />
+
+            <button
+              onClick={(e) => { e.stopPropagation(); onHireMe(); }}
+              className="font-mono text-[10px] tracking-[0.12em] uppercase text-lime pl-3 pr-1 h-full flex items-center justify-center transition-all active:scale-95 whitespace-nowrap"
+            >
+              Hire Me →
+            </button>
           </div>
 
           {/* Desktop Layout: All Nav Items */}

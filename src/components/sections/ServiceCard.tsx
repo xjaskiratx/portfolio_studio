@@ -68,7 +68,7 @@ export function ServiceCard({ service }: { service: Service }) {
       />
       
       {/* Background Number */}
-      <div className="absolute top-[-20px] right-[-20px] md:right-auto md:left-[-20px] font-mono text-[160px] text-lime/10 font-black select-none pointer-events-none group-hover:text-lime/[0.15] transition-colors duration-700 z-0">{service.num}</div>
+      <div className="absolute top-[-20px] left-[-20px] font-mono text-[160px] text-lime/10 font-black select-none pointer-events-none group-hover:text-lime/[0.15] transition-colors duration-700 z-0">{service.num}</div>
 
       {/* Bottom Bar */}
       <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-lime scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />

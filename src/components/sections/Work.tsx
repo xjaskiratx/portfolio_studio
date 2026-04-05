@@ -195,13 +195,20 @@ function ProjectCard({ project }: { project: any }) {
 
 export function Work() {
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const displayProjects = isExpanded ? projects : projects.slice(0, 3);
+  // On mobile, show ALL projects in the carousel. On desktop, respect isExpanded.
+  const displayProjects = isMobile ? projects : (isExpanded ? projects : projects.slice(0, 3));
 
   if (!mounted) {
     return <section id="work" className="sec bg-bg min-h-[50vh]" />;
@@ -222,9 +229,9 @@ export function Work() {
           <motion.button
             layout
             onClick={() => setIsExpanded(!isExpanded)}
-            className="group flex items-center justify-center gap-4 bg-white/[0.05] border border-white/20 px-8 py-4 hover:bg-lime/10 hover:border-lime/40 transition-all duration-500 overflow-hidden min-w-[180px]"
+            className="group hidden md:flex items-center justify-center gap-4 bg-white/[0.05] border border-white/20 px-8 py-4 hover:bg-lime/10 hover:border-lime/40 transition-all duration-500 overflow-hidden min-w-[180px]"
           >
-            <span className="font-mono text-[13px] tracking-[0.3em] font-bold uppercase text-white/90 group-hover:text-lime transition-colors">
+            <span className="font-mono text-[16px] tracking-[0.3em] font-bold uppercase text-white/90 group-hover:text-lime transition-colors">
               {isExpanded ? "Collapse" : "See More"}
             </span>
           </motion.button>
@@ -232,9 +239,13 @@ export function Work() {
       </div>
 
       <div className="max-w-[1400px] mx-auto relative z-20 w-full">
+        {/* Responsive Container: Carousel on Mobile, Grid on Desktop */}
         <motion.div
           layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          className={cn(
+            "flex overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-8 -mx-4 px-4 gap-6", // Mobile Carousel Styles
+            "md:mx-0 md:px-0 md:pb-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible" // Desktop Grid Styles
+          )}
         >
           <AnimatePresence initial={false}>
             {displayProjects.map((project, index) => (
@@ -245,19 +256,23 @@ export function Work() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4 }}
-                className="relative aspect-[3/4] overflow-hidden bg-white/[0.04] border border-white/[0.05]"
+                className={cn(
+                  "relative aspect-[3/4] overflow-hidden bg-white/[0.04] border border-white/[0.05] shrink-0 snap-center",
+                  "w-[85vw] md:w-auto" // Mobile width vs Desktop auto
+                )}
               >
                 <ProjectCard project={project} />
               </motion.div>
             ))}
 
-            {isExpanded && (
+            {/* "And Many More" card only on Desktop when expanded */}
+            {isExpanded && !isMobile && (
               <motion.div
                 layout
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
-                className="relative aspect-[3/4] snap-center flex items-center justify-center border border-lime/20 bg-lime/[0.03] p-10 overflow-hidden"
+                className="relative aspect-[3/4] flex items-center justify-center border border-lime/20 bg-lime/[0.03] p-10 overflow-hidden"
               >
                 <div className="text-center group transition-all duration-700 hover:scale-105">
                   <h3 className="font-display font-black text-3xl md:text-[40px] uppercase leading-none text-lime opacity-80 tracking-tighter mb-4">
