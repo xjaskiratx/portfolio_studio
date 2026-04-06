@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -24,6 +24,8 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [honeypot, setHoneypot] = useState(""); // Bot-trap field
+
   
   // Handling unmount delay for exit animation
   const [shouldRender, setShouldRender] = useState(isOpen);
@@ -207,6 +209,18 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             <div className="modal-step active animate-fade-in-right">
               <div className="modal-tag font-mono text-[9.5px] tracking-[0.2em] uppercase text-lime mb-[10px]">Step 3 of 3</div>
               <div className="modal-q font-display font-black text-4xl uppercase leading-[0.95] mb-7">Tell me about the project</div>
+              
+              {/* HONEYPOT (Hidden from humans) */}
+              <input 
+                type="text" 
+                name="user_comment_id" 
+                autoComplete="off" 
+                className="hidden" 
+                value={honeypot} 
+                onChange={(e) => setHoneypot(e.target.value)} 
+                tabIndex={-1} 
+              />
+
               <textarea 
                 className="modal-inp w-full bg-white/5 border border-white/10 text-white font-body text-sm p-[14px_18px] mb-3 outline-none focus:border-lime/40 transition-all placeholder:text-white/45 h-[100px] resize-none cursor-text" 
                 placeholder="What's the project? Timeline? Budget? Any references?"
@@ -219,7 +233,14 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   "modal-next w-full md:w-auto font-display font-bold text-[15px] tracking-[0.12em] uppercase px-9 py-[15px] mt-2 transition-all cursor-none",
                   isSubmitting ? "bg-white/10 text-white/60 pointer-events-none" : "bg-lime text-bg hover:bg-[#d4ff22]"
                 )}
-                onClick={handleNext}
+                onClick={() => {
+                  if (honeypot) {
+                    console.warn("Bot detected via honeypot — blocking submission");
+                    setStep('done'); // Silently fail for bots
+                    return;
+                  }
+                  handleNext();
+                }}
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "SENDING..." : "Send It →"}

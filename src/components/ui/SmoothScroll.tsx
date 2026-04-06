@@ -1,14 +1,16 @@
 "use client";
 
 import { ReactLenis } from "lenis/react";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import { isMobile } from "@/lib/browser";
 
+import { useIsMounted } from "@/hooks/useIsMounted";
+
 export function SmoothScroll({ children }: { children: ReactNode }) {
   useReveal();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsMounted();
+
 
   if (!mounted) return <>{children}</>;
 

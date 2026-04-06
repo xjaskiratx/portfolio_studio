@@ -11,7 +11,6 @@ export function ScrambleText({ text, trigger, duration = 0.28 }: { text: string;
   const scramble = useCallback(() => {
     if (!displayRef.current) return;
     
-    let iteration = -4;
     const startTime = performance.now();
     const totalDuration = duration * 1000;
 

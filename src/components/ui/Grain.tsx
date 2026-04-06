@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { isIOSSafari, isMobile } from "@/lib/browser";
+import { isMobile } from "@/lib/browser";
 import styles from "./Grain.module.css";
 
 export function Grain() {
@@ -25,8 +25,6 @@ export function Grain() {
     canvas.width = W;
     canvas.height = H;
 
-    // Throttle: skip N frames between redraws
-    const interval = isMobile ? 5 : 3;
     function draw() {
         const id = ctx!.createImageData(W, H);
         const d = id.data;

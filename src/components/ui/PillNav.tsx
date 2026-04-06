@@ -12,13 +12,19 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const navItems = [
-  { id: "hero", label: "JSX W&D" },
+  { id: "hero", label: "JSX Studios" },
+  { id: "about", label: "About" },
   { id: "services", label: "Services" },
   { id: "work", label: "Work" },
-  { id: "about", label: "About" },
-  { id: "process", label: "Forge" },
+  { id: "process", label: "Process" },
   { id: "cta", label: "Talk" },
 ];
+
+declare global {
+  interface Window {
+    _navObserver?: IntersectionObserver;
+  }
+}
 
 interface PillNavProps {
   onHireMe: () => void;
@@ -26,20 +32,13 @@ interface PillNavProps {
 
 export function PillNav({ onHireMe }: PillNavProps) {
   const [activeTab, setActiveTab] = useState("hero");
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [expandTimeout, setExpandTimeout] = useState<NodeJS.Timeout | null>(null);
+
 
   const navRef = useRef<HTMLElement>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef(0);
 
-  const handleMouseEnter = () => {
-    // No-op
-  };
 
-  const handleMouseLeave = () => {
-    // No-op
-  };
 
   useLenis((lenis) => {
     const scrollY = lenis.scroll;
@@ -59,7 +58,7 @@ export function PillNav({ onHireMe }: PillNavProps) {
   });
 
   useEffect(() => {
-    const sections = ["hero", "services", "work", "about", "process", "cta"];
+    const sections = ["hero", "about", "services", "work", "process", "cta"];
 
     // Defer observation to ensure dynamic components are in the DOM
     const timer = setTimeout(() => {
@@ -82,13 +81,13 @@ export function PillNav({ onHireMe }: PillNavProps) {
       const observer = new IntersectionObserver(handleIntersect, observerOptions);
       sectionElements.forEach(el => observer.observe(el));
 
-      (window as any)._navObserver = observer;
+      window._navObserver = observer;
     }, 800);
 
     return () => {
       clearTimeout(timer);
-      if ((window as any)._navObserver) {
-        (window as any)._navObserver.disconnect();
+      if (window._navObserver) {
+        window._navObserver.disconnect();
       }
     };
   }, []);
@@ -105,8 +104,6 @@ export function PillNav({ onHireMe }: PillNavProps) {
     <nav
       ref={navRef}
       id="pill-nav"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[800] transition-opacity duration-400 ease-out w-fit min-w-[220px] max-w-[90vw] md:w-auto"
     >
       <div className="relative">
