@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "./animations.css";
+import { DeferredStyles } from "./DeferredStyles";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -24,26 +24,26 @@ const spaceGrotesk = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://jsx-studios.vercel.app"),
-  title: "JSX W&D — Web Designer & Graphic Designer in Ludhiana, India",
-  description: "Full-spectrum creative studio. Web design, development, brand identity, and graphic design. Based in Ludhiana, Punjab. I build what agencies charge 10× for.",
+  title: "JSX Studios — Web Designer & Graphic Designer in Ludhiana, India",
+  description: "Full-spectrum creative studio. Web design, development, brand identity, and graphic design. Based in Ludhiana, Punjab. We build what agencies charge 10× for.",
   keywords: ["web designer ludhiana", "graphic designer punjab", "full stack developer india", "brand identity designer", "website redesign india", "freelance web developer ludhiana"],
   authors: [{ name: "Jaskirat Singh" }],
   openGraph: {
-    title: "JSX W&D — Digital Forge Studio",
+    title: "JSX Studios — Digital Forge Studio",
     description: "Web design, development, graphic design, brand identity. Ludhiana, India.",
     url: "https://jsx-studios.vercel.app",
-    siteName: "JSX W&D",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+    siteName: "JSX Studios",
+    images: [{ url: "/images/og-image.webp", width: 1200, height: 630 }],
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "JSX W&D — Digital Forge Studio",
+    title: "JSX Studios — Digital Forge Studio",
     description: "Web design, development, graphic design, brand identity. Ludhiana, India.",
   },
   icons: {
-    icon: "/favicon.webp",
+    icon: "/images/favicon.webp",
   },
 };
 
@@ -59,12 +59,16 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <meta httpEquiv="Content-Security-Policy" content="font-src 'self' data: blob:;" />
+        <meta 
+          httpEquiv="Content-Security-Policy" 
+          content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; connect-src 'self' https://*.supabase.co https://*.resend.com;" 
+        />
         <style dangerouslySetInnerHTML={{ __html: `html,body{background:#05050a;color:#ede9df;}` }} />
       </head>
       <body className="bg-bg text-txt font-body selection:bg-lime/30 selection:text-lime">
         <ThreePatchInitializer />
         <Preloader />
+        <DeferredStyles />
         <ScrollProgress />
         {children}
         <Analytics />

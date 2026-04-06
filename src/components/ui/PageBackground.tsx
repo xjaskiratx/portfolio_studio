@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useIsMounted } from "@/hooks/useIsMounted";
 
 export const PageBackground = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
-  }, []);
+  const mounted = useIsMounted();
 
   if (!mounted) return null;
+
 
   return (
     <div id="page-bg" className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
@@ -56,7 +53,7 @@ export const PageBackground = () => {
       <div
         className="page-vtext absolute top-1/2 left-[18px] -translate-y-1/2 -rotate-90 origin-center font-mono text-[9px] tracking-[0.28em] uppercase text-[var(--accent-line)] opacity-20 whitespace-nowrap max-[767px]:hidden"
       >
-        JSX W&D · DIGITAL FORGE · SOLO STUDIO · LUDHIANA · IN ·
+        JSX Studios · DIGITAL FORGE · SOLO STUDIO · LUDHIANA · IN ·
       </div>
       <div
         className="page-vtext absolute top-1/2 right-[18px] -translate-y-1/2 rotate-90 origin-center font-mono text-[9px] tracking-[0.28em] uppercase text-[var(--accent-line)] opacity-20 whitespace-nowrap max-[767px]:hidden"

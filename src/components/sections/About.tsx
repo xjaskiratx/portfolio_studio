@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrambleInView } from "@/components/ui/ScrambleInView";
 import typS from "@/styles/Typography.module.css";
@@ -27,7 +27,7 @@ export function About() {
   };
 
   return (
-    <section id="about" className="sec relative bg-bg overflow-hidden scroll-mt-20">
+    <section id="about" className="sec relative bg-transparent md:bg-bg overflow-hidden scroll-mt-20">
       {/* Background Decor */}
       <div className="absolute left-[-20px] top-[10%] font-display font-black text-[120px] md:text-[380px] text-transparent [-webkit-text-stroke:1px_rgba(200,255,0,0.015)] leading-none tracking-tighter pointer-events-none select-none uppercase">
         Mind
@@ -51,7 +51,7 @@ export function About() {
                 JSX Studios is a <span className="grad-text">premier digital studio</span> where <span className="grad-text">design</span> and <span className="grad-text">development</span> meet each other into a high-performance process. We build digital experiences that make your brand impossible to ignore.
               </p>
               <p className="text-[18px] font-light text-dim leading-[1.7] si" style={{ transitionDelay: '0.1s' }}>
-                Our approach combines <span className="grad-text">modern aesthetics</span> and full-stack precision with <span className="grad-text">modern technology</span> — guaranteed to deliver the <span className="grad-text">best experiences</span>. We deliver work that isn’t just "good"—it’s "<span className="grad-text">REMEMBERED</span>."
+                Our approach combines <span className="grad-text">modern aesthetics</span> and full-stack precision with <span className="grad-text">modern technology</span> — guaranteed to deliver the <span className="grad-text">best experiences</span>. We deliver work that isn&apos;t just &quot;good&quot;&mdash;it&apos;s &quot;<span className="grad-text">REMEMBERED</span>.&quot;
               </p>
             </div>
           </div>

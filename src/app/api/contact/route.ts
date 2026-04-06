@@ -28,7 +28,13 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, email, selectedOpt, project } = body;
+    const { name, email, selectedOpt, project, user_comment_id } = body;
+
+    // 🛡️ HONEYPOT CHECK (Bot protection)
+    if (user_comment_id) {
+      console.warn("Honeypot triggered — rejecting bot submission.");
+      return NextResponse.json({ success: true });
+    }
 
     // Constraints to prevent payload-based DoS
     const MAX_NAME_LENGTH = 100;
@@ -49,7 +55,7 @@ export async function POST(req: Request) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: "JSX W&D Portfolio <onboarding@resend.dev>", // Replace with verified domain for production
+      from: "JSX Studios Portfolio <onboarding@resend.dev>", // Replace with verified domain for production
       to: ["jaskirat06jan@gmail.com"],
       subject: `New Inquiry: ${selectedOpt} from ${name}`,
       react: ContactEmail({ 

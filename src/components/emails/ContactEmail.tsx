@@ -48,7 +48,7 @@ export const ContactEmail = ({
         </Section>
         <Hr style={hr} />
         <Text style={footer}>
-          JSX W&D Portfolio Form Submission
+          JSX Studios Portfolio Form Submission
         </Text>
       </Container>
     </Body>

@@ -3,7 +3,6 @@
 import { useState, useRef } from "react";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
-import typS from "@/styles/Typography.module.css";
 import btnS from "@/components/ui/Buttons.module.css";
 
 export function CTASection() {
@@ -63,7 +62,7 @@ export function CTASection() {
         </div>
 
         <div className="font-mono text-[14px] tracking-[0.12em] text-white/70 uppercase mt-8 mb-22">
-          © 2026 JSX W&D. Solo Studio. <br className="sm:hidden" />All Rights Reserved.
+          © 2026 JSX Studios. Solo Studio. <br className="sm:hidden" />All Rights Reserved.
         </div>
       </div>
     </section>

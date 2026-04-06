@@ -1,6 +1,5 @@
 "use client";
 
-import { ScrambleInView } from "@/components/ui/ScrambleInView";
 import typS from "@/styles/Typography.module.css";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -20,7 +19,7 @@ const industries = [
 
 export function Industries() {
   return (
-    <section id="industries" className="sec relative bg-bg overflow-hidden scroll-mt-20">
+    <section id="industries" className="sec relative bg-transparent md:bg-bg overflow-hidden scroll-mt-20">
       {/* Background Decor */}
       <div className="absolute left-[-20px] top-[10%] font-display font-black text-[120px] md:text-[380px] text-transparent [-webkit-text-stroke:1px_rgba(200,255,0,0.015)] leading-none tracking-tighter pointer-events-none select-none uppercase">
         Focus
@@ -42,7 +41,7 @@ export function Industries() {
             <div
               key={i}
               className="group relative flex items-center justify-between px-8 py-8 border border-white/5 bg-white/[0.015] hover:border-lime/30 transition-all duration-500 overflow-hidden cursor-none hover:bg-white/[0.03] backdrop-blur-sm rv"
-              style={{ transitionDelay: `${i * 0.1}s` } as any}
+              style={{ transitionDelay: `${i * 0.1}s` } as React.CSSProperties}
             >
               <div className="flex items-center gap-8 relative z-10">
                 <span className="font-mono text-[16px] text-lime/40 group-hover:text-lime transition-colors">
@@ -52,11 +51,19 @@ export function Industries() {
                   {item}
                 </span>
               </div>
-              <div className="relative z-10 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
-              </div>
               <div className="absolute inset-0 bg-gradient-to-r from-lime/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             </div>
           ))}
+
+          {/* "And Many More" Card */}
+          <div className="group relative flex items-center justify-between px-8 py-8 border border-white/5 bg-white/[0.015] hover:border-lime/30 transition-all duration-500 overflow-hidden cursor-none hover:bg-white/[0.03] backdrop-blur-sm rv">
+            <div className="flex items-center gap-8 relative z-10">
+              <span className="font-display font-black text-[22px] md:text-[28px] lg:text-[34px] tracking-tight uppercase text-white/50 group-hover:text-white transition-all duration-500 group-hover:translate-x-2">
+                ...And Many <ScrambleOutline text="More" className="[-webkit-text-stroke:1px_rgba(237,233,223,0.35)] text-transparent" />
+              </span>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-lime/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+          </div>
         </div>
       </div>
     </section>

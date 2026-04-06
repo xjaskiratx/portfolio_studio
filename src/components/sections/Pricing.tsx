@@ -1,6 +1,5 @@
 "use client";
 
-import { ScrambleInView } from "@/components/ui/ScrambleInView";
 import typS from "@/styles/Typography.module.css";
 import btnS from "@/components/ui/Buttons.module.css";
 import { clsx, type ClassValue } from "clsx";
@@ -55,7 +54,7 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="pricing" className="sec relative bg-bg overflow-hidden scroll-mt-20">
+    <section id="pricing" className="sec relative bg-transparent md:bg-bg overflow-hidden scroll-mt-20">
       <div className="max-w-[1400px] mx-auto relative z-10">
         <div className="rv mb-16 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-3 mb-6">
@@ -77,12 +76,12 @@ export function Pricing() {
 
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
-              <div className="mb-8">
-                <h3 className="font-display font-black text-[32px] lg:text-[38px] tracking-[0.08em] uppercase text-white mb-2">{plan.name}</h3>
-                <p className="font-light text-[15px] text-dim leading-relaxed h-[44px]">{plan.description}</p>
+              <div className="mb-3 md:mb-8 text-left w-full">
+                <h3 className="font-display font-black text-[28px] md:text-[32px] lg:text-[38px] tracking-[0.08em] uppercase text-white mb-1">{plan.name}</h3>
+                <p className="font-light text-[14px] md:text-[15px] text-dim leading-relaxed h-auto md:h-[44px]">{plan.description}</p>
               </div>
 
-              <div className="w-full h-px bg-white/5 mb-8" />
+              <div className="w-full h-px bg-white/15 mb-3 md:mb-8" />
 
               <ul className="space-y-4 mb-auto w-full">
                 {plan.features.map((feature, idx) => (
@@ -115,7 +114,7 @@ export function Pricing() {
               <span className="font-display font-black text-[22px] tracking-[0.12em] uppercase text-lime">Looking for a custom project?</span>
               <span className="font-mono text-[14px] tracking-[0.18em] uppercase text-muted">I handle complex and personalized enterprise solutions too.</span>
             </div>
-            <span className="font-display font-black text-sm tracking-[0.24em] uppercase text-white group-hover:text-lime transition-colors">Let's Talk →</span>
+            <span className="font-display font-black text-sm tracking-[0.24em] uppercase text-white group-hover:text-lime transition-colors">Let&apos;s Talk →</span>
           </div>
         </div>
       </div>
