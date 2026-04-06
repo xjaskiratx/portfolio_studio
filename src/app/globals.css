@@ -118,6 +118,18 @@
 }
 
 
+@layer base {
+  .animate-marquee-left {
+    animation: marquee-left linear infinite;
+    will-change: transform;
+  }
+
+  .animate-marquee-right {
+    animation: marquee-right linear infinite;
+    will-change: transform;
+  }
+}
+
 .grad-text {
   background: linear-gradient(90deg, var(--color-lime) 0%, #fff 40%, var(--color-lime) 80%, #d4ff22 100%);
   background-size: 200% auto;
@@ -127,22 +139,12 @@
   animation: gradmove 3.5s linear infinite;
 }
 
-
-@import '../styles/safari-fixes.css';
+/* Deferred Styles (Loaded asynchronously) are now in DeferredStyles.tsx */
 
 @media (max-width: 767px) {
   .grad-text {
     animation: gradmove 8s linear infinite;
     background-size: 200% auto !important;
-  }
-
-  .animate-scan,
-  [class*="animate-scan"] {
-    animation: scan 12s ease-in-out infinite !important;
-  }
-
-  [class*="animate-pulse"] {
-    animation: pulse 4s ease-in-out infinite !important;
   }
 }
 
