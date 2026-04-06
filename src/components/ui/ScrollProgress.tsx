@@ -27,9 +27,13 @@ export function ScrollProgress() {
 
     let totalScrollable = 0;
     
-    // Use ResizeObserver to avoid forced reflows
-    const observer = new ResizeObserver(() => {
-      totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
+    // Use ResizeObserver to avoid forced reflows by reading from the entry box size
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target === document.documentElement) {
+          totalScrollable = entry.target.scrollHeight - window.innerHeight;
+        }
+      }
     });
 
     const handleScroll = () => {

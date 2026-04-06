@@ -3,13 +3,14 @@
 import { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import styles from "./Hero.module.css";
-import btnS from "@/components/ui/Buttons.module.css";
 const HeroBackground = dynamic(() => import("./HeroBackground").then(mod => mod.HeroBackground), { ssr: false });
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
 import { useLenis } from "lenis/react";
+import { useIsMounted } from "@/hooks/useIsMounted";
+
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -25,12 +26,15 @@ const stats = [
 import { isSafari, isMobile } from "@/lib/browser";
 
 export function Hero() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
   const [fontsReady, setFontsReady] = useState(false);
   const [showScene, setShowScene] = useState(false);
 
+
   const heroRef = useRef<HTMLDivElement>(null);
   const defineRef = useRef<HTMLDivElement>(null);
+  const absoluteTopRef = useRef(0);
+  const heightRef = useRef(0);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const targetScrollRef = useRef<number>(0);
   const rafId = useRef<number>(0);
@@ -41,27 +45,35 @@ export function Hero() {
   const mobileRafId = useRef<number>(0);
 
   useEffect(() => {
-    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
+    if (!mounted) return;
+
     if (isSafari && typeof document !== 'undefined') {
       document.fonts.ready.then(() => setFontsReady(true));
     } else {
-      setFontsReady(true);
+      const timer = setTimeout(() => setFontsReady(true), 0);
+      return () => clearTimeout(timer);
     }
 
-    const observer = new IntersectionObserver((entries) => {
-      setShowScene(entries[0].isIntersecting);
-    }, { rootMargin: '200px' });
+    const obsDefine = new IntersectionObserver((entries) => {
+      if (!entries[0]) return;
+      const rect = entries[0].boundingClientRect;
+      const scrollY = window.scrollY;
+      absoluteTopRef.current = scrollY + rect.top;
+      heightRef.current = rect.height;
+      targetScrollRef.current = absoluteTopRef.current + heightRef.current * 0.75;
+    }, { threshold: 0 });
 
     const updateTarget = () => {
-      if (!defineRef.current || !heroRef.current) return;
-      const rectDefine = defineRef.current.getBoundingClientRect();
-      const scrollY = window.scrollY;
-      targetScrollRef.current = (scrollY + rectDefine.top) + rectDefine.height * 0.75;
+      // Handled by obsDefine asynchronously
     };
 
     const resizer = new ResizeObserver(() => {
       requestAnimationFrame(updateTarget);
     });
+
+    const observer = new IntersectionObserver((entries) => {
+      setShowScene(entries[0].isIntersecting);
+    }, { rootMargin: '200px' });
 
     // Stagger observation to avoid hydration-time reflows
     const timer = setTimeout(() => {
@@ -69,16 +81,20 @@ export function Hero() {
         resizer.observe(heroRef.current);
         observer.observe(heroRef.current);
       }
+      if (defineRef.current) {
+        obsDefine.observe(defineRef.current);
+      }
     }, 800);
 
     return () => {
       clearTimeout(timer);
       resizer.disconnect();
+      obsDefine.disconnect();
       observer.disconnect();
       window.removeEventListener('resize', updateTarget);
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
-  }, []);
+  }, [mounted]);
 
   const updateProgress = (scroll: number) => {
     if (targetScrollRef.current === 0 || !headlineRef.current) return;
@@ -175,7 +191,7 @@ export function Hero() {
         <div className={cn("flex flex-col md:flex-row items-center md:items-center gap-2 md:gap-3 mb-8 w-full rv", mounted && "in")}>
           <div className="w-10 h-px bg-lime/40 hidden md:block" />
           <span className="font-mono text-[14px] tracking-[0.24em] uppercase text-lime">
-            JSX W&D · DIGITAL FORGE
+            JSX Studios · DIGITAL FORGE
           </span>
         </div>
 
@@ -207,7 +223,7 @@ export function Hero() {
         <div className={cn("flex flex-col rv", mounted && "in")} style={{ transitionDelay: '1s' }}>
           {/* Paragraph + Metrics Row */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-10 md:gap-12 mb-10 md:mb-0">
-            <div className="max-w-none md:max-w-105 w-full">
+            <div className="max-w-none md:max-w-107 w-full">
               <p className="text-[17px] md:text-[18px] font-light text-dim leading-[1.5] text-left">
                 <span className="grad-text">JSX Studios</span> builds what agencies charge 10x for - with <span className="grad-text">unmatched quality</span> and <span className="grad-text">zero handoff loss</span>.
               </p>

@@ -12,15 +12,19 @@ export default function Magnetic({ children, strength = 0.35 }: MagneticProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const rectRef = useRef<DOMRect | null>(null);
 
-  const updateRect = () => {
-    if (ref.current) {
-      rectRef.current = ref.current.getBoundingClientRect();
-    }
-  };
-
   useEffect(() => {
-    window.addEventListener('resize', updateRect);
-    return () => window.removeEventListener('resize', updateRect);
+    if (!ref.current) return;
+    
+    // Use IntersectionObserver to capture layout info asynchronously
+    // entry.boundingClientRect is provided by the browser without a forced reflow scan.
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0]) {
+        rectRef.current = entries[0].boundingClientRect;
+      }
+    }, { threshold: 0 });
+
+    observer.observe(ref.current);
+    return () => observer.disconnect();
   }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -34,12 +38,11 @@ export default function Magnetic({ children, strength = 0.35 }: MagneticProps) {
   };
 
   const handleMouseEnter = () => {
-    updateRect();
+    // Rect is asynchronously updated via IntersectionObserver
   };
 
   const handleMouseLeave = () => {
     setPosition({ x: 0, y: 0 });
-    rectRef.current = null;
   };
 
   return (

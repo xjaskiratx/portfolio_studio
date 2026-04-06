@@ -1,12 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import React, { useRef, useState, useEffect } from "react";
 
 interface Service {
   num: string;
@@ -18,13 +12,23 @@ interface Service {
 export function ServiceCard({ service }: { service: Service }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0, s: 1 });
   const [mPos, setMPos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-  const rectRef = useRef<DOMRect | null>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRectReadOnly | null>(null);
 
-  const onMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    rectRef.current = e.currentTarget.getBoundingClientRect();
+  useEffect(() => {
+    if (!cardRef.current) return;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0]) {
+        rectRef.current = entries[0].boundingClientRect;
+      }
+    }, { threshold: 0 });
+
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const onMouseEnter = () => {
     setTilt(prev => ({ ...prev, s: 1.02 }));
-    setIsHovered(true);
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -40,12 +44,11 @@ export function ServiceCard({ service }: { service: Service }) {
 
   const onMouseLeave = () => {
     setTilt({ x: 0, y: 0, s: 1 });
-    setIsHovered(false);
-    rectRef.current = null;
   };
 
   return (
     <div
+      ref={cardRef}
       onMouseEnter={onMouseEnter}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
@@ -75,7 +78,7 @@ export function ServiceCard({ service }: { service: Service }) {
 
       <div className="relative z-10 h-full flex flex-col justify-between pt-[100px] md:pt-[120px]">
         <div>
-          <h3 className="font-display font-black text-[26px] md:text-[32px] uppercase leading-none mb-8 group-hover:text-lime transition-all max-[479px]:text-[24px]">
+          <h3 className="font-display font-black text-[26px] md:text-[32px] uppercase leading-none mb-8 text-white/80 group-hover:text-lime transition-all max-[479px]:text-[24px]">
             {service.title}
           </h3>
           <ul className="space-y-4 mb-8">

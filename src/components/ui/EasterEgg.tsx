@@ -26,15 +26,18 @@ export function EasterEgg() {
 
   useEffect(() => {
     if (show) {
-      setShouldRender(true);
-      setTimeout(() => setIsAnimating(true), 10);
-      document.body.style.overflow = "hidden";
-    } else {
-      setIsAnimating(false);
       const timer = setTimeout(() => {
-        setShouldRender(false);
-        document.body.style.overflow = "auto";
-      }, 500);
+        setShouldRender(true);
+        setTimeout(() => setIsAnimating(true), 10);
+      }, 0);
+      document.body.style.overflow = "hidden";
+      return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(() => {
+        setIsAnimating(false);
+        setTimeout(() => setShouldRender(false), 300);
+      }, 0);
+      document.body.style.overflow = "auto";
       return () => clearTimeout(timer);
     }
   }, [show]);

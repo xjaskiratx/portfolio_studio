@@ -34,7 +34,6 @@ export function useReveal() {
       });
     };
 
-    let scanScheduled = false;
     // Initial scan — defer to after first paint
     requestAnimationFrame(scanAndObserve);
 

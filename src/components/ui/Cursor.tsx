@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { useIsMounted } from "@/hooks/useIsMounted";
+
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -10,13 +12,19 @@ function cn(...inputs: ClassValue[]) {
 import { isSafari } from "@/lib/browser";
 
 export function Cursor() {
+  const mounted = useIsMounted();
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [isSafariBrowser, setIsSafariBrowser] = useState(false);
   
   useEffect(() => {
-    setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
-    setIsSafariBrowser(isSafari);
-  }, []);
+    if (!mounted) return;
+    const timer = setTimeout(() => {
+      setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
+      setIsSafariBrowser(isSafari);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [mounted]);
+
   const [cursorState, setCursorState] = useState<"" | "ch" | "cv" | "cta" | "cdrag">("");
   
   const mousePos = useRef({ x: 0, y: 0 });
@@ -195,7 +203,8 @@ export function Cursor() {
     }
   }, [isSafariBrowser]);
 
-  if (isTouchDevice) return null;
+  if (!mounted || isTouchDevice) return null;
+
 
   return (
     <>

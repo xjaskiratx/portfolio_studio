@@ -2,12 +2,16 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import { ScrambleOutline } from "@/components/ui/ScrambleOutline";
 import typS from "@/styles/Typography.module.css";
 import Magnetic from "@/components/ui/Magnetic";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+
+import { useLenis } from "lenis/react";
+import { useIsMounted } from "@/hooks/useIsMounted";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -24,7 +28,9 @@ const projects = [
     size: "large",
     bg: "bg4",
     glow: "g4",
-    image: "/cfcfasteners.webp",
+    image: "/images/cfcfasteners.webp",
+    width: 2880,
+    height: 1640,
     url: "https://cfc-fasteners.vercel.app"
   },
   {
@@ -37,7 +43,9 @@ const projects = [
     size: "small",
     bg: "bg-buh",
     glow: "g-buh",
-    image: "/buh.webp"
+    image: "/images/buh.webp",
+    width: 948,
+    height: 948
   },
   {
     id: "saphire",
@@ -49,7 +57,9 @@ const projects = [
     size: "tall",
     bg: "bg-special",
     glow: "g-special",
-    image: "/saphireastro.webp",
+    image: "/images/saphireastro.webp",
+    width: 2880,
+    height: 1640,
     url: "https://saphireastro.in"
   },
   {
@@ -62,7 +72,9 @@ const projects = [
     size: "small",
     bg: "bg-vye",
     glow: "g-vye",
-    image: "/vye.webp"
+    image: "/images/vye.webp",
+    width: 1100,
+    height: 1000
   },
   {
     id: "pawmatch",
@@ -74,10 +86,28 @@ const projects = [
     size: "large",
     bg: "bg5",
     glow: "g5",
-    image: "/pawmatch.webp",
+    image: "/images/pawmatch.webp",
+    width: 2880,
+    height: 1640,
     url: "https://pawmatch-club.vercel.app"
   }
 ];
+
+interface Project {
+  id: string;
+  title: string;
+  cat: string;
+  desc: string;
+  year: string;
+  type: string;
+  size: string;
+  bg: string;
+  glow: string;
+  image: string;
+  width: number;
+  height: number;
+  url?: string;
+}
 
 const bgs: Record<string, string> = {
   bg1: "radial-gradient(ellipse at 30% 40%, #0e1b00, #060608 85%)",
@@ -101,7 +131,7 @@ const glows: Record<string, string> = {
   "g-vye": "radial-gradient(ellipse at 50% 100%, rgba(130, 100, 255, 0.12), transparent 70%)"
 };
 
-function ProjectCard({ project }: { project: any }) {
+function ProjectCard({ project }: { project: Project }) {
   const [isHovered, setIsHovered] = useState(false);
   const lastHover = useRef(0);
   const activeBg = bgs[project.bg] || bgs.bg1;
@@ -137,9 +167,11 @@ function ProjectCard({ project }: { project: any }) {
 
       <div className="absolute inset-0 flex items-center justify-center transition-all duration-1000 group-hover:scale-105">
         {project.image && (
-          <img
+          <Image
             src={project.image}
             alt={project.title}
+            width={project.width}
+            height={project.height}
             className={cn(
               "h-auto object-contain drop-shadow-[0_0_80px_rgba(0,0,0,0.6)] transition-all duration-700",
               project.size === "small" ? "w-[65%] md:w-[50%]" : "w-[90%] md:w-[75%]"
@@ -194,28 +226,68 @@ function ProjectCard({ project }: { project: any }) {
 }
 
 export function Work() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
   const [isMobile, setIsMobile] = useState(false);
 
+
   const [isExpanded, setIsExpanded] = useState(false);
+  const lenis = useLenis();
 
   useEffect(() => {
-    setMounted(true);
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const cardHeightRef = useRef<number>(600); // Decent default
+
+  useEffect(() => {
+    if (!gridRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      const firstCard = entries[0].target.firstElementChild as HTMLElement;
+      if (firstCard) {
+        cardHeightRef.current = firstCard.offsetHeight;
+      }
+    });
+    observer.observe(gridRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   // On mobile, show ALL projects in the carousel. On desktop, respect isExpanded.
   const displayProjects = isMobile ? projects : (isExpanded ? projects : projects.slice(0, 3));
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const handleExpand = () => {
+    const newState = !isExpanded;
+    setIsExpanded(newState);
+    
+    if (newState && lenis && gridRef.current) {
+      setTimeout(() => {
+        const grid = gridRef.current;
+        if (!grid) return;
+
+        // Use cached height to avoid layout thrashing
+        const cardHeight = cardHeightRef.current;
+          const gap = 32; // md:gap-8
+          // To center the second row:
+          // Scroll to: GridTop + Row1 + Gap + (Row2/2) - (Viewport/2)
+          const targetOffset = (cardHeight + gap) + (cardHeight / 2) - (window.innerHeight / 2);
+
+          lenis.scrollTo(grid, {
+            offset: targetOffset,
+            duration: 1.8,
+            easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2 // Premium ease-in-out-cubic
+          });
+      }, 100);
+    }
+  };
 
   const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const scrollLeft = scrollRef.current.scrollLeft;
+    if (!gridRef.current) return;
+    const scrollLeft = gridRef.current.scrollLeft;
     // Account for the card width ([85vw]) AND the gap (gap-6 = 24px)
     const cardWidth = window.innerWidth * 0.85;
     const gap = 24; 
@@ -233,7 +305,7 @@ export function Work() {
   }
 
   return (
-    <section id="work" className="sec bg-bg relative overflow-hidden scroll-mt-20">
+    <section id="work" className="sec bg-transparent md:bg-bg relative overflow-hidden scroll-mt-20">
       <div className="max-w-[1400px] mx-auto relative z-20 mb-16">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
           <div className="rv">
@@ -241,12 +313,12 @@ export function Work() {
               <div className="w-10 h-px bg-lime/40" />
               <span className="font-mono text-[14px] tracking-[0.24em] uppercase text-lime">Project Index</span>
             </div>
-            <h2 className={typS.secTitle}>Selected <ScrambleOutline text="Work" className="[-webkit-text-stroke:2px_#333] text-transparent" /></h2>
+            <h2 className={typS.secTitle}>Selected <ScrambleOutline text="Work" className="[-webkit-text-stroke:2px_rgba(237,233,223,0.35)] text-transparent" /></h2>
           </div>
 
           <motion.button
             layout
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={handleExpand}
             className="group hidden md:flex items-center justify-center gap-4 bg-white/[0.05] border border-white/20 px-8 py-4 hover:bg-lime/10 hover:border-lime/40 transition-all duration-500 overflow-hidden min-w-[180px]"
           >
             <span className="font-mono text-[16px] tracking-[0.3em] font-bold uppercase text-white/90 group-hover:text-lime transition-colors">
@@ -259,7 +331,7 @@ export function Work() {
     <div className="max-w-[1400px] mx-auto relative z-20 w-full">
         {/* Responsive Container: Carousel on Mobile, Grid on Desktop */}
         <motion.div
-          ref={scrollRef}
+          ref={gridRef}
           onScroll={handleScroll}
           layout
           className={cn(
@@ -285,14 +357,17 @@ export function Work() {
               </motion.div>
             ))}
 
-            {/* "And Many More" card only on Desktop when expanded */}
-            {isExpanded && !isMobile && (
+            {/* "And Many More" card - Always visible on Mobile, Visible on Desktop when expanded */}
+            {(isExpanded || isMobile) && (
               <motion.div
                 layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                className="relative aspect-[3/4] flex items-center justify-center border border-lime/20 bg-lime/[0.03] p-10 overflow-hidden"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className={cn(
+                  "relative aspect-[3/4] flex items-center justify-center border border-lime/20 bg-lime/[0.03] p-10 overflow-hidden shrink-0 snap-center",
+                  "w-[85vw] md:w-auto" // Sync with project card widths
+                )}
               >
                 <div className="text-center group transition-all duration-700 hover:scale-105">
                   <h3 className="font-display font-black text-3xl md:text-[40px] uppercase leading-none text-lime opacity-80 tracking-tighter mb-4">

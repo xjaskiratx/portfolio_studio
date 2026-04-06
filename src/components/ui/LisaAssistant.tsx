@@ -45,11 +45,16 @@ export function LisaAssistant() {
 
   useEffect(() => {
     if (open) {
-      setShouldRender(true);
-      setTimeout(() => setIsAnimating(true), 10);
+      const timer = setTimeout(() => {
+        setShouldRender(true);
+        setTimeout(() => setIsAnimating(true), 10);
+      }, 0);
+      return () => clearTimeout(timer);
     } else {
-      setIsAnimating(false);
-      const timer = setTimeout(() => setShouldRender(false), 300);
+      const timer = setTimeout(() => {
+        setIsAnimating(false);
+        setTimeout(() => setShouldRender(false), 300);
+      }, 0);
       return () => clearTimeout(timer);
     }
   }, [open]);

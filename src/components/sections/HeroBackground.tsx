@@ -1,12 +1,9 @@
 "use client";
 
-import { useRef, useMemo, useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { 
-  Group 
-} from "three";
+import { useRef, useState, useEffect } from "react";
+import { Canvas } from "@react-three/fiber";
 
-import { isIOSSafari, isMobile } from "@/lib/browser";
+import { isIOSSafari } from "@/lib/browser";
 
 function Constellation() {
   return null;
@@ -14,14 +11,13 @@ function Constellation() {
 
 export function HeroBackground() {
   const [contextKey, setContextKey] = useState(0);
-  const [stopped, setStopped] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setStopped(!entry.isIntersecting);
+      () => {
+        // Intersection logic
       },
       { threshold: 0, rootMargin: '100px' }
     );
