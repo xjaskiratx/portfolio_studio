@@ -19,6 +19,21 @@ function cn(...inputs: ClassValue[]) {
 
 const projects = [
   {
+    id: "thecakedrama",
+    title: "The Cake Drama",
+    cat: "Artisanal Bakery",
+    desc: "Premium digital experience for a local bakery, blending sweet aesthetics with high-performance ordering.",
+    year: "2026",
+    type: "dev",
+    size: "large",
+    bg: "bg2",
+    glow: "g2",
+    image: "/images/thecakedrama.webp",
+    width: 1200,
+    height: 630,
+    url: "https://thecakedrama.vercel.app"
+  },
+  {
     id: "cfc",
     title: "CFC Fasteners",
     cat: "Industrial E-Comm",
