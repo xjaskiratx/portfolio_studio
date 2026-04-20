@@ -219,7 +219,7 @@ function ProjectCard({ project }: { project: Project }) {
 
       {project.type !== "design" && (
         <div className="absolute top-8 right-8">
-          <Magnetic strength={0.5}>
+          <Magnetic strength={0.35}>
             <div className="w-11 h-11 bg-lime flex items-center justify-center font-bold text-bg opacity-100 md:opacity-0 md:translate-x-4 md:-translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-x-0 md:group-hover:translate-y-0 transition-all duration-500 delay-75 shadow-lg">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </div>
