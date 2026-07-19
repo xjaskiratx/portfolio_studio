@@ -33,7 +33,14 @@ export const metadata: Metadata = {
     description: "Web design, development, graphic design, brand identity. Ludhiana, India.",
     url: "https://jsx-studios.vercel.app",
     siteName: "JSX Studios",
-    images: [{ url: "/images/og-image.webp", width: 1200, height: 630 }],
+    images: [
+      {
+        url: "/opengraph-image.jpg",
+        width: 1024,
+        height: 1024,
+        alt: "JSX Studios social preview image",
+      },
+    ],
     locale: "en_US",
     type: "website",
   },
@@ -41,6 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "JSX Studios — Digital Forge Studio",
     description: "Web design, development, graphic design, brand identity. Ludhiana, India.",
+    images: ["/twitter-image.jpg"],
   },
   icons: {
     icon: "/images/favicon.webp",

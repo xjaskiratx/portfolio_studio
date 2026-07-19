@@ -19,6 +19,21 @@ function cn(...inputs: ClassValue[]) {
 
 const projects = [
   {
+    id: "drkarambir",
+    title: "Dr. Karambir Gill",
+    cat: "Medical Portfolio",
+    desc: "High-performance medical portal and professional portfolio for a specialist pediatrician, featuring custom booking workflows and publication indexing.",
+    year: "2026",
+    type: "dev",
+    size: "small",
+    bg: "bg-drg",
+    glow: "g-drg",
+    image: "/images/drkarambir.webp",
+    width: 1024,
+    height: 1024,
+    url: "https://vercel-demo-one-app.vercel.app"
+  },
+  {
     id: "thecakedrama",
     title: "The Cake Drama",
     cat: "Artisanal Bakery",
@@ -132,7 +147,8 @@ const bgs: Record<string, string> = {
   bg5: "radial-gradient(ellipse at 55% 15%, #0a0016, #060608 85%)",
   "bg-special": "radial-gradient(ellipse at 50% 30%, #130820, #060608 80%)",
   "bg-buh": "radial-gradient(ellipse at 50% 50%, #18120c, #050508 85%)",
-  "bg-vye": "radial-gradient(ellipse at 50% 50%, #0d081f, #050508 85%)"
+  "bg-vye": "radial-gradient(ellipse at 50% 50%, #0d081f, #050508 85%)",
+  "bg-drg": "radial-gradient(ellipse at 50% 50%, #1a0e24, #060608 85%)"
 };
 
 const glows: Record<string, string> = {
@@ -143,7 +159,8 @@ const glows: Record<string, string> = {
   g5: "radial-gradient(ellipse at 50% 100%, rgba(153,85,255,0.12), transparent 70%)",
   "g-special": "radial-gradient(ellipse at 50% 100%, rgba(200,80,255,0.11), transparent 70%)",
   "g-buh": "radial-gradient(ellipse at 50% 100%, rgba(245, 230, 200, 0.12), transparent 70%)",
-  "g-vye": "radial-gradient(ellipse at 50% 100%, rgba(130, 100, 255, 0.12), transparent 70%)"
+  "g-vye": "radial-gradient(ellipse at 50% 100%, rgba(130, 100, 255, 0.12), transparent 70%)",
+  "g-drg": "radial-gradient(ellipse at 50% 100%, rgba(180,110,240,0.12), transparent 70%)"
 };
 
 function ProjectCard({ project }: { project: Project }) {
